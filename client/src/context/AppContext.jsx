@@ -9,6 +9,9 @@ export const AppProvider = ({ children }) => {
   const [selectedMaintenanceLog, setSelectedMaintenanceLog] = useState(null);
   const [userProfileOpen, setUserProfileOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [isMaintenanceFormOpen, setMaintenanceFormOpen] = useState(false);
+  const [isFuelFormOpen, setFuelFormOpen] = useState(false);
+  const [isExpenseFormOpen, setExpenseFormOpen] = useState(false);
 
   const [fleetData, setFleetData] = useState([
     {
@@ -74,6 +77,20 @@ export const AppProvider = ({ children }) => {
     }
   ]);
 
+  const [fuelLogs, setFuelLogs] = useState([
+    { vehicle: 'VH-492', date: 'Oct 24, 08:30', litres: '85 L', cost: '$134.50', mileage: '142,500 km', station: 'Shell Express' },
+    { vehicle: 'VH-118', date: 'Oct 24, 07:15', litres: '120 L', cost: '$189.20', mileage: '88,320 km', station: 'PetroCanada' },
+    { vehicle: 'VH-902', date: 'Oct 23, 16:45', litres: '65 L', cost: '$102.80', mileage: '210,105 km', station: 'Esso' },
+    { vehicle: 'VH-334', date: 'Oct 23, 14:20', litres: '90 L', cost: '$142.10', mileage: '54,900 km', station: 'Shell Express' },
+    { vehicle: 'VH-551', date: 'Oct 22, 09:10', litres: '110 L', cost: '$173.00', mileage: '112,450 km', station: 'PetroCanada' }
+  ]);
+  const [expenses, setExpenses] = useState([
+    { tripId: '#TR-8921', vehicle: 'VH-118', type: 'Toll Gate', driver: 'Sarah Jenkins', amount: '$45.00', status: 'Approved' },
+    { tripId: '#TR-8944', vehicle: 'VH-334', type: 'Emergency Repair', driver: 'Mike Torres', amount: '$320.50', status: 'Pending Approval' },
+    { tripId: '#TR-8890', vehicle: 'VH-492', type: 'Parking', driver: 'David Chen', amount: '$18.00', status: 'Approved' },
+    { tripId: '#TR-8955', vehicle: 'VH-551', type: 'Weigh Station Fee', driver: 'Anna Smith', amount: '$25.00', status: 'Pending Approval' }
+  ]);
+
   const addVehicle = (vehicle) => {
     setFleetData([...fleetData, { ...vehicle, id: `FL-${fleetData.length + 101}` }]);
   };
@@ -85,8 +102,13 @@ export const AppProvider = ({ children }) => {
       selectedMaintenanceLog, setSelectedMaintenanceLog,
       userProfileOpen, setUserProfileOpen,
       notificationsOpen, setNotificationsOpen,
+      isMaintenanceFormOpen, setMaintenanceFormOpen,
+      isFuelFormOpen, setFuelFormOpen,
+      isExpenseFormOpen, setExpenseFormOpen,
       fleetData, setFleetData, addVehicle,
-      maintenanceLogs, setMaintenanceLogs
+      maintenanceLogs, setMaintenanceLogs,
+      fuelLogs, setFuelLogs,
+      expenses, setExpenses
     }}>
       {children}
     </AppContext.Provider>

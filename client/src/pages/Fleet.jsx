@@ -1,8 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 
 const Fleet = () => {
-  const { fleetData } = useAppContext();
+  const { fleetData, setFleetData, setAddVehicleOpen } = useAppContext();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  
+  const [viewingVehicle, setViewingVehicle] = useState(null);
+  
+  const totalPages = Math.ceil(fleetData.length / itemsPerPage);
+  const paginatedFleet = fleetData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const exportToCSV = () => {
+    const headers = ['ID,Reg Number,Model,Type,Driver,Status,Odometer\n'];
+    const csvContent = fleetData.map(v => `${v.id},${v.regNumber},${v.model},${v.type},${v.driver},${v.status},"${v.odometer}"`).join('\n');
+    const blob = new Blob([headers + csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'fleet_export.csv';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
   useEffect(() => {
     if (window.lucide && window.lucide.createIcons) {
       window.lucide.createIcons();
@@ -20,11 +39,11 @@ const Fleet = () => {
 <p className="font-body-md text-body-md text-on-surface-variant mt-1">Manage and monitor all active vehicles across depots.</p>
 </div>
 <div className="flex items-center gap-3">
-<button className="bg-surface-container-lowest border border-outline-variant text-on-surface py-2 px-4 rounded-lg font-body-md text-body-md font-medium hover:bg-surface-container transition-colors shadow-soft flex items-center gap-2">
+<button onClick={exportToCSV} className="bg-surface-container-lowest border border-outline-variant text-on-surface py-2 px-4 rounded-lg font-body-md text-body-md font-medium hover:bg-surface-container transition-colors shadow-soft flex items-center gap-2">
 <span className="material-symbols-outlined" style={{}}>download</span>
                             Export
                         </button>
-<button className="bg-primary-container text-on-primary py-2 px-4 rounded-lg font-body-md text-body-md font-medium hover:bg-opacity-90 transition-colors shadow-soft flex items-center gap-2">
+<button onClick={() => setAddVehicleOpen(true)} className="bg-primary-container text-on-primary py-2 px-4 rounded-lg font-body-md text-body-md font-medium hover:bg-opacity-90 transition-colors shadow-soft flex items-center gap-2">
 <span className="material-symbols-outlined" style={{}}>add</span>
                             Add Vehicle
                         </button>
@@ -93,7 +112,7 @@ const Fleet = () => {
 </tr>
 </thead>
 <tbody className="font-body-sm text-body-sm">
-{fleetData.map((vehicle, index) => (
+{paginatedFleet.map((vehicle, index) => (
 <tr key={vehicle.id} className={`border-b border-outline-variant hover:bg-surface-container-low transition-colors group cursor-pointer ${index % 2 !== 0 ? 'bg-surface-bright' : ''}`} >
 <td className="py-3 px-4">
 <div className="flex items-center gap-3">
@@ -130,10 +149,10 @@ vehicle.driverInitials ? (
 </span>
 </td>
 <td className="py-3 px-4 text-right">
-<button className="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed/20 rounded-md transition-colors" title="View Details">
+<button onClick={() => setViewingVehicle(vehicle)} className="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed/20 rounded-md transition-colors" title="View Details">
 <span className="material-symbols-outlined">visibility</span>
 </button>
-<button className="p-1.5 text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/20 rounded-md transition-colors" title="Edit">
+<button onClick={() => alert("Edit Vehicle Functional Stub. Imagine an edit form opening! ")} className="p-1.5 text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/20 rounded-md transition-colors" title="Edit">
 <span className="material-symbols-outlined">edit</span>
 </button>
 </td>
@@ -145,17 +164,14 @@ vehicle.driverInitials ? (
 
 <div className="flex items-center justify-between px-4 py-3 border-t border-outline-variant bg-surface-container-lowest">
 <div className="font-body-sm text-body-sm text-on-surface-variant">
-                            Showing <span className="font-medium text-on-surface">1</span> to <span className="font-medium text-on-surface">3</span> of <span className="font-medium text-on-surface">142</span> vehicles
+Showing <span className="font-medium text-on-surface">{(currentPage - 1) * itemsPerPage + 1}</span> to <span className="font-medium text-on-surface">{Math.min(currentPage * itemsPerPage, fleetData.length)}</span> of <span className="font-medium text-on-surface">{fleetData.length}</span> vehicles
                         </div>
 <div className="flex items-center gap-2">
-<button className="p-1.5 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container disabled:opacity-50 disabled:cursor-not-allowed" disabled="">
+<button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} className="p-1.5 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container disabled:opacity-50 disabled:cursor-not-allowed">
 <span className="material-symbols-outlined" style={{}}>chevron_left</span>
 </button>
-<button className="w-8 h-8 rounded-lg bg-primary-container text-on-primary font-body-sm text-body-sm font-medium flex items-center justify-center">1</button>
-<button className="w-8 h-8 rounded-lg hover:bg-surface-container text-on-surface font-body-sm text-body-sm font-medium flex items-center justify-center">2</button>
-<button className="w-8 h-8 rounded-lg hover:bg-surface-container text-on-surface font-body-sm text-body-sm font-medium flex items-center justify-center">3</button>
-<span className="text-on-surface-variant">...</span>
-<button className="p-1.5 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container">
+<button className="w-8 h-8 rounded-lg bg-primary-container text-on-primary font-body-sm text-body-sm font-medium flex items-center justify-center">{currentPage}</button>
+<button onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} className="p-1.5 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container disabled:opacity-50 disabled:cursor-not-allowed">
 <span className="material-symbols-outlined" style={{}}>chevron_right</span>
 </button>
 </div>
@@ -163,6 +179,39 @@ vehicle.driverInitials ? (
 </div>
 </div>
 
+      {viewingVehicle && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <div className="absolute inset-0 bg-surface-dim/50 backdrop-blur-sm" onClick={() => setViewingVehicle(null)}></div>
+          <div className="relative w-full max-w-md h-full bg-surface-container-lowest border-l border-outline-variant shadow-2xl z-10 flex flex-col pt-8 animate-in slide-in-from-right duration-300">
+            <div className="p-4 border-b border-outline-variant flex justify-between items-start bg-surface-container">
+              <div>
+                <h3 className="font-section-title text-xl font-semibold text-on-surface">{viewingVehicle.regNumber}</h3>
+                <p className="text-sm text-on-surface-variant mt-1">{viewingVehicle.model}</p>
+              </div>
+              <button className="text-on-surface-variant hover:text-on-surface rounded p-1" onClick={() => setViewingVehicle(null)}>
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+              {viewingVehicle.image && <img src={viewingVehicle.image} alt="vehicle" className="w-full h-48 object-cover rounded-lg border border-outline-variant mb-4" />}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-surface border border-outline-variant rounded-lg p-3">
+                  <span className="text-xs text-on-surface-variant block mb-1">Status</span>
+                  <span className="font-semibold text-on-surface">{viewingVehicle.status}</span>
+                </div>
+                <div className="bg-surface border border-outline-variant rounded-lg p-3">
+                  <span className="text-xs text-on-surface-variant block mb-1">Odometer</span>
+                  <span className="font-semibold text-on-surface">{viewingVehicle.odometer}</span>
+                </div>
+              </div>
+              <div className="bg-surface border border-outline-variant rounded-lg p-4">
+                  <h4 className="text-sm font-semibold mb-3 border-b border-outline-variant pb-2">Driver Assignment</h4>
+                  <p className="text-sm text-on-surface">{viewingVehicle.driver}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

@@ -167,15 +167,15 @@ const Reports = () => {
 </div>
 
 <div className="flex items-center bg-surface border border-outline-variant rounded-lg overflow-hidden">
-<button className="px-3 py-2 border-r border-outline-variant hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-caps text-label-caps" title="Export PDF">
+<button onClick={() => alert('Exporting PDF...')} className="px-3 py-2 border-r border-outline-variant hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-caps text-label-caps" title="Export PDF">
 <span className="material-symbols-outlined text-[18px]">picture_as_pdf</span>
                             PDF
                         </button>
-<button className="px-3 py-2 border-r border-outline-variant hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-caps text-label-caps" title="Export Excel">
+<button onClick={() => alert('Exporting XLSX...')} className="px-3 py-2 border-r border-outline-variant hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-caps text-label-caps" title="Export Excel">
 <span className="material-symbols-outlined text-[18px]">table_view</span>
                             XLSX
                         </button>
-<button className="px-3 py-2 hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-caps text-label-caps" title="Export CSV">
+<button onClick={() => alert('Exporting CSV...')} className="px-3 py-2 hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-caps text-label-caps" title="Export CSV">
 <span className="material-symbols-outlined text-[18px]">data_object</span>
                             CSV
                         </button>
@@ -316,7 +316,7 @@ const Reports = () => {
 <div className="lg:col-span-2 bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)]">
 <div className="flex justify-between items-center mb-6">
 <h3 className="font-section-title text-section-title text-on-background">Monthly Revenue</h3>
-<button className="p-1 hover:bg-surface-container rounded transition-colors text-on-surface-variant">
+<button onClick={() => alert('Chart menu opened')} className="p-1 hover:bg-surface-container rounded transition-colors text-on-surface-variant">
 <span className="material-symbols-outlined">more_vert</span>
 </button>
 </div>
@@ -328,7 +328,7 @@ const Reports = () => {
 <div className="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)]">
 <div className="flex justify-between items-center mb-6">
 <h3 className="font-section-title text-section-title text-on-background">Trip Status</h3>
-<button className="p-1 hover:bg-surface-container rounded transition-colors text-on-surface-variant">
+<button onClick={() => alert('Chart menu opened')} className="p-1 hover:bg-surface-container rounded transition-colors text-on-surface-variant">
 <span className="material-symbols-outlined">more_vert</span>
 </button>
 </div>
@@ -342,7 +342,7 @@ const Reports = () => {
 <div className="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)]">
 <div className="flex justify-between items-center mb-6">
 <h3 className="font-section-title text-section-title text-on-background">Rev vs Cost</h3>
-<button className="p-1 hover:bg-surface-container rounded transition-colors text-on-surface-variant">
+<button onClick={() => alert('Chart menu opened')} className="p-1 hover:bg-surface-container rounded transition-colors text-on-surface-variant">
 <span className="material-symbols-outlined">more_vert</span>
 </button>
 </div>
@@ -354,7 +354,7 @@ const Reports = () => {
 <div className="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)]">
 <div className="flex justify-between items-center mb-6">
 <h3 className="font-section-title text-section-title text-on-background">Maint. Costs</h3>
-<button className="p-1 hover:bg-surface-container rounded transition-colors text-on-surface-variant">
+<button onClick={() => alert('Chart menu opened')} className="p-1 hover:bg-surface-container rounded transition-colors text-on-surface-variant">
 <span className="material-symbols-outlined">more_vert</span>
 </button>
 </div>
@@ -370,7 +370,7 @@ const Reports = () => {
 <div className="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)]">
 <div className="flex justify-between items-center mb-6">
 <h3 className="font-section-title text-section-title text-on-background">Driver Metrics</h3>
-<button className="p-1 hover:bg-surface-container rounded transition-colors text-on-surface-variant">
+<button onClick={() => alert('Chart menu opened')} className="p-1 hover:bg-surface-container rounded transition-colors text-on-surface-variant">
 <span className="material-symbols-outlined">more_vert</span>
 </button>
 </div>

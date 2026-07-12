@@ -1,183 +1,188 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Settings = () => {
+  const [activeTab, setActiveTab] = useState('General');
+
+  const [settingsState, setSettingsState] = useState({
+    darkMode: false,
+    emailNotifications: true,
+    currency: 'USD ($)',
+    distanceUnit: 'Miles (mi)',
+    twoFactor: false
+  });
+
+  const [rbacState, setRbacState] = useState({
+    Dashboard: { view: true, create: true, edit: true, delete: false },
+    Fleet: { view: true, create: true, edit: true, delete: true },
+    Drivers: { view: true, create: true, edit: true, delete: false }
+  });
+
+  const handleRbacChange = (module, permission) => {
+    setRbacState(prev => ({
+      ...prev,
+      [module]: {
+        ...prev[module],
+        [permission]: !prev[module][permission]
+      }
+    }));
+  };
+
   useEffect(() => {
     if (window.lucide && window.lucide.createIcons) {
       window.lucide.createIcons();
     }
   }, []);
 
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'General':
+        return (
+          <section className="glass rounded-xl p-stack-lg shadow-sm border border-outline-variant/50 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent pointer-events-none"></div>
+            <div className="relative z-10">
+              <div className="mb-6 pb-4 border-b border-outline-variant/50">
+                <h3 className="font-section-title text-section-title text-on-surface">General Preferences</h3>
+                <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Configure your personal workspace settings.</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-body-md text-body-md text-on-surface font-medium">Dark Mode</p>
+                      <p className="font-body-sm text-body-sm text-on-surface-variant">Switch between light and dark themes.</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" checked={settingsState.darkMode} onChange={e => setSettingsState({ ...settingsState, darkMode: e.target.checked })} className="sr-only peer" />
+                      <div className="w-11 h-6 bg-surface-dim peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    </label>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-body-md text-body-md text-on-surface font-medium">Email Notifications</p>
+                      <p className="font-body-sm text-body-sm text-on-surface-variant">Receive daily summary reports.</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" checked={settingsState.emailNotifications} onChange={e => setSettingsState({ ...settingsState, emailNotifications: e.target.checked })} className="sr-only peer" />
+                      <div className="w-11 h-6 bg-surface-dim peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    </label>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block font-body-sm text-body-sm text-on-surface font-medium mb-1">Currency</label>
+                    <div className="relative">
+                      <select value={settingsState.currency} onChange={e => setSettingsState({ ...settingsState, currency: e.target.value })} className="block w-full bg-white border border-outline-variant text-on-surface text-body-sm rounded-lg focus:ring-primary focus:border-primary p-2.5 appearance-none shadow-sm cursor-pointer">
+                        <option>USD ($)</option>
+                        <option>EUR (€)</option>
+                        <option>GBP (£)</option>
+                      </select>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-on-surface-variant">
+                        <span className="material-symbols-outlined text-sm">expand_more</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block font-body-sm text-body-sm text-on-surface font-medium mb-1">Distance Unit</label>
+                    <div className="relative">
+                      <select value={settingsState.distanceUnit} onChange={e => setSettingsState({ ...settingsState, distanceUnit: e.target.value })} className="block w-full bg-white border border-outline-variant text-on-surface text-body-sm rounded-lg focus:ring-primary focus:border-primary p-2.5 appearance-none shadow-sm cursor-pointer">
+                        <option>Miles (mi)</option>
+                        <option>Kilometers (km)</option>
+                      </select>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-on-surface-variant">
+                        <span className="material-symbols-outlined text-sm">expand_more</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+
+      case 'RBAC':
+        return (
+          <section className="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden p-stack-lg animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-outline-variant">
+              <div>
+                <h3 className="font-section-title text-section-title text-on-surface">Role-Based Access Control</h3>
+                <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Manage permissions for different user roles across the platform.</p>
+              </div>
+              <button className="bg-secondary text-white px-4 py-2 rounded-lg font-body-sm text-body-sm font-medium hover:bg-secondary-container transition-colors flex items-center gap-2">
+                <span className="material-symbols-outlined text-sm">add</span> New Role
+              </button>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr>
+                    <th className="font-label-caps text-label-caps text-on-surface-variant pb-3 border-b border-outline-variant font-semibold min-w-[150px]">Module</th>
+                    <th className="font-label-caps text-label-caps text-on-surface-variant pb-3 border-b border-outline-variant font-semibold text-center w-24">View</th>
+                    <th className="font-label-caps text-label-caps text-on-surface-variant pb-3 border-b border-outline-variant font-semibold text-center w-24">Create</th>
+                    <th className="font-label-caps text-label-caps text-on-surface-variant pb-3 border-b border-outline-variant font-semibold text-center w-24">Edit</th>
+                    <th className="font-label-caps text-label-caps text-on-surface-variant pb-3 border-b border-outline-variant font-semibold text-center w-24">Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(rbacState).map(([module, perms], index) => (
+                    <tr key={module} className={`${index % 2 !== 0 ? 'bg-surface-bright' : ''} border-b border-outline-variant/50 hover:bg-surface-container-low/50 transition-colors`}>
+                      <td className="py-4 font-body-md text-body-md text-on-surface font-medium">{module}</td>
+                      <td className="py-4 text-center"><input type="checkbox" checked={perms.view} onChange={() => handleRbacChange(module, 'view')} className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" /></td>
+                      <td className="py-4 text-center"><input type="checkbox" checked={perms.create} onChange={() => handleRbacChange(module, 'create')} className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" /></td>
+                      <td className="py-4 text-center"><input type="checkbox" checked={perms.edit} onChange={() => handleRbacChange(module, 'edit')} className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" /></td>
+                      <td className="py-4 text-center"><input type="checkbox" checked={perms.delete} onChange={() => handleRbacChange(module, 'delete')} className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-6 flex justify-end">
+              <button className="bg-white border border-outline-variant text-on-surface px-6 py-2 rounded-lg font-body-sm text-body-sm font-medium hover:bg-surface-container-low transition-colors mr-3">Cancel</button>
+              <button onClick={() => alert('RBAC Saved!')} className="bg-primary text-white px-6 py-2 rounded-lg font-body-sm text-body-sm font-medium hover:bg-opacity-90 transition-colors shadow-sm">Save Changes</button>
+            </div>
+          </section>
+        );
+
+      default:
+        // Placeholder for other tabs
+        return (
+          <section className="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm p-stack-lg flex flex-col items-center justify-center min-h-[400px] text-center animate-in fade-in duration-300">
+             <div className="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center mb-4 text-on-surface-variant">
+               <span className="material-symbols-outlined text-3xl">construction</span>
+             </div>
+             <h3 className="text-xl font-semibold text-on-surface mb-2">{activeTab} Settings</h3>
+             <p className="text-on-surface-variant">This section is currently under development.</p>
+          </section>
+        );
+    }
+  };
+
+  const navItems = ['General', 'Company', 'Depot', 'Notifications', 'Users', 'Security'];
+
   return (
-    <>
-      
+    <div className="p-margin-page max-w-container-max mx-auto w-full flex-grow flex flex-col md:flex-row gap-gutter">
+      <aside className="w-full md:w-64 flex-shrink-0">
+        <div className="sticky top-[100px]">
+          <h2 className="font-section-title text-section-title text-on-surface mb-6">Settings</h2>
+          <nav className="flex flex-col gap-1">
+            {navItems.map(item => (
+              <button key={item} onClick={() => setActiveTab(item)} className={`text-left px-4 py-2.5 rounded-lg font-body-md text-body-md flex items-center justify-between group transition-colors ${activeTab === item ? 'bg-primary-container text-on-primary-container font-medium' : 'text-on-surface-variant hover:bg-surface-container'}`}>
+                {item}
+                <span className={`material-symbols-outlined text-sm transition-opacity ${activeTab === item ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>chevron_right</span>
+              </button>
+            ))}
+            <button onClick={() => setActiveTab('RBAC')} className={`mt-2 text-left px-4 py-2.5 rounded-lg font-body-md text-body-md flex items-center justify-between border ${activeTab === 'RBAC' ? 'bg-primary text-on-primary border-primary shadow-sm font-medium' : 'bg-white border-outline-variant text-primary font-medium hover:bg-surface-container'}`}>
+              RBAC (Roles &amp; Permissions)
+              <span className="material-symbols-outlined text-sm">chevron_right</span>
+            </button>
+          </nav>
+        </div>
+      </aside>
 
-
-
-<div className="p-margin-page max-w-container-max mx-auto w-full flex-grow flex flex-col md:flex-row gap-gutter">
-
-<aside className="w-full md:w-64 flex-shrink-0">
-<div className="sticky top-[100px]">
-<h2 className="font-section-title text-section-title text-on-surface mb-6">Settings</h2>
-<nav className="flex flex-col gap-1">
-<button className="text-left px-4 py-2.5 rounded-lg font-body-md text-body-md text-on-surface-variant hover:bg-surface-container transition-colors flex items-center justify-between group">
-                            General
-                            <span className="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</button>
-<button className="text-left px-4 py-2.5 rounded-lg font-body-md text-body-md text-on-surface-variant hover:bg-surface-container transition-colors flex items-center justify-between group">
-                            Company
-                            <span className="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</button>
-<button className="text-left px-4 py-2.5 rounded-lg font-body-md text-body-md text-on-surface-variant hover:bg-surface-container transition-colors flex items-center justify-between group">
-                            Depot
-                            <span className="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</button>
-<button className="text-left px-4 py-2.5 rounded-lg font-body-md text-body-md text-on-surface-variant hover:bg-surface-container transition-colors flex items-center justify-between group">
-                            Notifications
-                            <span className="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</button>
-<button className="text-left px-4 py-2.5 rounded-lg font-body-md text-body-md text-on-surface-variant hover:bg-surface-container transition-colors flex items-center justify-between group">
-                            Users
-                            <span className="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</button>
-<button className="text-left px-4 py-2.5 rounded-lg font-body-md text-body-md text-on-surface-variant hover:bg-surface-container transition-colors flex items-center justify-between group">
-                            Security
-                            <span className="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</button>
-<button className="text-left px-4 py-2.5 rounded-lg font-body-md text-body-md bg-white border border-outline-variant shadow-sm text-primary font-medium flex items-center justify-between">
-                            RBAC (Roles &amp; Permissions)
-                            <span className="material-symbols-outlined text-sm">chevron_right</span>
-</button>
-</nav>
-</div>
-</aside>
-
-<div className="flex-1 flex flex-col gap-stack-lg">
-
-<section className="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden p-stack-lg">
-<div className="flex items-center justify-between mb-6 pb-4 border-b border-outline-variant">
-<div>
-<h3 className="font-section-title text-section-title text-on-surface">Role-Based Access Control</h3>
-<p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Manage permissions for different user roles across the platform.</p>
-</div>
-<button className="bg-secondary text-white px-4 py-2 rounded-lg font-body-sm text-body-sm font-medium hover:bg-secondary-container transition-colors flex items-center gap-2">
-<span className="material-symbols-outlined text-sm">add</span>
-                            New Role
-                        </button>
-</div>
-<div className="overflow-x-auto">
-<table className="w-full text-left border-collapse">
-<thead>
-<tr>
-<th className="font-label-caps text-label-caps text-on-surface-variant pb-3 border-b border-outline-variant font-semibold min-w-[150px]">Module</th>
-<th className="font-label-caps text-label-caps text-on-surface-variant pb-3 border-b border-outline-variant font-semibold text-center w-24">View</th>
-<th className="font-label-caps text-label-caps text-on-surface-variant pb-3 border-b border-outline-variant font-semibold text-center w-24">Create</th>
-<th className="font-label-caps text-label-caps text-on-surface-variant pb-3 border-b border-outline-variant font-semibold text-center w-24">Edit</th>
-<th className="font-label-caps text-label-caps text-on-surface-variant pb-3 border-b border-outline-variant font-semibold text-center w-24">Delete</th>
-</tr>
-</thead>
-<tbody>
-
-<tr className="border-b border-outline-variant/50 hover:bg-surface-container-low/50 transition-colors">
-<td className="py-4 font-body-md text-body-md text-on-surface font-medium">Dashboard</td>
-<td className="py-4 text-center"><input checked="" className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" type="checkbox" /></td>
-<td className="py-4 text-center"><input checked="" className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" type="checkbox" /></td>
-<td className="py-4 text-center"><input checked="" className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" type="checkbox" /></td>
-<td className="py-4 text-center"><input className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" type="checkbox" /></td>
-</tr>
-<tr className="bg-surface-bright border-b border-outline-variant/50 hover:bg-surface-container-low/50 transition-colors">
-<td className="py-4 font-body-md text-body-md text-on-surface font-medium">Fleet</td>
-<td className="py-4 text-center"><input checked="" className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" type="checkbox" /></td>
-<td className="py-4 text-center"><input checked="" className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" type="checkbox" /></td>
-<td className="py-4 text-center"><input checked="" className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" type="checkbox" /></td>
-<td className="py-4 text-center"><input checked="" className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" type="checkbox" /></td>
-</tr>
-<tr className="border-b border-outline-variant/50 hover:bg-surface-container-low/50 transition-colors">
-<td className="py-4 font-body-md text-body-md text-on-surface font-medium">Drivers</td>
-<td className="py-4 text-center"><input checked="" className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" type="checkbox" /></td>
-<td className="py-4 text-center"><input checked="" className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" type="checkbox" /></td>
-<td className="py-4 text-center"><input checked="" className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" type="checkbox" /></td>
-<td className="py-4 text-center"><input className="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant bg-surface-container-low cursor-pointer" type="checkbox" /></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div className="mt-6 flex justify-end">
-<button className="bg-white border border-outline-variant text-on-surface px-6 py-2 rounded-lg font-body-sm text-body-sm font-medium hover:bg-surface-container-low transition-colors mr-3">
-                            Cancel
-                        </button>
-<button className="bg-primary text-white px-6 py-2 rounded-lg font-body-sm text-body-sm font-medium hover:bg-surface-tint transition-colors shadow-sm">
-                            Save Changes
-                        </button>
-</div>
-</section>
-
-<section className="glass rounded-xl p-stack-lg shadow-sm border border-outline-variant/50 relative overflow-hidden">
-<div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent pointer-events-none"></div>
-<div className="relative z-10">
-<div className="mb-6 pb-4 border-b border-outline-variant/50">
-<h3 className="font-section-title text-section-title text-on-surface">General Preferences</h3>
-<p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Configure your personal workspace settings.</p>
-</div>
-<div className="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
-
-<div className="space-y-6">
-<div className="flex items-center justify-between">
-<div>
-<p className="font-body-md text-body-md text-on-surface font-medium">Dark Mode</p>
-<p className="font-body-sm text-body-sm text-on-surface-variant">Switch between light and dark themes.</p>
-</div>
-<label className="relative inline-flex items-center cursor-pointer">
-<input className="sr-only peer" type="checkbox" value="" />
-<div className="w-11 h-6 bg-surface-dim peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-</label>
-</div>
-<div className="flex items-center justify-between">
-<div>
-<p className="font-body-md text-body-md text-on-surface font-medium">Email Notifications</p>
-<p className="font-body-sm text-body-sm text-on-surface-variant">Receive daily summary reports.</p>
-</div>
-<label className="relative inline-flex items-center cursor-pointer">
-<input checked="" className="sr-only peer" type="checkbox" value="" />
-<div className="w-11 h-6 bg-surface-dim peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-</label>
-</div>
-</div>
-
-<div className="space-y-4">
-<div>
-<label className="block font-body-sm text-body-sm text-on-surface font-medium mb-1">Currency</label>
-<div className="relative">
-<select className="block w-full bg-white border border-outline-variant text-on-surface text-body-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 appearance-none shadow-sm cursor-pointer">
-<option>USD ($)</option>
-<option>EUR (€)</option>
-<option>GBP (£)</option>
-</select>
-<div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-on-surface-variant">
-<span className="material-symbols-outlined text-sm">expand_more</span>
-</div>
-</div>
-</div>
-<div>
-<label className="block font-body-sm text-body-sm text-on-surface font-medium mb-1">Distance Unit</label>
-<div className="relative">
-<select className="block w-full bg-white border border-outline-variant text-on-surface text-body-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 appearance-none shadow-sm cursor-pointer">
-<option>Miles (mi)</option>
-<option>Kilometers (km)</option>
-</select>
-<div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-on-surface-variant">
-<span className="material-symbols-outlined text-sm">expand_more</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-</div>
-</div>
-
-    </>
+      <div className="flex-1 flex flex-col gap-stack-lg">
+        {renderTabContent()}
+      </div>
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 
 const Maintenance = () => {
-  const { maintenanceLogs, setSelectedMaintenanceLog } = useAppContext();
+  const { maintenanceLogs, setSelectedMaintenanceLog, setMaintenanceFormOpen } = useAppContext();
   useEffect(() => {
     if (window.lucide && window.lucide.createIcons) {
       window.lucide.createIcons();
@@ -19,10 +19,10 @@ const Maintenance = () => {
 <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Track and manage fleet service schedules and repairs.</p>
 </div>
 <div className="flex gap-3">
-<button className="font-body-md text-body-md font-medium text-on-surface bg-surface-container-lowest border border-outline-variant px-4 py-2 rounded-lg hover:bg-surface-variant transition-colors flex items-center gap-2">
+<button onClick={() => setMaintenanceFormOpen(true)} className="font-body-md text-body-md font-medium text-on-surface bg-surface-container-lowest border border-outline-variant px-4 py-2 rounded-lg hover:bg-surface-variant transition-colors flex items-center gap-2">
 <span className="material-symbols-outlined text-sm">history</span> Log Service
                     </button>
-<button className="font-body-md text-body-md font-medium text-on-primary-container bg-primary-container px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 shadow-sm">
+<button onClick={() => setMaintenanceFormOpen(true)} className="font-body-md text-body-md font-medium text-on-primary-container bg-primary-container px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 shadow-sm">
 <span className="material-symbols-outlined text-sm">calendar_month</span> Schedule Service
                     </button>
 </div>

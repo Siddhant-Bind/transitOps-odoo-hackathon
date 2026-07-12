@@ -1,7 +1,8 @@
-
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ExecutiveDashboard = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     if (window.lucide && window.lucide.createIcons) {
       window.lucide.createIcons();
@@ -301,7 +302,7 @@ const ExecutiveDashboard = () => {
 <div className="xl:col-span-2 bg-surface rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden">
 <div className="p-5 border-b border-outline-variant/30 flex justify-between items-center">
 <h3 className="font-body-md font-semibold text-on-surface">Recent Trips</h3>
-<button className="text-secondary text-sm font-medium hover:underline">View All</button>
+<button onClick={() => navigate('/trips')} className="text-secondary text-sm font-medium hover:underline">View All</button>
 </div>
 <div className="overflow-x-auto">
 <table className="w-full text-left border-collapse">
@@ -339,7 +340,7 @@ const ExecutiveDashboard = () => {
 <span className="px-2.5 py-1 bg-primary-container/20 text-primary-fixed-dim text-xs font-semibold rounded-full border border-primary-container/30">In Transit</span>
 </td>
 <td className="p-4 text-right">
-<button className="text-on-surface-variant hover:text-secondary transition-colors"><i className="w-5 h-5" data-lucide="more-horizontal"></i></button>
+<button onClick={() => navigate('/trips')} className="text-on-surface-variant hover:text-secondary transition-colors"><i className="w-5 h-5" data-lucide="more-horizontal"></i></button>
 </td>
 </tr>
 <tr className="border-b border-outline-variant/20 hover-row-transition">
@@ -364,7 +365,7 @@ const ExecutiveDashboard = () => {
 <span className="px-2.5 py-1 bg-tertiary-container/20 text-tertiary text-xs font-semibold rounded-full border border-tertiary-container/30">Completed</span>
 </td>
 <td className="p-4 text-right">
-<button className="text-on-surface-variant hover:text-secondary transition-colors"><i className="w-5 h-5" data-lucide="more-horizontal"></i></button>
+<button onClick={() => navigate('/trips')} className="text-on-surface-variant hover:text-secondary transition-colors"><i className="w-5 h-5" data-lucide="more-horizontal"></i></button>
 </td>
 </tr>
 <tr className="border-b border-outline-variant/20 hover-row-transition">
@@ -389,7 +390,7 @@ const ExecutiveDashboard = () => {
 <span className="px-2.5 py-1 bg-surface-variant text-on-surface-variant text-xs font-semibold rounded-full border border-outline-variant">Pending</span>
 </td>
 <td className="p-4 text-right">
-<button className="text-on-surface-variant hover:text-secondary transition-colors"><i className="w-5 h-5" data-lucide="more-horizontal"></i></button>
+<button onClick={() => navigate('/trips')} className="text-on-surface-variant hover:text-secondary transition-colors"><i className="w-5 h-5" data-lucide="more-horizontal"></i></button>
 </td>
 </tr>
 </tbody>

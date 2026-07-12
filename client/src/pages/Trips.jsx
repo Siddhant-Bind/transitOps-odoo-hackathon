@@ -1,12 +1,55 @@
 import React, { useEffect, useState } from 'react';
 
 const Trips = () => {
-  const [tripsData] = useState([
+  const [tripsData, setTripsData] = useState([
     { id: 'TRP-8892', status: 'Dispatched', route: 'Chicago ➔ Detroit', icon: 'person', details: 'Sarah Jenkins • TRK-1042', progress: 45, eta: '4h 12m' },
     { id: 'TRP-8893', status: 'Scheduled', route: 'Atlanta ➔ Miami', icon: 'schedule', details: 'Departs: 14:00 EST' },
     { id: 'TRP-8894', status: 'Draft', route: 'Dallas ➔ Houston', icon: 'warning', details: 'Missing Driver' },
     { id: 'TRP-8890', status: 'Cancelled', route: 'Seattle ➔ Portland', icon: 'cancel', details: 'Cancelled by Dispatch' }
   ]);
+
+  const [formData, setFormData] = useState({
+    source: '',
+    destination: '',
+    cargoType: 'General Freight',
+    weight: '',
+    vehicle: 'TRK-1042 (Volvo VNL)',
+    driver: 'Sarah Jenkins (Available)',
+    distance: '',
+    departure: ''
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({...prev, [name]: value}));
+  };
+
+  const handleAddTrip = (status) => {
+    if (!formData.source || !formData.destination) {
+      alert("Source and Destination are required!");
+      return;
+    }
+    const newTrip = {
+      id: `TRP-${Math.floor(1000 + Math.random() * 9000)}`,
+      status: status,
+      route: `${formData.source} ➔ ${formData.destination}`,
+      icon: status === 'Draft' ? 'warning' : 'schedule',
+      details: `${formData.driver.split(' ')[0]} • ${formData.vehicle.split(' ')[0]}`,
+      progress: status === 'Dispatched' ? 0 : undefined,
+      eta: formData.distance ? `${Math.ceil(parseInt(formData.distance)/60)}h` : 'TBD'
+    };
+    setTripsData([newTrip, ...tripsData]);
+    setFormData({
+      source: '',
+      destination: '',
+      cargoType: 'General Freight',
+      weight: '',
+      vehicle: 'TRK-1042 (Volvo VNL)',
+      driver: 'Sarah Jenkins (Available)',
+      distance: '',
+      departure: ''
+    });
+  };
 
   useEffect(() => {
     if (window.lucide && window.lucide.createIcons) {
@@ -33,16 +76,16 @@ const Trips = () => {
 <form className="grid grid-cols-2 gap-4">
 <div className="col-span-2 md:col-span-1">
 <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1">Source Location</label>
-<input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="e.g., Warehouse A, Chicago" type="text" />
+<input name="source" value={formData.source} onChange={handleInputChange} className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="e.g., Warehouse A, Chicago" type="text" />
 </div>
 <div className="col-span-2 md:col-span-1">
 <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1">Destination</label>
-<input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="e.g., Distribution Center B, Detroit" type="text" />
+<input name="destination" value={formData.destination} onChange={handleInputChange} className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="e.g., Distribution Center B, Detroit" type="text" />
 </div>
 <div className="col-span-2 border-t border-outline-variant my-2 pt-4"></div>
 <div className="col-span-2 md:col-span-1">
 <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1">Cargo Type</label>
-<select className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+<select name="cargoType" value={formData.cargoType} onChange={handleInputChange} className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
 <option>General Freight</option>
 <option>Refrigerated</option>
 <option>Hazardous Materials</option>
@@ -50,19 +93,19 @@ const Trips = () => {
 </div>
 <div className="col-span-2 md:col-span-1">
 <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1">Cargo Weight (lbs)</label>
-<input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="45,000" type="number" />
+<input name="weight" value={formData.weight} onChange={handleInputChange} className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="45,000" type="number" />
 </div>
 <div className="col-span-2 border-t border-outline-variant my-2 pt-4"></div>
 <div className="col-span-2 md:col-span-1">
 <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1">Assign Vehicle</label>
-<select className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+<select name="vehicle" value={formData.vehicle} onChange={handleInputChange} className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
 <option>TRK-1042 (Volvo VNL)</option>
 <option>TRK-1055 (Freightliner Cascadia)</option>
 </select>
 </div>
 <div className="col-span-2 md:col-span-1">
 <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1">Assign Driver</label>
-<select className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+<select name="driver" value={formData.driver} onChange={handleInputChange} className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
 <option>Sarah Jenkins (Available)</option>
 <option>Marcus Cole (Available in 2h)</option>
 </select>
@@ -70,15 +113,15 @@ const Trips = () => {
 <div className="col-span-2 border-t border-outline-variant my-2 pt-4"></div>
 <div className="col-span-2 md:col-span-1">
 <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1">Estimated Distance (mi)</label>
-<input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow bg-surface-container-low" placeholder="285" readonly="" type="number" />
+<input name="distance" value={formData.distance} onChange={handleInputChange} className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="285" type="number" />
 </div>
 <div className="col-span-2 md:col-span-1">
 <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1">Planned Departure</label>
-<input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" type="datetime-local" />
+<input name="departure" value={formData.departure} onChange={handleInputChange} className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" type="datetime-local" />
 </div>
 <div className="col-span-2 flex justify-end gap-3 mt-4">
-<button className="px-4 py-2 border border-outline-variant rounded-lg text-body-sm font-body-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" type="button">Save Draft</button>
-<button className="px-6 py-2 bg-primary-container text-on-primary-container rounded-lg text-body-sm font-body-sm font-medium hover:opacity-90 transition-opacity" type="button">Dispatch Trip</button>
+<button onClick={() => handleAddTrip('Draft')} className="px-4 py-2 border border-outline-variant rounded-lg text-body-sm font-body-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" type="button">Save Draft</button>
+<button onClick={() => handleAddTrip('Scheduled')} className="px-6 py-2 bg-primary-container text-on-primary-container rounded-lg text-body-sm font-body-sm font-medium hover:opacity-90 transition-opacity" type="button">Dispatch Trip</button>
 </div>
 </form>
 </div>
