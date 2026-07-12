@@ -1,0 +1,527 @@
+<!DOCTYPE html><html class="h-full" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>TransitOps - Driver Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#293040",
+                        "surface-container": "#e9edff",
+                        "primary-container": "#f59e0b",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#4ae176",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#867461",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#001a42",
+                        "on-primary-fixed": "#2a1700",
+                        "background": "#f9f9ff",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#2170e4",
+                        "tertiary-container": "#2bca62",
+                        "on-tertiary-fixed": "#002109",
+                        "surface-bright": "#f9f9ff",
+                        "on-tertiary-fixed-variant": "#005321",
+                        "secondary": "#0058be",
+                        "on-surface-variant": "#534434",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#004395",
+                        "primary": "#855300",
+                        "primary-fixed": "#ffddb8",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-secondary-container": "#fefcff",
+                        "surface-container-high": "#e1e8fd",
+                        "on-primary-fixed-variant": "#653e00",
+                        "tertiary-fixed": "#6bff8f",
+                        "tertiary": "#006e2f",
+                        "surface-tint": "#855300",
+                        "primary-fixed-dim": "#ffb95f",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "on-primary-container": "#613b00",
+                        "on-surface": "#141b2b",
+                        "inverse-primary": "#ffb95f",
+                        "surface": "#f9f9ff",
+                        "on-background": "#141b2b",
+                        "surface-container-highest": "#dce2f7",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#d8c3ad",
+                        "surface-variant": "#dce2f7",
+                        "surface-dim": "#d3daef",
+                        "inverse-on-surface": "#edf0ff",
+                        "on-tertiary-container": "#004f20",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f1f3ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "stack-md": "16px",
+                        "stack-lg": "24px",
+                        "margin-page": "32px",
+                        "stack-sm": "8px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "section-title": ["Inter"],
+                        "kpi-display": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                        "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "section-title": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "kpi-display": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#F5F7FA] text-on-surface font-body-sm h-full overflow-hidden flex">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full w-[260px] bg-surface dark:bg-inverse-surface border-r border-outline-variant shadow-sm hidden md:flex flex-col z-50">
+<div class="flex flex-col h-full p-stack-lg">
+<!-- Brand -->
+<div class="flex items-center gap-3 mb-8">
+<img class="w-10 h-10 object-contain rounded-md" data-alt="A clean, minimalist abstract logo for an enterprise fleet management software named TransitOps. The logo should feature crisp geometric shapes in a vibrant amber and dark navy color palette, set against a white background to match a modern light-mode UI style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBajfs1iaHd1KHJ3aI96MLYNJYFFAvElmUPGgOhKM6xjIIqFmIOz1expapqhmFCcsADAwkOlCehHNDr3NOMc5PQdtybZowpj5O9XKp3oT46hEZRXolj9gajaUghLU8GX5NECjBmWxKYiLTxfwVt4_EeBEcrSwcFEjnIOmliCGpaM9OkqbAUrxCoszMzcI62KhF3naD47nOfFlzp2NppF2g-9f_Lnk8gIqmriBdxwQZ5gldueJXpBDl1PA">
+<div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed">TransitOps</h1>
+<span class="font-label-caps text-label-caps text-on-surface-variant block mt-1 uppercase tracking-wider">Enterprise Fleet</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<ul class="flex flex-col gap-2 flex-grow font-body-md text-body-md">
+<li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>Dashboard</a></li>
+<li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#"><span class="material-symbols-outlined" data-icon="directions_car">directions_car</span>Fleet</a></li>
+<li><a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-bold scale-95 duration-150 ease-in-out shadow-sm" href="#"><span class="material-symbols-outlined" data-icon="person">person</span>Drivers</a></li>
+<li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#"><span class="material-symbols-outlined" data-icon="route">route</span>Trips</a></li>
+<li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#"><span class="material-symbols-outlined" data-icon="build">build</span>Maintenance</a></li>
+<li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#"><span class="material-symbols-outlined" data-icon="local_gas_station">local_gas_station</span>Fuel &amp; Expenses</a></li>
+<li><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#"><span class="material-symbols-outlined" data-icon="analytics">analytics</span>Reports &amp; Analytics</a></li>
+</ul>
+<!-- Bottom Actions -->
+<div class="mt-auto pt-4 border-t border-outline-variant space-y-4">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg font-body-md text-body-md" href="#"><span class="material-symbols-outlined" data-icon="settings">settings</span>Settings</a>
+<button class="w-full bg-[#F59E0B] text-on-primary font-body-md text-body-md py-3 rounded-[14px] hover:bg-primary-fixed-dim transition-colors shadow-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="add">add</span> Quick Add
+                </button>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0 md:ml-[260px] h-full overflow-hidden">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-40 w-full bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-md border-b border-outline-variant shadow-sm flex justify-between items-center h-16 px-margin-page max-w-container-max mx-auto">
+<!-- Mobile Menu & Search -->
+<div class="flex items-center gap-4 flex-1">
+<button class="md:hidden text-on-surface-variant p-2"><span class="material-symbols-outlined" data-icon="menu">menu</span></button>
+<div class="relative w-full max-w-md hidden sm:block focus-within:ring-2 focus-within:ring-secondary rounded-lg transition-all">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-[#E5E7EB] rounded-lg font-body-sm text-on-surface focus:outline-none focus:border-[#3B82F6] focus:ring-2 focus:ring-[#3B82F6]/20 transition-shadow" placeholder="Search drivers, licenses, depots..." type="text">
+</div>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-4">
+<button class="hidden lg:flex items-center gap-2 bg-[#F59E0B] text-on-primary px-4 py-2 rounded-[14px] font-body-md text-body-md hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" data-icon="person_add">person_add</span> Add Driver
+                </button>
+<button class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-all p-2 rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-all p-2 rounded-full hover:bg-surface-container hidden sm:block">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+</button>
+<div class="h-8 w-px bg-outline-variant mx-2 hidden sm:block"></div>
+<button class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-all p-2 rounded-full hover:bg-surface-container hidden sm:block">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<img alt="User Avatar" class="w-9 h-9 rounded-full object-cover border border-[#E5E7EB] cursor-pointer" data-alt="A professional headshot of a female executive in a modern office, serving as a user profile avatar. Soft natural lighting, shallow depth of field, corporate modern style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRYcKEAZhyfZdNoog9l0km8-enJO1gCpii52ltEtONkOJERd-fa0TPgYrcM4g-s-QVqOSKA-dyVq9h1qcxSPViOkBsJC9yOwpoPOUIiok--wtXBxQ88Q72gMDvG6KQuZ9jIjaZCb30Q-VJpdJYpzd3FWvbWWxUzozo-WjtPhX0zsu38jTUCUmNr7GiAkbZr8t3M51SGF5LcCPTkp0SwC90jSZ3aiKxU7T9zQsbWLUP_6YStYqKlini4A">
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 overflow-y-auto p-margin-page">
+<div class="max-w-container-max mx-auto space-y-stack-lg">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+<div>
+<h2 class="font-section-title text-section-title text-on-surface">Driver Directory</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Manage personnel, licenses, and performance metrics.</p>
+</div>
+<div class="flex gap-2">
+<button class="bg-surface-container-lowest border border-[#E5E7EB] text-on-surface px-4 py-2 rounded-[14px] font-body-md text-body-md hover:bg-surface-container transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span> Filters
+                        </button>
+<button class="bg-surface-container-lowest border border-[#E5E7EB] text-on-surface px-4 py-2 rounded-[14px] font-body-md text-body-md hover:bg-surface-container transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span> Export
+                        </button>
+</div>
+</div>
+<!-- KPI Bento Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-gutter">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest p-stack-lg rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Total Drivers</span>
+<div class="flex items-baseline gap-2">
+<span class="font-kpi-display text-kpi-display text-on-surface">248</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest p-stack-lg rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-[#3B82F6]">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Available</span>
+<div class="flex items-baseline gap-2">
+<span class="font-kpi-display text-kpi-display text-on-surface">42</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest p-stack-lg rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-tertiary-container">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">On Trip</span>
+<div class="flex items-baseline gap-2">
+<span class="font-kpi-display text-kpi-display text-on-surface">195</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest p-stack-lg rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-[#F59E0B]">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Expiring Licenses</span>
+<div class="flex items-baseline gap-2">
+<span class="font-kpi-display text-kpi-display text-on-surface">8</span>
+</div>
+</div>
+<!-- KPI 5 -->
+<div class="bg-surface-container-lowest p-stack-lg rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-error">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Suspended</span>
+<div class="flex items-baseline gap-2">
+<span class="font-kpi-display text-kpi-display text-on-surface">3</span>
+</div>
+</div>
+</div>
+<!-- Main Data Table Container -->
+<div class="bg-surface-container-lowest rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col">
+<!-- Table Toolbar -->
+<div class="p-4 border-b border-[#E5E7EB] flex flex-wrap gap-4 items-center justify-between bg-surface-container-low/50">
+<div class="flex gap-2 items-center flex-wrap">
+<select class="bg-surface-container-lowest border border-[#E5E7EB] rounded-lg font-body-sm text-on-surface px-3 py-1.5 focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] outline-none">
+<option>All Statuses</option>
+<option>Available</option>
+<option>On Trip</option>
+<option>Suspended</option>
+</select>
+<select class="bg-surface-container-lowest border border-[#E5E7EB] rounded-lg font-body-sm text-on-surface px-3 py-1.5 focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] outline-none">
+<option>All Licenses</option>
+<option>CDL Class A</option>
+<option>CDL Class B</option>
+</select>
+<select class="bg-surface-container-lowest border border-[#E5E7EB] rounded-lg font-body-sm text-on-surface px-3 py-1.5 focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] outline-none">
+<option>All Depots</option>
+<option>North Hub</option>
+<option>South Hub</option>
+</select>
+</div>
+<div class="text-on-surface-variant font-body-sm text-body-sm">
+                            Showing 1-10 of 248 drivers
+                        </div>
+</div>
+<!-- Table (Zebra Striped) -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="font-label-caps text-label-caps uppercase text-on-surface-variant border-b border-[#E5E7EB]">
+<th class="px-6 py-4 font-semibold">Driver</th>
+<th class="px-6 py-4 font-semibold">License / Phone</th>
+<th class="px-6 py-4 font-semibold">Metrics</th>
+<th class="px-6 py-4 font-semibold">Vehicle / Depot</th>
+<th class="px-6 py-4 font-semibold">Status</th>
+<th class="px-6 py-4 font-semibold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-sm text-body-sm text-on-surface">
+<!-- Row 1 -->
+<tr class="bg-[#FFFFFF] hover:bg-surface-container-low transition-colors group border-b border-[#E5E7EB]/50">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Headshot of a middle-aged male commercial truck driver wearing a high-visibility vest. Corporate modern style, bright lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhiOKWX4tjwo2atHC3km3gM8UFSF4gAL4duVxxV_2c8bN-BZ2nMb53I4wpX0_KvnTahecS-0o0pTPlyhvCCrRou9tPFFlTMYxP-LaURHBdZ7r7bta-3u4OvGwGALJiTzl3huJYLmO_WkPEEahxOydrMUvGn_aLVbWtn0fsC0CDABNzj08P_3NNbNBk6gSB2X4OCe-9mlOCLDTbXqVKsf0iAhZrcTL1HtgdYlLNl0TNRc7Vpn9Q90aTUQ">
+<div>
+<div class="font-body-md text-body-md text-on-surface font-semibold">Marcus Reynolds</div>
+<div class="text-on-surface-variant text-xs mt-0.5">ID: DRV-8492</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="font-medium">CDL Class A</div>
+<div class="text-on-surface-variant mt-0.5">+1 (555) 019-2834</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div>
+<div class="text-on-surface-variant text-[11px] uppercase tracking-wider">Trips</div>
+<div class="font-medium">1,204</div>
+</div>
+<div>
+<div class="text-on-surface-variant text-[11px] uppercase tracking-wider">Safety</div>
+<div class="font-medium text-tertiary-container">98/100</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="font-medium text-secondary">TRK-902 (Volvo VNL)</div>
+<div class="text-on-surface-variant mt-0.5">North Hub</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-tertiary-container/10 text-tertiary-container">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container mr-1.5"></span> On Trip
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1" onclick="document.getElementById('driver-drawer').classList.remove('translate-x-full'); document.getElementById('drawer-backdrop').classList.remove('hidden');">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 ml-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="bg-[#F9FAFB] hover:bg-surface-container-low transition-colors group border-b border-[#E5E7EB]/50">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Headshot of a younger female delivery driver in a neat uniform. Corporate modern style, bright lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEBox-hGSVPF_81PlKPqZ3GeVy0bZ6b5t-1gMKwBpiFY-juWFxZftHxA5R1xjknGOaInlpfuFaoJ--AMnJI4AZjWYLDWbjMoz643-RfEyonR1-PduksBRTFt6DxAPWIDaufsl5EXtc_5IcDVf3e0XswYlG5X5nPPQ0af4PtryRmmy73cbYpHtBJRnIEmVQsAgPodS-8-v23iJsJCgQDS6ZavFyeklHC1eP2nRhWVi8frZD1lT6tAPcGg">
+<div>
+<div class="font-body-md text-body-md text-on-surface font-semibold">Sarah Jenkins</div>
+<div class="text-on-surface-variant text-xs mt-0.5">ID: DRV-7731</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="font-medium">CDL Class B</div>
+<div class="text-on-surface-variant mt-0.5">+1 (555) 832-1102</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div>
+<div class="text-on-surface-variant text-[11px] uppercase tracking-wider">Trips</div>
+<div class="font-medium">432</div>
+</div>
+<div>
+<div class="text-on-surface-variant text-[11px] uppercase tracking-wider">Safety</div>
+<div class="font-medium text-[#F59E0B]">82/100</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="font-medium text-on-surface-variant">Unassigned</div>
+<div class="text-on-surface-variant mt-0.5">South Hub</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-[#3B82F6]/10 text-[#3B82F6]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#3B82F6] mr-1.5"></span> Available
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1" onclick="document.getElementById('driver-drawer').classList.remove('translate-x-full'); document.getElementById('drawer-backdrop').classList.remove('hidden');">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 ml-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="bg-[#FFFFFF] hover:bg-surface-container-low transition-colors group border-b border-[#E5E7EB]/50">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant font-bold">
+                                                DT
+                                            </div>
+<div>
+<div class="font-body-md text-body-md text-on-surface font-semibold">David Torres</div>
+<div class="text-on-surface-variant text-xs mt-0.5">ID: DRV-9920</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="font-medium flex items-center gap-2">CDL Class A <span class="material-symbols-outlined text-error text-[16px]" data-icon="warning">warning</span></div>
+<div class="text-on-surface-variant mt-0.5">+1 (555) 443-9001</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div>
+<div class="text-on-surface-variant text-[11px] uppercase tracking-wider">Trips</div>
+<div class="font-medium">2,891</div>
+</div>
+<div>
+<div class="text-on-surface-variant text-[11px] uppercase tracking-wider">Safety</div>
+<div class="font-medium text-error">64/100</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="font-medium text-on-surface-variant">Unassigned</div>
+<div class="text-on-surface-variant mt-0.5">West Depot</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-error/10 text-error">
+<span class="w-1.5 h-1.5 rounded-full bg-error mr-1.5"></span> Suspended
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 ml-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-4 border-t border-[#E5E7EB] flex items-center justify-between bg-surface-container-lowest">
+<button class="px-3 py-1.5 border border-[#E5E7EB] rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-body-sm text-body-sm disabled:opacity-50" disabled="">Previous</button>
+<div class="flex gap-1">
+<button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary-container text-on-primary-container font-medium text-sm">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container font-medium text-sm">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container font-medium text-sm">3</button>
+<span class="w-8 h-8 flex items-center justify-center text-on-surface-variant">...</span>
+</div>
+<button class="px-3 py-1.5 border border-[#E5E7EB] rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-body-sm text-body-sm">Next</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Slide-over Drawer (Driver Profile) -->
+<div class="fixed inset-0 bg-on-surface/20 backdrop-blur-[2px] z-50 hidden transition-opacity" id="drawer-backdrop" onclick="document.getElementById('driver-drawer').classList.add('translate-x-full'); this.classList.add('hidden');"></div>
+<div class="fixed right-0 top-0 h-full w-full max-w-[500px] bg-surface-container-lowest shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col border-l border-[#E5E7EB]" id="driver-drawer">
+<!-- Drawer Header -->
+<div class="px-6 py-5 border-b border-[#E5E7EB] flex items-center justify-between sticky top-0 bg-surface-container-lowest z-10">
+<h3 class="font-section-title text-section-title font-semibold text-on-surface">Driver Profile</h3>
+<button class="text-on-surface-variant hover:text-on-surface p-2 rounded-full hover:bg-surface-container transition-colors" onclick="document.getElementById('driver-drawer').classList.add('translate-x-full'); document.getElementById('drawer-backdrop').classList.add('hidden');">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<!-- Drawer Body -->
+<div class="flex-1 overflow-y-auto p-6 space-y-8">
+<!-- Quick Info -->
+<div class="flex items-start gap-4">
+<img class="w-20 h-20 rounded-xl object-cover border border-[#E5E7EB]" data-alt="Headshot of Marcus Reynolds, a middle-aged male commercial truck driver. Corporate modern style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB776TFA8QVv7Xpa1mTv3ygx-QALbihIql8y8c6Nv_YLSTM9siNSfjpTIsNMLs6Nulja_osN8Ao8NueSHmCj30lBUKOZYyvHaV_mqWM2fVjxscj-K5NFcljE8RWeeYBtarmmRHIksc1sFCPkQaaElfwCI3WSeLNbaY9mBKb9GIHKxl7Y2HLfu_8a-bZc9garfMXIzXfS4-onebKMh1C9LJyVldzefuOXQeA958r3oXK9J_8XDvArGMxkg">
+<div>
+<h4 class="font-headline-lg-mobile text-headline-lg-mobile font-semibold text-on-surface">Marcus Reynolds</h4>
+<div class="flex items-center gap-2 mt-1 mb-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-tertiary-container/10 text-tertiary-container uppercase tracking-wide">On Trip</span>
+<span class="text-on-surface-variant text-sm">ID: DRV-8492</span>
+</div>
+<div class="text-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="call">call</span> +1 (555) 019-2834
+                    </div>
+</div>
+</div>
+<!-- Tabs (Visual only) -->
+<div class="flex border-b border-[#E5E7EB]">
+<button class="px-4 py-2 border-b-2 border-[#F59E0B] text-primary font-medium text-sm">Overview</button>
+<button class="px-4 py-2 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface text-sm">Documents</button>
+<button class="px-4 py-2 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface text-sm">History</button>
+</div>
+<!-- Performance Stats -->
+<div>
+<h5 class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Performance Metrics</h5>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface p-4 rounded-xl border border-[#E5E7EB]">
+<div class="text-sm text-on-surface-variant mb-1">Safety Score</div>
+<div class="text-2xl font-semibold text-tertiary-container">98<span class="text-sm text-on-surface-variant font-normal">/100</span></div>
+</div>
+<div class="bg-surface p-4 rounded-xl border border-[#E5E7EB]">
+<div class="text-sm text-on-surface-variant mb-1">On-Time Rate</div>
+<div class="text-2xl font-semibold text-on-surface">94.2%</div>
+</div>
+<div class="bg-surface p-4 rounded-xl border border-[#E5E7EB]">
+<div class="text-sm text-on-surface-variant mb-1">Miles Driven</div>
+<div class="text-2xl font-semibold text-on-surface">142k</div>
+</div>
+<div class="bg-surface p-4 rounded-xl border border-[#E5E7EB]">
+<div class="text-sm text-on-surface-variant mb-1">Incidents (YTD)</div>
+<div class="text-2xl font-semibold text-on-surface">0</div>
+</div>
+</div>
+</div>
+<!-- Current Assignment -->
+<div>
+<h5 class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Current Assignment</h5>
+<div class="bg-surface-container-low p-4 rounded-xl border border-[#E5E7EB] flex items-center justify-between">
+<div>
+<div class="font-medium text-on-surface">TRK-902 (Volvo VNL)</div>
+<div class="text-sm text-on-surface-variant mt-1">Route: Chicago → Detroit</div>
+</div>
+<span class="material-symbols-outlined text-secondary" data-icon="local_shipping">local_shipping</span>
+</div>
+</div>
+<!-- License & Certs -->
+<div>
+<h5 class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-4">Licenses &amp; Certifications</h5>
+<ul class="space-y-3">
+<li class="flex items-center justify-between p-3 border border-[#E5E7EB] rounded-lg bg-surface">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="badge">badge</span>
+<div>
+<div class="font-medium text-sm text-on-surface">CDL Class A</div>
+<div class="text-xs text-on-surface-variant">Exp: Oct 24, 2026</div>
+</div>
+</div>
+<span class="text-tertiary-container text-xs font-semibold px-2 py-1 bg-tertiary-container/10 rounded">Valid</span>
+</li>
+<li class="flex items-center justify-between p-3 border border-[#E5E7EB] rounded-lg bg-surface">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="local_hospital">local_hospital</span>
+<div>
+<div class="font-medium text-sm text-on-surface">Medical Card</div>
+<div class="text-xs text-on-surface-variant">Exp: Jan 15, 2025</div>
+</div>
+</div>
+<span class="text-tertiary-container text-xs font-semibold px-2 py-1 bg-tertiary-container/10 rounded">Valid</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Drawer Footer -->
+<div class="p-6 border-t border-[#E5E7EB] bg-surface-container-lowest sticky bottom-0 flex gap-4">
+<button class="flex-1 bg-surface border border-[#E5E7EB] text-on-surface py-2.5 rounded-[14px] font-medium text-sm hover:bg-surface-container transition-colors">Message</button>
+<button class="flex-1 bg-[#F59E0B] text-on-primary py-2.5 rounded-[14px] font-medium text-sm hover:opacity-90 transition-opacity">Edit Profile</button>
+</div>
+</div>
+</body></html>
