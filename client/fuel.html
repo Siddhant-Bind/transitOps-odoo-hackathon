@@ -125,7 +125,7 @@
 </div>
 </div>
 <!-- Navigation Links -->
-<nav class="flex-1 flex flex-col gap-1 space-y-1">
+<nav id="sidebar" class="fixed left-0 top-0 h-full w-[260px] z-50 transition-transform duration-300 -translate-x-full md:translate-x-0 flex-1 flex flex-col gap-1 space-y-1">
 <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out" href="#">
 <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
 <span class="font-body-md text-body-md">Dashboard</span>
@@ -156,6 +156,8 @@
 <span class="font-body-md text-body-md">Reports &amp; Analytics</span>
 </a>
 </nav>
+<!-- Mobile Overlay -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity"></div>
 <!-- Bottom Actions -->
 <div class="mt-auto flex flex-col gap-2">
 <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out" href="#">
@@ -173,6 +175,10 @@
 <!-- TopNavBar (Shared Component) -->
 <header class="sticky top-0 z-40 w-full border-b border-outline-variant bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-md shadow-sm">
 <div class="flex justify-between items-center h-16 px-margin-page max-w-container-max mx-auto">
+<button id="mobile-menu-btn" class="md:hidden mr-4 p-2 text-on-surface-variant hover:bg-surface-container rounded-lg">
+<span class="material-symbols-outlined">menu</span>
+</button>
+
 <!-- Search (Search Bar: on_left) -->
 <div class="flex-1 flex items-center">
 <div class="relative w-64 focus-within:ring-2 focus-within:ring-secondary rounded-lg transition-all">
@@ -211,10 +217,10 @@
 <p class="font-body-md text-body-md text-on-surface-variant mt-1">Monitor operational costs and log receipts across the fleet.</p>
 </div>
 <div class="flex items-center gap-3">
-<button class="text-body-sm font-medium px-5 py-2.5 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-[14px] hover:bg-surface-container transition-colors flex items-center gap-2 shadow-sm">
+<button onclick="toggleAddExpenseDrawer(true)" class="text-body-sm font-medium px-5 py-2.5 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-[14px] hover:bg-surface-container transition-colors flex items-center gap-2 shadow-sm">
 <span class="material-symbols-outlined text-[18px]">receipt_long</span> Add Expense
                     </button>
-<button class="text-body-sm font-medium px-5 py-2.5 bg-primary-container text-on-primary-container rounded-[14px] hover:opacity-90 transition-opacity flex items-center gap-2 shadow-sm">
+<button onclick="toggleAddFuelDrawer(true)" class="text-body-sm font-medium px-5 py-2.5 bg-primary-container text-on-primary-container rounded-[14px] hover:opacity-90 transition-opacity flex items-center gap-2 shadow-sm">
 <span class="material-symbols-outlined text-[18px]">local_gas_station</span> Add Fuel Log
                     </button>
 </div>
@@ -230,7 +236,7 @@
 </div>
 </div>
 <div>
-<div class="font-kpi-display text-kpi-display text-on-surface">14,250 <span class="text-body-md text-on-surface-variant font-medium">L</span></div>
+<div id="kpi-fuel-liters" class="font-kpi-display text-kpi-display text-on-surface">14,250 <span class="text-body-md text-on-surface-variant font-medium">L</span></div>
 <div class="flex items-center gap-1 mt-2 text-tertiary-container font-medium text-sm">
 <span class="material-symbols-outlined text-[16px]">trending_down</span>
 <span>2.4% vs last month</span>
@@ -246,7 +252,7 @@
 </div>
 </div>
 <div>
-<div class="font-kpi-display text-kpi-display text-on-surface">$22,410</div>
+<div id="kpi-fuel-cost" class="font-kpi-display text-kpi-display text-on-surface">$22,410</div>
 <div class="flex items-center gap-1 mt-2 text-error font-medium text-sm">
 <span class="material-symbols-outlined text-[16px]">trending_up</span>
 <span>1.1% vs last month</span>
@@ -262,7 +268,7 @@
 </div>
 </div>
 <div>
-<div class="font-kpi-display text-kpi-display text-on-surface">$34,890</div>
+<div id="kpi-total-expenses" class="font-kpi-display text-kpi-display text-on-surface">$34,890</div>
 <div class="flex items-center gap-1 mt-2 text-tertiary-container font-medium text-sm">
 <span class="material-symbols-outlined text-[16px]">trending_down</span>
 <span>0.5% vs last month</span>
@@ -278,7 +284,7 @@
 </div>
 </div>
 <div>
-<div class="font-kpi-display text-kpi-display text-on-surface">$0.42</div>
+<div id="kpi-cost-per-mile" class="font-kpi-display text-kpi-display text-on-surface">$0.42</div>
 <div class="flex items-center gap-1 mt-2 text-on-surface-variant font-medium text-sm">
 <span class="material-symbols-outlined text-[16px]">horizontal_rule</span>
 <span>Stable vs last month</span>
@@ -306,7 +312,7 @@
 <th class="px-stack-lg py-4 border-b border-outline-variant font-label-caps text-label-caps text-on-surface-variant">Station</th>
 </tr>
 </thead>
-<tbody class="text-body-sm">
+<tbody class="text-body-sm" id="fuel-table-body">
 <tr>
 <td class="px-stack-lg py-3 font-medium text-on-surface">VH-492</td>
 <td class="px-stack-lg py-3 text-on-surface-variant">Oct 24, 08:30</td>
@@ -433,7 +439,7 @@
 <th class="px-stack-lg py-4 border-b border-outline-variant font-label-caps text-label-caps text-on-surface-variant text-right">Actions</th>
 </tr>
 </thead>
-<tbody class="text-body-sm">
+<tbody class="text-body-sm" id="expenses-table-body">
 <tr>
 <td class="px-stack-lg py-3 font-medium text-on-surface">#TR-8921</td>
 <td class="px-stack-lg py-3 text-on-surface-variant">VH-118</td>
@@ -494,4 +500,162 @@
 </div>
 </div>
 </main>
+<script src="api.js"></script>
+<script src="fuel.js"></script>
+<!-- Fuel & Expense Drawers Backdrop -->
+<div class="fixed inset-0 bg-on-surface/20 backdrop-blur-[2px] z-50 hidden transition-opacity" id="drawers-backdrop" onclick="closeAllDrawers()"></div>
+
+<!-- Add Fuel Log Slide-over Drawer -->
+<div class="fixed right-0 top-0 h-full w-full max-w-[500px] bg-surface-container-lowest shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col border-l border-[#E5E7EB]" id="add-fuel-drawer">
+    <div class="p-6 border-b border-[#E5E7EB] flex items-center justify-between bg-surface-container-lowest">
+        <div>
+            <h2 class="text-xl font-bold text-on-surface">Add Fuel Log</h2>
+            <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Record a vehicle fuel fill-up.</p>
+        </div>
+        <button class="text-on-surface-variant hover:text-on-surface p-2 rounded-full hover:bg-surface-container transition-colors" onclick="toggleAddFuelDrawer(false)">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+    </div>
+    <form id="add-fuel-form" class="flex-1 flex flex-col justify-between overflow-hidden">
+        <div class="flex-1 overflow-y-auto p-6 bg-background space-y-4">
+            <!-- Vehicle Select -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Vehicle *</label>
+                <select required id="af-vehicle-select" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+                    <option value="">Choose a vehicle</option>
+                </select>
+            </div>
+            <!-- Trip (Optional) -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Associated Trip (Optional)</label>
+                <select id="af-trip-select" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+                    <option value="">None</option>
+                </select>
+            </div>
+            <!-- Fuel Date -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Fill-up Date *</label>
+                <input required id="af-date" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary" type="date">
+            </div>
+            <!-- Litres -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Litres *</label>
+                <input required id="af-liters" step="any" min="0.01" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary" placeholder="e.g. 50.0" type="number">
+            </div>
+            <!-- Cost -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Total Cost ($) *</label>
+                <input required id="af-cost" step="any" min="0" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary" placeholder="0.00" type="number">
+            </div>
+            <!-- Odometer -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Odometer Reading (KM) *</label>
+                <input required id="af-odometer" step="any" min="0" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary" placeholder="e.g. 120500" type="number">
+            </div>
+        </div>
+        <div class="p-6 border-t border-[#E5E7EB] bg-surface-container-lowest flex gap-4">
+            <button type="button" class="flex-1 border border-[#E5E7EB] text-on-surface py-2.5 rounded-[14px] font-medium text-sm hover:bg-surface-container transition-colors" onclick="toggleAddFuelDrawer(false)">Cancel</button>
+            <button type="submit" class="flex-1 bg-secondary text-on-primary py-2.5 rounded-[14px] font-medium text-sm hover:opacity-90 transition-opacity">Save Log</button>
+        </div>
+    </form>
+</div>
+
+<!-- Add Expense Slide-over Drawer -->
+<div class="fixed right-0 top-0 h-full w-full max-w-[500px] bg-surface-container-lowest shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col border-l border-[#E5E7EB]" id="add-expense-drawer">
+    <div class="p-6 border-b border-[#E5E7EB] flex items-center justify-between bg-surface-container-lowest">
+        <div>
+            <h2 class="text-xl font-bold text-on-surface">Add Expense</h2>
+            <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Log tolls, emergency repairs, parking, etc.</p>
+        </div>
+        <button class="text-on-surface-variant hover:text-on-surface p-2 rounded-full hover:bg-surface-container transition-colors" onclick="toggleAddExpenseDrawer(false)">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+    </div>
+    <form id="add-expense-form" class="flex-1 flex flex-col justify-between overflow-hidden">
+        <div class="flex-1 overflow-y-auto p-6 bg-background space-y-4">
+            <!-- Vehicle Select -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Vehicle *</label>
+                <select required id="ae-vehicle-select" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+                    <option value="">Choose a vehicle</option>
+                </select>
+            </div>
+            <!-- Trip (Optional) -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Associated Trip (Optional)</label>
+                <select id="ae-trip-select" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+                    <option value="">None</option>
+                </select>
+            </div>
+            <!-- Expense Type -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Expense Type *</label>
+                <select required id="ae-type" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+                    <option value="Toll">Toll</option>
+                    <option value="Maintenance">Maintenance</option>
+                    <option value="Fuel">Fuel</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <!-- Expense Date -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Expense Date *</label>
+                <input required id="ae-date" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary" type="date">
+            </div>
+            <!-- Amount -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Amount ($) *</label>
+                <input required id="ae-amount" step="any" min="0.01" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary" placeholder="0.00" type="number">
+            </div>
+            <!-- Description -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Description / Notes</label>
+                <textarea id="ae-description" rows="3" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary" placeholder="Provide receipt/expense details..."></textarea>
+            </div>
+        </div>
+        <div class="p-6 border-t border-[#E5E7EB] bg-surface-container-lowest flex gap-4">
+            <button type="button" class="flex-1 border border-[#E5E7EB] text-on-surface py-2.5 rounded-[14px] font-medium text-sm hover:bg-surface-container transition-colors" onclick="toggleAddExpenseDrawer(false)">Cancel</button>
+            <button type="submit" class="flex-1 bg-secondary text-on-primary py-2.5 rounded-[14px] font-medium text-sm hover:opacity-90 transition-opacity">Save Expense</button>
+        </div>
+    </form>
+</div>
+
+<script>
+function toggleAddFuelDrawer(show) {
+    const drawer = document.getElementById('add-fuel-drawer');
+    const backdrop = document.getElementById('drawers-backdrop');
+    if (drawer && backdrop) {
+        if (show) {
+            drawer.classList.remove('translate-x-full');
+            backdrop.classList.remove('hidden');
+            document.getElementById('af-date').value = new Date().toISOString().split('T')[0];
+        } else {
+            drawer.classList.add('translate-x-full');
+            if (document.getElementById('add-expense-drawer').classList.contains('translate-x-full')) {
+                backdrop.classList.add('hidden');
+            }
+        }
+    }
+}
+function toggleAddExpenseDrawer(show) {
+    const drawer = document.getElementById('add-expense-drawer');
+    const backdrop = document.getElementById('drawers-backdrop');
+    if (drawer && backdrop) {
+        if (show) {
+            drawer.classList.remove('translate-x-full');
+            backdrop.classList.remove('hidden');
+            document.getElementById('ae-date').value = new Date().toISOString().split('T')[0];
+        } else {
+            drawer.classList.add('translate-x-full');
+            if (document.getElementById('add-fuel-drawer').classList.contains('translate-x-full')) {
+                backdrop.classList.add('hidden');
+            }
+        }
+    }
+}
+function closeAllDrawers() {
+    toggleAddFuelDrawer(false);
+    toggleAddExpenseDrawer(false);
+}
+</script>
 </body></html>

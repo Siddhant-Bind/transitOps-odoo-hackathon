@@ -143,10 +143,10 @@ vehicle.driverInitials ? (
 </td>
 <td className="py-3 px-4 text-on-surface-variant">{vehicle.odometer}</td>
 <td className="py-3 px-4">
-<span className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border ${vehicle.status === 'Active Route' ? 'bg-tertiary-container/10 text-tertiary-container border-tertiary-container/20' : vehicle.status === 'Maintenance' ? 'bg-error/10 text-error border-error/20' : 'bg-surface-variant text-on-surface border-outline-variant'}`}>
-<span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${vehicle.status === 'Active Route' ? 'bg-tertiary-container' : vehicle.status === 'Maintenance' ? 'bg-error' : 'bg-outline-variant'}`}></span>
-{vehicle.status}
-</span>
+                  <span className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border ${vehicle.status === 'On Trip' ? 'bg-tertiary-container/10 text-tertiary-container border-tertiary-container/20' : vehicle.status === 'In Shop' ? 'bg-error/10 text-error border-error/20' : 'bg-surface-variant text-on-surface border-outline-variant'}`}>
+                    <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${vehicle.status === 'On Trip' ? 'bg-tertiary-container' : vehicle.status === 'In Shop' ? 'bg-error' : 'bg-outline-variant'}`}></span>
+                    {vehicle.status}
+                  </span>
 </td>
 <td className="py-3 px-4 text-right">
 <button onClick={() => setViewingVehicle(vehicle)} className="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed/20 rounded-md transition-colors" title="View Details">

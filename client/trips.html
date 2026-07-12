@@ -102,7 +102,7 @@
 </head>
 <body class="bg-background text-on-background min-h-screen flex">
 <!-- SideNavBar -->
-<nav class="bg-surface border-r border-outline-variant shadow-sm fixed left-0 top-0 h-full w-[260px] z-50 flex flex-col p-stack-lg hidden md:flex">
+<nav id="sidebar" class="fixed left-0 top-0 h-full w-[260px] z-50 transition-transform duration-300 -translate-x-full md:translate-x-0 bg-surface border-r border-outline-variant shadow-sm     w-[260px]  flex flex-col p-stack-lg">
 <div class="flex items-center gap-3 mb-8 px-4">
 <img class="w-8 h-8 object-contain" data-alt="A clean, modern geometric logo for a fleet management software called TransitOps. The logo should use deep blues and vibrant orange accents, communicating reliability, logistics, and enterprise scale on a light background. High-quality vector style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-3P8PIZMTYKmwlQNRO2tVGT66o38khNDBAp6Ib7maRvwHphOfXvPYUre7fz9LQB3FSt2RopTvkkiQ2D1z2uDT4xxYZpmYHxPIn3Zcj8hU8a6Md1GM0OYZbWZsF-bg4yTjDhXQ4FDuD-sDyyQRrxB7q17toqLUNdJCrzcj6y7_rFSXWzS8CtkqEaRUEeH2ZgoUB32XRofrfTcbnM0wdzrrGaI6I7CL5IZgJU17HAQq4DfQmOyuk0B1rA">
 <div>
@@ -149,11 +149,17 @@
 <span class="font-body-md text-body-md">Settings</span>
 </a>
 </nav>
+<!-- Mobile Overlay -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity"></div>
 <!-- Main Content Area -->
-<div class="flex-1 flex flex-col md:ml-[260px] min-h-screen">
+<div class="w-full md:w-auto md:ml-[260px] flex-1 flex flex-col md:ml-[260px] min-h-screen">
 <!-- TopNavBar -->
 <header class="sticky top-0 z-40 w-full border-b border-outline-variant bg-surface/80 backdrop-blur-md shadow-sm flex justify-between items-center h-16 px-margin-page max-w-container-max mx-auto">
 <div class="flex items-center">
+<button id="mobile-menu-btn" class="md:hidden mr-4 p-2 text-on-surface-variant hover:bg-surface-container rounded-lg">
+<span class="material-symbols-outlined">menu</span>
+</button>
+
 <!-- Search could go here if search_bar: on_left wasn't slightly ambiguous relative to no logo in top nav. Assuming search input. -->
 <div class="relative focus-within:ring-2 focus-within:ring-secondary rounded-lg">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
@@ -191,76 +197,74 @@
 <!-- Create Trip Card -->
 <div class="bg-surface-container-lowest rounded-xl p-stack-lg border border-outline-variant shadow-sm flex-1">
 <h2 class="font-section-title text-section-title text-on-surface mb-6 border-b border-outline-variant pb-2">New Trip Details</h2>
-<form class="grid grid-cols-2 gap-4">
+<form id="trip-form" class="grid grid-cols-2 gap-4">
 <div class="col-span-2 md:col-span-1">
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Source Location</label>
-<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="e.g., Warehouse A, Chicago" type="text">
+<input required id="trip-source" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="e.g., Warehouse A, Chicago" type="text">
 </div>
 <div class="col-span-2 md:col-span-1">
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Destination</label>
-<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="e.g., Distribution Center B, Detroit" type="text">
+<input required id="trip-destination" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="e.g., Distribution Center B, Detroit" type="text">
 </div>
 <div class="col-span-2 border-t border-outline-variant my-2 pt-4"></div>
 <div class="col-span-2 md:col-span-1">
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Cargo Type</label>
-<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+<select id="trip-cargo-type" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
 <option>General Freight</option>
 <option>Refrigerated</option>
 <option>Hazardous Materials</option>
 </select>
 </div>
 <div class="col-span-2 md:col-span-1">
-<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Cargo Weight (lbs)</label>
-<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="45,000" type="number">
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Cargo Weight (kg) *</label>
+<input required id="trip-cargo-weight" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="e.g. 450" type="number" step="any">
 </div>
 <div class="col-span-2 border-t border-outline-variant my-2 pt-4"></div>
 <div class="col-span-2 md:col-span-1">
-<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Assign Vehicle</label>
-<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
-<option>TRK-1042 (Volvo VNL)</option>
-<option>TRK-1055 (Freightliner Cascadia)</option>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Assign Vehicle *</label>
+<select required id="vehicle-select" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+<option value="">Select a Vehicle</option>
 </select>
 </div>
 <div class="col-span-2 md:col-span-1">
-<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Assign Driver</label>
-<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
-<option>Sarah Jenkins (Available)</option>
-<option>Marcus Cole (Available in 2h)</option>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Assign Driver *</label>
+<select required id="driver-select" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+<option value="">Select a Driver</option>
 </select>
 </div>
 <div class="col-span-2 border-t border-outline-variant my-2 pt-4"></div>
 <div class="col-span-2 md:col-span-1">
-<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Estimated Distance (mi)</label>
-<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow bg-surface-container-low" placeholder="285" readonly="" type="number">
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Estimated Distance (mi) *</label>
+<input required id="trip-distance" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="e.g. 285" type="number" step="any">
 </div>
 <div class="col-span-2 md:col-span-1">
-<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Planned Departure</label>
-<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" type="datetime-local">
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Planned Departure *</label>
+<input required id="trip-departure" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" type="datetime-local">
 </div>
 <div class="col-span-2 flex justify-end gap-3 mt-4">
-<button class="px-4 py-2 border border-outline-variant rounded-lg text-body-sm font-body-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" type="button">Save Draft</button>
-<button class="px-6 py-2 bg-primary-container text-on-primary-container rounded-lg text-body-sm font-body-sm font-medium hover:opacity-90 transition-opacity" type="button">Dispatch Trip</button>
+<button id="btn-save-draft" class="px-4 py-2 border border-outline-variant rounded-lg text-body-sm font-body-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" type="button">Schedule Only</button>
+<button id="btn-dispatch-trip" class="px-6 py-2 bg-primary-container text-on-primary-container rounded-lg text-body-sm font-body-sm font-medium hover:opacity-90 transition-opacity" type="submit">Dispatch Trip</button>
 </div>
 </form>
 </div>
 <!-- Validation Cards (Glassmorphism inspired row) -->
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
 <div class="bg-surface/60 backdrop-blur-sm border border-outline-variant rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1 shadow-sm">
-<span class="material-symbols-outlined text-tertiary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-<span class="font-label-caps text-label-caps text-on-surface-variant">Capacity OK</span>
+<span id="val-icon-capacity" class="material-symbols-outlined text-outline-variant" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span id="val-label-capacity" class="font-label-caps text-label-caps text-on-surface-variant">Capacity check</span>
 </div>
 <div class="bg-surface/60 backdrop-blur-sm border border-outline-variant rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1 shadow-sm">
-<span class="material-symbols-outlined text-tertiary-container" style="font-variation-settings: 'FILL' 1;">build_circle</span>
-<span class="font-label-caps text-label-caps text-on-surface-variant">Maint. Clear</span>
+<span id="val-icon-maint" class="material-symbols-outlined text-outline-variant" style="font-variation-settings: 'FILL' 1;">build_circle</span>
+<span id="val-label-maint" class="font-label-caps text-label-caps text-on-surface-variant">Maint. check</span>
 </div>
 <div class="bg-surface/60 backdrop-blur-sm border border-outline-variant rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1 shadow-sm relative overflow-hidden">
-<div class="absolute inset-0 bg-primary-container/10"></div>
-<span class="material-symbols-outlined text-primary-container z-10" style="font-variation-settings: 'FILL' 1;">warning</span>
-<span class="font-label-caps text-label-caps text-on-primary-fixed-variant z-10">Hours Limit</span>
+<!-- removed background -->
+<span id="val-icon-hours" class="material-symbols-outlined text-outline-variant" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span id="val-label-hours" class="font-label-caps text-label-caps text-on-surface-variant">Hours check</span>
 </div>
 <div class="bg-surface/60 backdrop-blur-sm border border-outline-variant rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1 shadow-sm">
-<span class="material-symbols-outlined text-tertiary-container" style="font-variation-settings: 'FILL' 1;">fact_check</span>
-<span class="font-label-caps text-label-caps text-on-surface-variant">License Valid</span>
+<span id="val-icon-license" class="material-symbols-outlined text-outline-variant" style="font-variation-settings: 'FILL' 1;">fact_check</span>
+<span id="val-label-license" class="font-label-caps text-label-caps text-on-surface-variant">License check</span>
 </div>
 </div>
 </div>
@@ -272,7 +276,7 @@
 <button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">filter_list</span></button>
 </div>
 <!-- Scrollable Board -->
-<div class="flex-1 overflow-y-auto p-4 space-y-4 bg-background">
+<div class="flex-1 overflow-y-auto p-4 space-y-4 bg-background" id="live-board">
 <!-- Dispatched Card -->
 <div class="bg-surface-container-lowest border-l-4 border-l-secondary border-y border-r border-outline-variant rounded-r-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
 <div class="flex justify-between items-start mb-2">
@@ -327,4 +331,100 @@
 </div>
 </main>
 </div>
+<script src="api.js"></script>
+<script src="trips.js"></script>
+<!-- Trip Details Drawer Backdrop -->
+<div class="fixed inset-0 bg-on-surface/20 backdrop-blur-[2px] z-50 hidden transition-opacity" id="trip-drawer-backdrop" onclick="toggleTripDrawer()"></div>
+
+<!-- Trip Details Slide-over Drawer -->
+<div class="fixed right-0 top-0 h-full w-full max-w-[500px] bg-surface-container-lowest shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col border-l border-[#E5E7EB]" id="trip-drawer">
+    <!-- Drawer Header -->
+    <div class="p-6 border-b border-[#E5E7EB] flex items-center justify-between bg-surface-container-lowest">
+        <div>
+            <h2 class="text-xl font-bold text-on-surface" id="trip-drawer-title">Trip Details</h2>
+            <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5" id="trip-drawer-subtitle">Manage active or scheduled trip operations.</p>
+        </div>
+        <button class="text-on-surface-variant hover:text-on-surface p-2 rounded-full hover:bg-surface-container transition-colors" onclick="toggleTripDrawer()">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+    </div>
+    <!-- Drawer Content -->
+    <div class="flex-1 overflow-y-auto p-6 bg-background space-y-6 animate-in fade-in duration-200">
+        <!-- Main KPI Details -->
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-surface p-4 rounded-xl border border-[#E5E7EB]">
+                <div class="text-sm text-on-surface-variant mb-1">Status</div>
+                <div class="text-lg font-semibold text-on-surface" id="td-status">-</div>
+            </div>
+            <div class="bg-surface p-4 rounded-xl border border-[#E5E7EB]">
+                <div class="text-sm text-on-surface-variant mb-1">Cargo Weight</div>
+                <div class="text-lg font-semibold text-on-surface" id="td-weight">-</div>
+            </div>
+        </div>
+
+        <!-- Trip Details List -->
+        <div class="space-y-4">
+            <div>
+                <h5 class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Route</h5>
+                <div class="p-3 border border-[#E5E7EB] rounded-lg bg-surface font-medium text-on-surface" id="td-route">-</div>
+            </div>
+            <div>
+                <h5 class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Vehicle Assigned</h5>
+                <div class="p-3 border border-[#E5E7EB] rounded-lg bg-surface text-sm text-on-surface" id="td-vehicle">-</div>
+            </div>
+            <div>
+                <h5 class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Driver Assigned</h5>
+                <div class="p-3 border border-[#E5E7EB] rounded-lg bg-surface text-sm text-on-surface" id="td-driver">-</div>
+            </div>
+            <div>
+                <h5 class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-2">Planned Distance / Departure</h5>
+                <div class="p-3 border border-[#E5E7EB] rounded-lg bg-surface text-sm text-on-surface" id="td-distance-time">-</div>
+            </div>
+        </div>
+
+        <!-- Complete Trip Sub-Form (hidden by default) -->
+        <div id="complete-trip-section" class="hidden p-4 border border-[#E5E7EB] rounded-xl bg-surface-container-low space-y-4 animate-in slide-in-from-bottom duration-250">
+            <h4 class="font-semibold text-on-surface text-md">Complete Trip Requirements</h4>
+            <form id="complete-trip-form" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-on-surface-variant mb-1">Actual Distance Traveled (mi) *</label>
+                    <input required id="ct-actual-distance" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary" type="number" step="any">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-on-surface-variant mb-1">Final Vehicle Odometer (mi) *</label>
+                    <input required id="ct-end-odometer" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary" type="number" step="any">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-on-surface-variant mb-1">Fuel Consumed (gal) *</label>
+                    <input required id="ct-fuel-consumed" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary" type="number" step="any">
+                </div>
+                <button type="submit" class="w-full bg-[#10B981] text-on-primary py-2 rounded-lg text-xs font-semibold hover:opacity-90 transition-opacity">Submit &amp; Mark Completed</button>
+            </form>
+        </div>
+    </div>
+    <!-- Drawer Footer -->
+    <div class="p-6 border-t border-[#E5E7EB] bg-surface-container-lowest sticky bottom-0 flex gap-4" id="trip-drawer-footer">
+        <!-- Buttons are dynamically inserted/hidden based on status -->
+        <button id="btn-action-dispatch" class="hidden flex-1 bg-[#3B82F6] text-on-primary py-2.5 rounded-[14px] font-medium text-sm hover:opacity-90 transition-opacity">Dispatch Trip</button>
+        <button id="btn-action-complete-toggle" class="hidden flex-1 bg-[#10B981] text-on-primary py-2.5 rounded-[14px] font-medium text-sm hover:opacity-90 transition-opacity">Complete Trip...</button>
+        <button id="btn-action-cancel" class="hidden flex-1 bg-[#EF4444] text-on-primary py-2.5 rounded-[14px] font-medium text-sm hover:opacity-90 transition-opacity">Cancel Trip</button>
+    </div>
+</div>
+
+<script>
+function toggleTripDrawer() {
+    const drawer = document.getElementById('trip-drawer');
+    const backdrop = document.getElementById('trip-drawer-backdrop');
+    if (drawer && backdrop) {
+        const isOpen = !drawer.classList.contains('translate-x-full');
+        if (isOpen) {
+            drawer.classList.add('translate-x-full');
+            backdrop.classList.add('hidden');
+        } else {
+            drawer.classList.remove('translate-x-full');
+            backdrop.classList.remove('hidden');
+        }
+    }
+}
+</script>
 </body></html>

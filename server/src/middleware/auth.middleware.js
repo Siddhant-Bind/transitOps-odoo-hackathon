@@ -1,46 +1,22 @@
-const { clerkMiddleware, requireAuth, getAuth } = require('@clerk/express');
-const AppError = require('../utils/AppError');
-const userRepo = require('../repositories/user.repo');
+import jwt from 'jsonwebtoken';
+import AppError from '../utils/AppError.js';
 
-module.exports = [
-  clerkMiddleware(),
-  requireAuth(),
-  async (req, res, next) => {
-    try {
-      const auth = getAuth(req);
-      const clerkUserId = auth?.userId;
-
-      if (!clerkUserId) throw new AppError('Unauthorized', 401);
-
-      let user = await userRepo.findByClerkId(clerkUserId);
-
-      if (!user) {
-        const claims = req.auth?.sessionClaims || {};
-        const email = claims.email || claims.email_address || `${clerkUserId}@placeholder.local`;
-        const name =
-          claims.name ||
-          [claims.first_name, claims.last_name].filter(Boolean).join(' ') ||
-          'New User';
-
-        user = await userRepo.createFromClerk({
-          clerkUserId,
-          name,
-          email,
-          role: 'DRIVER'
-        });
-      }
-
-      req.user = {
-        id: user.id,
-        clerkUserId: user.clerk_user_id,
-        email: user.email,
-        role: user.role,
-        name: user.name
-      };
-
-      next();
-    } catch (err) {
-      next(err);
+export const protect = (req, res, next) => {
+    let token;
+    
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        token = req.headers.authorization.split(' ')[1];
     }
-  }
-];
+    
+    if (!token) {
+        return next(new AppError('You are not logged in! Please log in to get access.', 401));
+    }
+    
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecret_fallback_key');
+        req.user = decoded;
+        next();
+    } catch (err) {
+        return next(new AppError('Invalid token or token expired! Please log in again.', 401));
+    }
+};

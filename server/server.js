@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import { app } from "./src/app.js";
 
-
 dotenv.config({
   path: "./.env",
 });
@@ -12,13 +11,11 @@ const server = app.listen(port, () => {
   console.log(`⚙️ Server is running at port : ${port}`);
 });
 
-
 async function gracefulShutdown(signal) {
   console.log(`\n🛑 Received ${signal}. Shutting down gracefully...`);
-  server.close(async () => {
+  server.close(() => {
     console.log("   HTTP server closed.");
-    await prisma.$disconnect();
-    console.log("   Prisma disconnected.");
+    // In the future we could close the db pool here if necessary
     process.exit(0);
   });
 }

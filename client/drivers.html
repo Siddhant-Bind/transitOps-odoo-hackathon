@@ -116,7 +116,7 @@
 </head>
 <body class="bg-[#F5F7FA] text-on-surface font-body-sm h-full overflow-hidden flex">
 <!-- SideNavBar -->
-<nav class="fixed left-0 top-0 h-full w-[260px] bg-surface dark:bg-inverse-surface border-r border-outline-variant shadow-sm hidden md:flex flex-col z-50">
+<nav id="sidebar" class="fixed left-0 top-0 h-full w-[260px] z-50 transition-transform duration-300 -translate-x-full md:translate-x-0 w-[260px] bg-surface dark:bg-inverse-surface border-r border-outline-variant shadow-sm   flex-col">
 <div class="flex flex-col h-full p-stack-lg">
 <!-- Brand -->
 <div class="flex items-center gap-3 mb-8">
@@ -145,8 +145,10 @@
 </div>
 </div>
 </nav>
+<!-- Mobile Overlay -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity"></div>
 <!-- Main Content Area -->
-<div class="flex-1 flex flex-col min-w-0 md:ml-[260px] h-full overflow-hidden">
+<div class="w-full md:w-auto md:ml-[260px] flex-1 flex flex-col min-w-0 md:ml-[260px] h-full overflow-hidden">
 <!-- TopNavBar -->
 <header class="sticky top-0 z-40 w-full bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-md border-b border-outline-variant shadow-sm flex justify-between items-center h-16 px-margin-page max-w-container-max mx-auto">
 <!-- Mobile Menu & Search -->
@@ -159,7 +161,7 @@
 </div>
 <!-- Actions -->
 <div class="flex items-center gap-4">
-<button class="hidden lg:flex items-center gap-2 bg-[#F59E0B] text-on-primary px-4 py-2 rounded-[14px] font-body-md text-body-md hover:opacity-90 transition-opacity">
+<button onclick="openAddDriverModal()" class="hidden lg:flex items-center gap-2 bg-[#F59E0B] text-on-primary px-4 py-2 rounded-[14px] font-body-md text-body-md hover:opacity-90 transition-opacity">
 <span class="material-symbols-outlined" data-icon="person_add">person_add</span> Add Driver
                 </button>
 <button class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-all p-2 rounded-full hover:bg-surface-container">
@@ -199,35 +201,35 @@
 <div class="bg-surface-container-lowest p-stack-lg rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2">
 <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Total Drivers</span>
 <div class="flex items-baseline gap-2">
-<span class="font-kpi-display text-kpi-display text-on-surface">248</span>
+<span id="kpi-total-drivers" class="font-kpi-display text-kpi-display text-on-surface">248</span>
 </div>
 </div>
 <!-- KPI 2 -->
 <div class="bg-surface-container-lowest p-stack-lg rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-[#3B82F6]">
 <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Available</span>
 <div class="flex items-baseline gap-2">
-<span class="font-kpi-display text-kpi-display text-on-surface">42</span>
+<span id="kpi-available" class="font-kpi-display text-kpi-display text-on-surface">42</span>
 </div>
 </div>
 <!-- KPI 3 -->
 <div class="bg-surface-container-lowest p-stack-lg rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-tertiary-container">
 <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">On Trip</span>
 <div class="flex items-baseline gap-2">
-<span class="font-kpi-display text-kpi-display text-on-surface">195</span>
+<span id="kpi-on-trip" class="font-kpi-display text-kpi-display text-on-surface">195</span>
 </div>
 </div>
 <!-- KPI 4 -->
 <div class="bg-surface-container-lowest p-stack-lg rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-[#F59E0B]">
 <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Expiring Licenses</span>
 <div class="flex items-baseline gap-2">
-<span class="font-kpi-display text-kpi-display text-on-surface">8</span>
+<span id="kpi-expiring" class="font-kpi-display text-kpi-display text-on-surface">8</span>
 </div>
 </div>
 <!-- KPI 5 -->
 <div class="bg-surface-container-lowest p-stack-lg rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-error">
 <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Suspended</span>
 <div class="flex items-baseline gap-2">
-<span class="font-kpi-display text-kpi-display text-on-surface">3</span>
+<span id="kpi-suspended" class="font-kpi-display text-kpi-display text-on-surface">3</span>
 </div>
 </div>
 </div>
@@ -254,7 +256,7 @@
 </select>
 </div>
 <div class="text-on-surface-variant font-body-sm text-body-sm">
-                            Showing 1-10 of 248 drivers
+                            Showing <span id="showing-start">1</span>-<span id="showing-end">10</span> of <span id="total-drivers">248</span> drivers
                         </div>
 </div>
 <!-- Table (Zebra Striped) -->
@@ -270,7 +272,7 @@
 <th class="px-6 py-4 font-semibold text-right">Actions</th>
 </tr>
 </thead>
-<tbody class="font-body-sm text-body-sm text-on-surface">
+<tbody class="font-body-sm text-body-sm text-on-surface" id="drivers-table-body">
 <!-- Row 1 -->
 <tr class="bg-[#FFFFFF] hover:bg-surface-container-low transition-colors group border-b border-[#E5E7EB]/50">
 <td class="px-6 py-4">
@@ -521,7 +523,91 @@
 <!-- Drawer Footer -->
 <div class="p-6 border-t border-[#E5E7EB] bg-surface-container-lowest sticky bottom-0 flex gap-4">
 <button class="flex-1 bg-surface border border-[#E5E7EB] text-on-surface py-2.5 rounded-[14px] font-medium text-sm hover:bg-surface-container transition-colors">Message</button>
-<button class="flex-1 bg-[#F59E0B] text-on-primary py-2.5 rounded-[14px] font-medium text-sm hover:opacity-90 transition-opacity">Edit Profile</button>
+<button id="edit-driver-btn-drawer" class="flex-1 bg-[#F59E0B] text-on-primary py-2.5 rounded-[14px] font-medium text-sm hover:opacity-90 transition-opacity">Edit Profile</button>
 </div>
 </div>
+<script src="api.js"></script>
+<script src="drivers.js"></script>
+<!-- Add/Edit Driver Drawer Backdrop -->
+<div class="fixed inset-0 bg-on-surface/20 backdrop-blur-[2px] z-50 hidden transition-opacity" id="add-driver-drawer-backdrop" onclick="toggleAddDriverDrawer()"></div>
+
+<!-- Add/Edit Driver Slide-over Drawer -->
+<div class="fixed right-0 top-0 h-full w-full max-w-[500px] bg-surface-container-lowest shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col border-l border-[#E5E7EB]" id="add-driver-drawer">
+    <!-- Drawer Header -->
+    <div class="p-6 border-b border-[#E5E7EB] flex items-center justify-between bg-surface-container-lowest">
+        <div>
+            <h2 class="text-xl font-bold text-on-surface" id="add-driver-drawer-title">Add New Driver</h2>
+            <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5" id="add-driver-drawer-subtitle">Register a new driver with a valid CDL license.</p>
+        </div>
+        <button class="text-on-surface-variant hover:text-on-surface p-2 rounded-full hover:bg-surface-container transition-colors" onclick="toggleAddDriverDrawer()">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+    </div>
+    <!-- Drawer Content -->
+    <div class="flex-1 overflow-y-auto p-6 bg-background animate-in fade-in duration-200">
+        <form id="driver-form" class="space-y-4">
+            <input type="hidden" id="d-id" value="">
+            
+            <div>
+                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Full Name *</label>
+                <input required id="d-name" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="e.g. Alex Smith" type="text">
+            </div>
+            <div>
+                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">License Number *</label>
+                <input required id="d-license" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="e.g. DL1234567" type="text">
+            </div>
+            <div>
+                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">License Category *</label>
+                <input required id="d-category" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="e.g. CDL Class A" type="text">
+            </div>
+            <div>
+                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">License Expiry Date *</label>
+                <input required id="d-expiry" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" type="date">
+            </div>
+            <div>
+                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Contact Number *</label>
+                <input required id="d-phone" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="e.g. +1 555 123 4567" type="text">
+            </div>
+            <div>
+                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Safety Score (0-100) *</label>
+                <input required id="d-safety" min="0" max="100" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" placeholder="e.g. 95" type="number">
+            </div>
+            <div>
+                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Hire Date *</label>
+                <input required id="d-hire" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-shadow" type="date">
+            </div>
+            <div>
+                <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Status</label>
+                <select id="d-status" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-body-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+                    <option value="Available">Available</option>
+                    <option value="On Trip">On Trip</option>
+                    <option value="Off Duty">Off Duty</option>
+                    <option value="Suspended">Suspended</option>
+                </select>
+            </div>
+        </form>
+    </div>
+    <!-- Drawer Footer -->
+    <div class="p-6 border-t border-[#E5E7EB] bg-surface-container-lowest sticky bottom-0 flex gap-4">
+        <button class="flex-1 bg-surface border border-[#E5E7EB] text-on-surface py-2.5 rounded-[14px] font-medium text-sm hover:bg-surface-container transition-colors" onclick="toggleAddDriverDrawer()" type="button">Cancel</button>
+        <button id="d-submit-btn" form="driver-form" class="flex-1 bg-[#F59E0B] text-on-primary py-2.5 rounded-[14px] font-medium text-sm hover:opacity-90 transition-opacity" type="submit">Save Driver</button>
+    </div>
+</div>
+
+<script>
+function toggleAddDriverDrawer() {
+    const drawer = document.getElementById('add-driver-drawer');
+    const backdrop = document.getElementById('add-driver-drawer-backdrop');
+    if (drawer && backdrop) {
+        const isOpen = !drawer.classList.contains('translate-x-full');
+        if (isOpen) {
+            drawer.classList.add('translate-x-full');
+            backdrop.classList.add('hidden');
+        } else {
+            drawer.classList.remove('translate-x-full');
+            backdrop.classList.remove('hidden');
+        }
+    }
+}
+</script>
 </body></html>

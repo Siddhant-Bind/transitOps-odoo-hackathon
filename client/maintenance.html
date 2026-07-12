@@ -191,7 +191,7 @@
 <button class="w-full bg-primary-container text-on-primary-container font-body-md text-body-md font-medium py-2 px-4 rounded-lg mb-8 shadow-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span> Quick Add
         </button>
-<nav class="flex-1 space-y-1 font-body-md text-body-md">
+<nav id="sidebar" class="fixed left-0 top-0 h-full w-[260px] z-50 transition-transform duration-300 -translate-x-full md:translate-x-0 flex-1 space-y-1 font-body-md text-body-md">
 <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out" href="#">
 <span class="material-symbols-outlined">dashboard</span>
                 Dashboard
@@ -225,12 +225,18 @@
                 Settings
             </a>
 </nav>
+<!-- Mobile Overlay -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity"></div>
 </aside>
 <!-- Main Content Area -->
-<div class="flex-1 flex flex-col ml-[260px] min-h-screen">
+<div class="w-full md:w-auto md:ml-[260px] flex-1 flex flex-col ml-[260px] min-h-screen">
 <!-- TopNavBar -->
 <header class="sticky top-0 z-40 w-full bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-md border-b border-outline-variant shadow-sm flex justify-between items-center h-16 px-margin-page max-w-container-max mx-auto">
 <div class="flex items-center gap-4 flex-1">
+<button id="mobile-menu-btn" class="md:hidden mr-4 p-2 text-on-surface-variant hover:bg-surface-container rounded-lg">
+<span class="material-symbols-outlined">menu</span>
+</button>
+
 <div class="relative w-64 focus-within:ring-2 focus-within:ring-secondary rounded-lg">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
 <input class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm focus:outline-none focus:border-secondary transition-colors text-on-surface" placeholder="Search..." type="text">
@@ -261,10 +267,10 @@
 <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Track and manage fleet service schedules and repairs.</p>
 </div>
 <div class="flex gap-3">
-<button class="font-body-md text-body-md font-medium text-on-surface bg-surface-container-lowest border border-outline-variant px-4 py-2 rounded-lg hover:bg-surface-variant transition-colors flex items-center gap-2">
+<button onclick="openAddMaintDrawer(true)" class="font-body-md text-body-md font-medium text-on-surface bg-surface-container-lowest border border-outline-variant px-4 py-2 rounded-lg hover:bg-surface-variant transition-colors flex items-center gap-2">
 <span class="material-symbols-outlined text-sm">history</span> Log Service
                     </button>
-<button class="font-body-md text-body-md font-medium text-on-primary-container bg-primary-container px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 shadow-sm">
+<button onclick="openAddMaintDrawer(false)" class="font-body-md text-body-md font-medium text-on-primary-container bg-primary-container px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 shadow-sm">
 <span class="material-symbols-outlined text-sm">calendar_month</span> Schedule Service
                     </button>
 </div>
@@ -276,7 +282,7 @@
 <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Vehicles In Shop</span>
 <span class="material-symbols-outlined text-error p-1 bg-error-container rounded-md">build</span>
 </div>
-<div class="font-kpi-display text-kpi-display text-on-surface">12</div>
+<div id="kpi-in-shop" class="font-kpi-display text-kpi-display text-on-surface">12</div>
 <div class="text-error font-body-sm text-body-sm mt-2 flex items-center gap-1">
 <span class="material-symbols-outlined text-[16px]">trending_up</span> +2 from last week
                     </div>
@@ -286,7 +292,7 @@
 <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Upcoming Services</span>
 <span class="material-symbols-outlined text-secondary p-1 bg-secondary-fixed rounded-md">event</span>
 </div>
-<div class="font-kpi-display text-kpi-display text-on-surface">24</div>
+<div id="kpi-upcoming" class="font-kpi-display text-kpi-display text-on-surface">24</div>
 <div class="text-on-surface-variant font-body-sm text-body-sm mt-2">Next 7 days</div>
 </div>
 <div class="bg-surface-container-lowest p-stack-lg rounded-xl border border-outline-variant shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col justify-between">
@@ -294,7 +300,7 @@
 <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Completed Services</span>
 <span class="material-symbols-outlined text-tertiary p-1 bg-tertiary-fixed rounded-md">check_circle</span>
 </div>
-<div class="font-kpi-display text-kpi-display text-on-surface">148</div>
+<div id="kpi-completed" class="font-kpi-display text-kpi-display text-on-surface">148</div>
 <div class="text-tertiary font-body-sm text-body-sm mt-2 flex items-center gap-1">
 <span class="material-symbols-outlined text-[16px]">trending_up</span> +15% this month
                     </div>
@@ -304,7 +310,7 @@
 <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Total Maintenance Cost</span>
 <span class="material-symbols-outlined text-primary p-1 bg-primary-fixed rounded-md">payments</span>
 </div>
-<div class="font-kpi-display text-kpi-display text-on-surface">$42.5k</div>
+<div id="kpi-cost" class="font-kpi-display text-kpi-display text-on-surface">$42.5k</div>
 <div class="text-on-surface-variant font-body-sm text-body-sm mt-2">Year to Date</div>
 </div>
 </div>
@@ -331,7 +337,7 @@
 <th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant font-semibold text-right">Action</th>
 </tr>
 </thead>
-<tbody class="font-body-sm text-body-sm">
+<tbody class="font-body-sm text-body-sm" id="maintenance-table-body">
 <!-- Row 1 (Odd) -->
 <tr class="bg-surface-bright border-b border-outline-variant hover:bg-surface-container-low transition-colors group">
 <td class="py-3 px-4 flex items-center gap-3">
@@ -469,4 +475,107 @@
             overlay.classList.toggle('open');
         }
     </script>
+<script src="api.js"></script>
+<script src="maintenance.js"></script>
+<!-- Add Maintenance Drawer Backdrop -->
+<div class="fixed inset-0 bg-on-surface/20 backdrop-blur-[2px] z-50 hidden transition-opacity" id="add-maint-drawer-backdrop" onclick="toggleAddMaintDrawer()"></div>
+
+<!-- Add Maintenance Slide-over Drawer -->
+<div class="fixed right-0 top-0 h-full w-full max-w-[500px] bg-surface-container-lowest shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col border-l border-[#E5E7EB]" id="add-maint-drawer">
+    <!-- Drawer Header -->
+    <div class="p-6 border-b border-[#E5E7EB] flex items-center justify-between bg-surface-container-lowest">
+        <div>
+            <h2 class="text-xl font-bold text-on-surface" id="add-maint-drawer-title">Add Maintenance Record</h2>
+            <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Schedule or log vehicle maintenance service.</p>
+        </div>
+        <button class="text-on-surface-variant hover:text-on-surface p-2 rounded-full hover:bg-surface-container transition-colors" onclick="toggleAddMaintDrawer()">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+    </div>
+    <!-- Drawer Content -->
+    <form id="add-maint-form" class="flex-1 flex flex-col justify-between overflow-hidden">
+        <div class="flex-1 overflow-y-auto p-6 bg-background space-y-4">
+            <!-- Vehicle Select -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Select Vehicle *</label>
+                <select required id="am-vehicle-select" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+                    <option value="">Choose a vehicle</option>
+                </select>
+            </div>
+            
+            <!-- Maintenance Type -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Service Type *</label>
+                <input required id="am-type" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary" placeholder="e.g. Oil Change, Tire Rotation" type="text">
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Description / Notes *</label>
+                <textarea required id="am-description" rows="3" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary" placeholder="Provide service details, parts replaced..."></textarea>
+            </div>
+
+            <!-- Scheduled Date -->
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant mb-1">Scheduled Date *</label>
+                <input required id="am-scheduled-date" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary" type="date">
+            </div>
+
+            <!-- Log Immediately Toggle / Checkbox -->
+            <div class="flex items-center gap-2 pt-2 border-t border-[#E5E7EB]">
+                <input id="am-is-completed" type="checkbox" class="rounded border-[#E5E7EB] text-secondary focus:ring-secondary">
+                <label for="am-is-completed" class="text-xs font-semibold text-on-surface">Log as Completed Immediately</label>
+            </div>
+
+            <!-- Completion Fields (Hidden by default) -->
+            <div id="am-completion-fields" class="hidden p-4 border border-[#E5E7EB] rounded-xl bg-surface-container-low space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-on-surface-variant mb-1">Actual Completion Date *</label>
+                    <input id="am-actual-date" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary" type="date">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-on-surface-variant mb-1">Total Cost ($) *</label>
+                    <input id="am-cost" class="w-full bg-surface-container-lowest border border-[#E5E7EB] rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary" placeholder="0.00" type="number" step="any">
+                </div>
+            </div>
+        </div>
+        <!-- Drawer Footer -->
+        <div class="p-6 border-t border-[#E5E7EB] bg-surface-container-lowest flex gap-4">
+            <button type="button" class="flex-1 border border-[#E5E7EB] text-on-surface py-2.5 rounded-[14px] font-medium text-sm hover:bg-surface-container transition-colors" onclick="toggleAddMaintDrawer()">Cancel</button>
+            <button type="submit" class="flex-1 bg-secondary text-on-primary py-2.5 rounded-[14px] font-medium text-sm hover:opacity-90 transition-opacity">Save Record</button>
+        </div>
+    </form>
+</div>
+
+<script>
+function toggleAddMaintDrawer() {
+    const drawer = document.getElementById('add-maint-drawer');
+    const backdrop = document.getElementById('add-maint-drawer-backdrop');
+    if (drawer && backdrop) {
+        const isOpen = !drawer.classList.contains('translate-x-full');
+        if (isOpen) {
+            drawer.classList.add('translate-x-full');
+            backdrop.classList.add('hidden');
+        } else {
+            drawer.classList.remove('translate-x-full');
+            backdrop.classList.remove('hidden');
+        }
+    }
+}
+document.getElementById('am-is-completed').addEventListener('change', function(e) {
+    const compFields = document.getElementById('am-completion-fields');
+    const actualDate = document.getElementById('am-actual-date');
+    const cost = document.getElementById('am-cost');
+    if (e.target.checked) {
+        compFields.classList.remove('hidden');
+        actualDate.required = true;
+        cost.required = true;
+        actualDate.value = new Date().toISOString().split('T')[0];
+    } else {
+        compFields.classList.add('hidden');
+        actualDate.required = false;
+        cost.required = false;
+    }
+});
+</script>
 </body></html>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
+import { apiRequest } from '../utils/api';
 
 export default function GlobalOverlays() {
   const navigate = useNavigate();
@@ -13,11 +14,17 @@ export default function GlobalOverlays() {
     isMaintenanceFormOpen, setMaintenanceFormOpen,
     isFuelFormOpen, setFuelFormOpen,
     isExpenseFormOpen, setExpenseFormOpen,
-    addVehicle,
-    maintenanceLogs, setMaintenanceLogs,
-    fuelLogs, setFuelLogs,
-    expenses, setExpenses
+    fleetData,
+    refreshVehicles,
+    refreshMaintenance,
+    refreshFuel,
+    refreshExpenses
   } = useAppContext();
+
+  // Load User context dynamically
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const userName = user.full_name || 'Susan Supervisor';
+  const userRole = user.role_name || 'Fleet Manager';
 
   const handleNavigation = (path) => {
     setUserProfileOpen(false);
@@ -25,73 +32,127 @@ export default function GlobalOverlays() {
     navigate(path);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setUserProfileOpen(false);
+    navigate('/login');
+  };
+
   // Handle Add Vehicle Form
   const [vehicleForm, setVehicleForm] = useState({
     regNumber: '', model: '', type: 'Van', odometer: ''
   });
 
-  const handleAddVehicleSubmit = (e) => {
+  const handleAddVehicleSubmit = async (e) => {
     e.preventDefault();
-    addVehicle({
-      ...vehicleForm,
-      driver: 'Unassigned',
-      driverInitials: '',
-      driverAvatar: '',
-      status: 'Idle (Depot)'
-    });
-    setAddVehicleOpen(false);
-    setVehicleForm({ regNumber: '', model: '', type: 'Van', odometer: '' });
+    try {
+      await apiRequest('/vehicles', 'POST', {
+        registration_number: vehicleForm.regNumber,
+        vehicle_name: vehicleForm.model,
+        model: vehicleForm.model,
+        vehicle_type: vehicleForm.type,
+        max_load_capacity: vehicleForm.type.includes('Articulated') ? 3000 : vehicleForm.type.includes('Panel') ? 1500 : 800,
+        odometer: Number(vehicleForm.odometer.replace(/[^0-9.]/g, '')) || 0,
+        acquisition_cost: 35000,
+        status: 'Available',
+        region: 'North'
+      });
+      await refreshVehicles();
+      setAddVehicleOpen(false);
+      setVehicleForm({ regNumber: '', model: '', type: 'Van', odometer: '' });
+    } catch (err) {
+      alert(err.message || 'Failed to save vehicle');
+    }
   };
 
   const [maintenanceForm, setMaintenanceForm] = useState({ vehicle: '', serviceType: '', cost: '' });
-  const handleMaintenanceSubmit = (e) => {
+  
+  const handleMaintenanceSubmit = async (e) => {
     e.preventDefault();
-    const newLog = {
-      id: `ML-${Math.floor(100+Math.random()*900)}`,
-      vehicle: maintenanceForm.vehicle || 'Generic Vehicle',
-      regNumber: 'XX-0000',
-      serviceType: maintenanceForm.serviceType || 'Standard Service',
-      workshop: 'Internal Depot',
-      cost: `$${maintenanceForm.cost || '0.00'}`,
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      status: 'Scheduled',
-      image: 'https://placehold.co/100'
-    };
-    setMaintenanceLogs([newLog, ...maintenanceLogs]);
-    setMaintenanceFormOpen(false);
-    setMaintenanceForm({ vehicle: '', serviceType: '', cost: '' });
+    const targetVehicle = fleetData.find(v => 
+      v.regNumber.toLowerCase() === maintenanceForm.vehicle.trim().toLowerCase() ||
+      v.id.toString() === maintenanceForm.vehicle.trim()
+    );
+    if (!targetVehicle) {
+      alert('Vehicle registration/ID not found in fleet. Please use a valid registration like VAN-001.');
+      return;
+    }
+
+    try {
+      await apiRequest('/maintenance', 'POST', {
+        vehicle_id: targetVehicle.id,
+        maintenance_type: maintenanceForm.serviceType,
+        description: `Scheduled service: ${maintenanceForm.serviceType}`,
+        scheduled_date: new Date().toISOString().split('T')[0]
+      });
+      await refreshMaintenance();
+      await refreshVehicles();
+      setMaintenanceFormOpen(false);
+      setMaintenanceForm({ vehicle: '', serviceType: '', cost: '' });
+    } catch (err) {
+      alert(err.message || 'Failed to schedule maintenance');
+    }
   };
 
   const [fuelForm, setFuelForm] = useState({ vehicle: '', litres: '', cost: '' });
-  const handleFuelSubmit = (e) => {
+  
+  const handleFuelSubmit = async (e) => {
     e.preventDefault();
-    const newLog = {
-      vehicle: fuelForm.vehicle || 'VH-000',
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' }),
-      litres: `${fuelForm.litres || '0'} L`,
-      cost: `$${fuelForm.cost || '0.00'}`,
-      mileage: 'TBD',
-      station: 'Internal Depot Station'
-    };
-    setFuelLogs([newLog, ...fuelLogs]);
-    setFuelFormOpen(false);
-    setFuelForm({ vehicle: '', litres: '', cost: '' });
+    const targetVehicle = fleetData.find(v => 
+      v.regNumber.toLowerCase() === fuelForm.vehicle.trim().toLowerCase() ||
+      v.id.toString() === fuelForm.vehicle.trim()
+    );
+    if (!targetVehicle) {
+      alert('Vehicle registration/ID not found in fleet. Please use a valid registration like VAN-001.');
+      return;
+    }
+
+    const odometerVal = Number(targetVehicle.odometer.replace(/[^0-9.]/g, '')) || 0;
+
+    try {
+      await apiRequest('/fuel', 'POST', {
+        vehicle_id: targetVehicle.id,
+        fuel_date: new Date().toISOString().split('T')[0],
+        fuel_liters: Number(fuelForm.litres),
+        fuel_cost: Number(fuelForm.cost),
+        odometer_reading: odometerVal + 10
+      });
+      await refreshFuel();
+      setFuelFormOpen(false);
+      setFuelForm({ vehicle: '', litres: '', cost: '' });
+    } catch (err) {
+      alert(err.message || 'Failed to log fuel');
+    }
   };
 
   const [expenseForm, setExpenseForm] = useState({ vehicle: '', amount: '', type: '' });
-  const handleExpenseSubmit = (e) => {
+  
+  const handleExpenseSubmit = async (e) => {
     e.preventDefault();
-    const newLog = {
-      tripId: `#TR-${Math.floor(1000+Math.random()*9000)}`,
-      vehicle: expenseForm.vehicle || 'VH-000',
-      type: expenseForm.type || 'Miscellaneous',
-      driver: 'Current User',
-      amount: `$${expenseForm.amount || '0.00'}`,
-      status: 'Pending Approval'
-    };
-    setExpenses([newLog, ...expenses]);
-    setExpenseFormOpen(false);
-    setExpenseForm({ vehicle: '', amount: '', type: '' });
+    const targetVehicle = fleetData.find(v => 
+      v.regNumber.toLowerCase() === expenseForm.vehicle.trim().toLowerCase() ||
+      v.id.toString() === expenseForm.vehicle.trim()
+    );
+    if (!targetVehicle) {
+      alert('Vehicle registration/ID not found in fleet. Please use a valid registration like VAN-001.');
+      return;
+    }
+
+    try {
+      await apiRequest('/expenses', 'POST', {
+        vehicle_id: targetVehicle.id,
+        expense_type: expenseForm.type,
+        description: `Expense log: ${expenseForm.type}`,
+        amount: Number(expenseForm.amount),
+        expense_date: new Date().toISOString().split('T')[0]
+      });
+      await refreshExpenses();
+      setExpenseFormOpen(false);
+      setExpenseForm({ vehicle: '', amount: '', type: '' });
+    } catch (err) {
+      alert(err.message || 'Failed to log expense');
+    }
   };
 
   return (
@@ -110,23 +171,23 @@ export default function GlobalOverlays() {
             <form onSubmit={handleAddVehicleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-on-surface mb-1">Registration Number</label>
-                <input required type="text" value={vehicleForm.regNumber} onChange={e => setVehicleForm({...vehicleForm, regNumber: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="HG23 KLP" />
+                <input required type="text" value={vehicleForm.regNumber} onChange={e => setVehicleForm({...vehicleForm, regNumber: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="VAN-005" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-on-surface mb-1">Make & Model</label>
-                <input required type="text" value={vehicleForm.model} onChange={e => setVehicleForm({...vehicleForm, model: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Volvo FH16" />
+                <input required type="text" value={vehicleForm.model} onChange={e => setVehicleForm({...vehicleForm, model: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Ford Transit" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-on-surface mb-1">Type</label>
                 <select value={vehicleForm.type} onChange={e => setVehicleForm({...vehicleForm, type: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                  <option value="44t / Articulated">Heavy Goods (HGV)</option>
-                  <option value="3.5t / Panel">Light Goods (LGV)</option>
                   <option value="Van">Delivery Van</option>
+                  <option value="Truck">Heavy Goods (HGV)</option>
+                  <option value="LGV">Light Goods (LGV)</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-on-surface mb-1">Initial Odometer (mi)</label>
-                <input required type="text" value={vehicleForm.odometer} onChange={e => setVehicleForm({...vehicleForm, odometer: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="10,000 mi" />
+                <label className="block text-sm font-medium text-on-surface mb-1">Initial Odometer (km)</label>
+                <input required type="text" value={vehicleForm.odometer} onChange={e => setVehicleForm({...vehicleForm, odometer: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="12500" />
               </div>
               <div className="pt-4 flex gap-3 justify-end">
                 <button type="button" onClick={() => setAddVehicleOpen(false)} className="px-4 py-2 border border-outline-variant rounded-lg font-medium text-on-surface">Cancel</button>
@@ -166,7 +227,7 @@ export default function GlobalOverlays() {
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" defaultChecked className="sr-only peer" />
                      <div className="w-9 h-5 bg-surface-dim rounded-full peer peer-checked:after:translate-x-full after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
-                 </label>
+                  </label>
                 </div>
               </div>
             </div>
@@ -247,8 +308,8 @@ export default function GlobalOverlays() {
                  <span className="material-symbols-outlined">close</span>
                </button>
                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmolZtt7mRq3yBow4bFHhqa7bmbjrgYKNQcjitYzem15tkmhfo7iNNecBJsbdX2XIT59Tgi_HMLRi2sZSdbjVa5XMosWi0zs3RCypfv5b47htnk1YXEBnL5Zyh675375kf9aSuTt49LkpHL7kEhJyZM4ZNkynXHFYa-PnpC8brhnjiSAiNneWy1DPLt5ynV1iB_F2NUcjGd451dQaXCuvEIlqO1KMU2KBoH52v6ABjnLhN-edQpHydzQ" className="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-primary object-cover" alt="User" />
-               <h3 className="text-lg font-bold text-on-surface">Susan Supervisor</h3>
-               <p className="text-sm text-on-surface-variant">Dispatcher</p>
+               <h3 className="text-lg font-bold text-on-surface">{userName}</h3>
+               <p className="text-sm text-on-surface-variant">{userRole}</p>
             </div>
             <div className="p-4 flex-1">
               <ul className="space-y-1">
@@ -258,7 +319,7 @@ export default function GlobalOverlays() {
               </ul>
             </div>
             <div className="p-4 border-t border-outline-variant">
-              <button onClick={() => handleNavigation('/login')} className="w-full bg-error-container text-error px-4 py-2 rounded-lg font-medium flex justify-center items-center gap-2 hover:opacity-90">
+              <button onClick={handleLogout} className="w-full bg-error-container text-error px-4 py-2 rounded-lg font-medium flex justify-center items-center gap-2 hover:opacity-90">
                 <span className="material-symbols-outlined text-[18px]">logout</span> Sign Out
               </button>
             </div>
@@ -266,7 +327,7 @@ export default function GlobalOverlays() {
         </div>
       )}
 
-     {/* 5. Notifications Drawer */}
+      {/* 5. Notifications Drawer */}
       {notificationsOpen && (
         <div className="fixed inset-0 z-50 flex justify-end">
           <div className="absolute inset-0 bg-surface-dim/40 backdrop-blur-sm" onClick={() => setNotificationsOpen(false)}></div>
@@ -281,14 +342,14 @@ export default function GlobalOverlays() {
                     <span className="text-xs font-bold text-error uppercase">Maintenance Alert</span>
                     <span className="text-xs text-on-surface-variant">10m ago</span>
                   </div>
-                  <p className="text-sm text-on-surface">Vehicle HG21 ZXC engine temperature high.</p>
+                  <p className="text-sm text-on-surface">Vehicle temperature readings abnormal.</p>
                </div>
                <div className="p-4 border-b border-outline-variant/30 hover:bg-surface-container cursor-pointer transition-colors bg-surface-container-low">
                   <div className="flex justify-between items-start mb-1">
                     <span className="text-xs font-bold text-secondary uppercase">Approval Required</span>
                     <span className="text-xs text-on-surface-variant">1h ago</span>
                   </div>
-                  <p className="text-sm text-on-surface">Fuel logged for VH-334 pending approval.</p>
+                  <p className="text-sm text-on-surface">Fuel logged pending approval.</p>
                </div>
             </div>
           </div>
@@ -309,8 +370,8 @@ export default function GlobalOverlays() {
             <div className="flex-1 overflow-y-auto p-4">
               <form onSubmit={handleMaintenanceSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-on-surface mb-1">Vehicle</label>
-                  <input required type="text" value={maintenanceForm.vehicle} onChange={e => setMaintenanceForm({...maintenanceForm, vehicle: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="VH-123" />
+                  <label className="block text-sm font-medium text-on-surface mb-1">Vehicle Registration / ID</label>
+                  <input required type="text" value={maintenanceForm.vehicle} onChange={e => setMaintenanceForm({...maintenanceForm, vehicle: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="VAN-001" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-on-surface mb-1">Service Type</label>
@@ -343,12 +404,12 @@ export default function GlobalOverlays() {
             <div className="flex-1 overflow-y-auto p-4">
               <form onSubmit={handleFuelSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-on-surface mb-1">Vehicle</label>
-                  <input required type="text" value={fuelForm.vehicle} onChange={e => setFuelForm({...fuelForm, vehicle: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="VH-123" />
+                  <label className="block text-sm font-medium text-on-surface mb-1">Vehicle Registration / ID</label>
+                  <input required type="text" value={fuelForm.vehicle} onChange={e => setFuelForm({...fuelForm, vehicle: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="VAN-001" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-on-surface mb-1">Litres</label>
-                  <input required type="number" value={fuelForm.litres} onChange={e => setFuelForm({...fuelForm, litres: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="85 L" />
+                  <input required type="number" value={fuelForm.litres} onChange={e => setFuelForm({...fuelForm, litres: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="85" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-on-surface mb-1">Total Cost ($)</label>
@@ -377,8 +438,8 @@ export default function GlobalOverlays() {
             <div className="flex-1 overflow-y-auto p-4">
               <form onSubmit={handleExpenseSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-on-surface mb-1">Vehicle/Trip Reference</label>
-                  <input required type="text" value={expenseForm.vehicle} onChange={e => setExpenseForm({...expenseForm, vehicle: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="VH-123" />
+                  <label className="block text-sm font-medium text-on-surface mb-1">Vehicle Registration / ID</label>
+                  <input required type="text" value={expenseForm.vehicle} onChange={e => setExpenseForm({...expenseForm, vehicle: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="VAN-001" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-on-surface mb-1">Expense Type</label>

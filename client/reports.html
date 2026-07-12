@@ -174,7 +174,7 @@
 </head>
 <body class="h-full flex text-on-background font-body-sm bg-[#F5F7FA]">
 <!-- Side Navigation -->
-<nav class="bg-surface dark:bg-inverse-surface text-primary-container dark:text-primary-container font-body-md text-body-md fixed left-0 top-0 h-full w-[260px] bg-surface dark:bg-inverse-surface border-r border-outline-variant shadow-sm flex flex-col h-full p-stack-lg z-50">
+<nav id="sidebar" class="fixed left-0 top-0 h-full w-[260px] z-50 transition-transform duration-300 -translate-x-full md:translate-x-0 bg-surface dark:bg-inverse-surface text-primary-container dark:text-primary-container font-body-md text-body-md     w-[260px] bg-surface dark:bg-inverse-surface border-r border-outline-variant shadow-sm flex flex-col  p-stack-lg">
 <!-- Header -->
 <div class="mb-8">
 <div class="flex items-center gap-3">
@@ -230,11 +230,17 @@
             </button>
 </div>
 </nav>
+<!-- Mobile Overlay -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity"></div>
 <!-- Main Content Wrapper -->
-<div class="flex-1 flex flex-col ml-[260px] min-w-0 bg-[#F5F7FA]">
+<div class="w-full md:w-auto md:ml-[260px] flex-1 flex flex-col ml-[260px] min-w-0 bg-[#F5F7FA]">
 <!-- Top App Bar -->
 <header class="bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-md text-primary dark:text-primary-fixed-dim sticky top-0 z-40 w-full border-b border-outline-variant bg-surface dark:bg-inverse-surface shadow-sm flex justify-between items-center h-16 px-margin-page max-w-container-max">
 <div class="flex items-center flex-1 gap-6">
+<button id="mobile-menu-btn" class="md:hidden mr-4 p-2 text-on-surface-variant hover:bg-surface-container rounded-lg">
+<span class="material-symbols-outlined">menu</span>
+</button>
+
 <!-- Search Bar -->
 <div class="relative w-64 focus-within:ring-2 focus-within:ring-secondary rounded-lg">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
@@ -290,7 +296,7 @@
 <span class="material-symbols-outlined text-[18px]">table_view</span>
                             XLSX
                         </button>
-<button class="px-3 py-2 hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-caps text-label-caps" title="Export CSV">
+<button id="btn-export-csv" class="px-3 py-2 hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-caps text-label-caps" title="Export CSV">
 <span class="material-symbols-outlined text-[18px]">data_object</span>
                             CSV
                         </button>
@@ -308,7 +314,7 @@
 </div>
 </div>
 <div>
-<div class="font-kpi-display text-kpi-display text-on-background">$1.24M</div>
+<div id="kpi-revenue" class="font-kpi-display text-kpi-display text-on-background">$1.24M</div>
 <div class="flex items-center gap-1 mt-2 text-tertiary font-body-sm text-body-sm">
 <span class="material-symbols-outlined text-[16px]">trending_up</span>
 <span>+12.5% vs last period</span>
@@ -324,7 +330,7 @@
 </div>
 </div>
 <div>
-<div class="font-kpi-display text-kpi-display text-on-background">$842K</div>
+<div class="font-kpi-display text-kpi-display text-on-background" id="kpi-op-cost">$842K</div>
 <div class="flex items-center gap-1 mt-2 text-error font-body-sm text-body-sm">
 <span class="material-symbols-outlined text-[16px]">trending_up</span>
 <span>+4.2% vs last period</span>
@@ -340,7 +346,7 @@
 </div>
 </div>
 <div>
-<div class="font-kpi-display text-kpi-display text-on-background">$398K</div>
+<div id="kpi-net-profit" class="font-kpi-display text-kpi-display text-on-background">$398K</div>
 <div class="flex items-center gap-1 mt-2 text-tertiary font-body-sm text-body-sm">
 <span class="material-symbols-outlined text-[16px]">trending_up</span>
 <span>+8.7% vs last period</span>
@@ -356,7 +362,7 @@
 </div>
 </div>
 <div>
-<div class="font-kpi-display text-kpi-display text-on-background">87.3%</div>
+<div id="kpi-utilization" class="font-kpi-display text-kpi-display text-on-background">87.3%</div>
 <div class="flex items-center gap-1 mt-2 text-tertiary font-body-sm text-body-sm">
 <span class="material-symbols-outlined text-[16px]">trending_up</span>
 <span>+2.1% vs last period</span>
@@ -372,7 +378,7 @@
 </div>
 </div>
 <div>
-<div class="font-kpi-display text-kpi-display text-on-background">6.2 <span class="text-lg text-on-surface-variant">MPG</span></div>
+<div id="kpi-fuel-efficiency" class="font-kpi-display text-kpi-display text-on-background">6.2 <span class="text-lg text-on-surface-variant">MPG</span></div>
 <div class="flex items-center gap-1 mt-2 text-tertiary font-body-sm text-body-sm">
 <span class="material-symbols-outlined text-[16px]">trending_up</span>
 <span>+0.4 MPG vs last period</span>
@@ -387,7 +393,7 @@
 </div>
 </div>
 <div>
-<div class="font-kpi-display text-kpi-display text-on-background">1,492</div>
+<div id="kpi-total-trips" class="font-kpi-display text-kpi-display text-on-background">1,492</div>
 <div class="flex items-center gap-1 mt-2 text-tertiary font-body-sm text-body-sm">
 <span class="material-symbols-outlined text-[16px]">trending_up</span>
 <span>+112 vs last period</span>
@@ -402,7 +408,7 @@
 </div>
 </div>
 <div>
-<div class="font-kpi-display text-kpi-display text-on-background">$564</div>
+<div class="font-kpi-display text-kpi-display text-on-background" id="kpi-avg-cost">$564</div>
 <div class="flex items-center gap-1 mt-2 text-error font-body-sm text-body-sm">
 <span class="material-symbols-outlined text-[16px]">trending_up</span>
 <span>+$12 vs last period</span>
@@ -417,7 +423,7 @@
 </div>
 </div>
 <div>
-<div class="font-kpi-display text-kpi-display text-on-background">18.4%</div>
+<div id="kpi-roi" class="font-kpi-display text-kpi-display text-on-background">18.4%</div>
 <div class="flex items-center gap-1 mt-2 text-tertiary font-body-sm text-body-sm">
 <span class="material-symbols-outlined text-[16px]">trending_up</span>
 <span>+1.2% vs last period</span>
@@ -477,7 +483,7 @@
 <canvas id="maintChart"></canvas>
 <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
 <span class="font-label-caps text-label-caps text-on-surface-variant">Total</span>
-<span class="font-body-md text-body-md font-bold text-on-background">$124K</span>
+<span id="kpi-maint-total" class="font-body-md text-body-md font-bold text-on-background">$124K</span>
 </div>
 </div>
 </div>
@@ -496,180 +502,6 @@
 </div>
 </main>
 </div>
-<script>
-        // Common Chart Defaults
-        Chart.defaults.font.family = 'Inter, sans-serif';
-        Chart.defaults.color = '#534434'; // text-on-surface-variant
-        Chart.defaults.scale.grid.color = '#e5e7eb'; // subtle grid
-        const primaryColor = '#855300';
-        const primaryContainerColor = '#f59e0b';
-        const secondaryColor = '#0058be';
-        const tertiaryColor = '#006e2f';
-        const errorColor = '#ba1a1a';
-        const surfaceColor = '#f9f9ff';
-
-        // 1. Monthly Revenue (Line)
-        const ctxRev = document.getElementById('revenueChart').getContext('2d');
-        new Chart(ctxRev, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: 'Revenue ($K)',
-                    data: [85, 92, 88, 105, 110, 118, 115, 125, 130, 128, 135, 142],
-                    borderColor: primaryContainerColor,
-                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                    borderWidth: 2,
-                    tension: 0.4,
-                    fill: true,
-                    pointBackgroundColor: surfaceColor,
-                    pointBorderColor: primaryContainerColor,
-                    pointBorderWidth: 2,
-                    pointRadius: 4,
-                    pointHoverRadius: 6
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { beginAtZero: true, border: {display: false} },
-                    x: { border: {display: false}, grid: {display: false} }
-                }
-            }
-        });
-
-        // 2. Trip Status (Stacked Bar)
-        const ctxTrip = document.getElementById('tripChart').getContext('2d');
-        new Chart(ctxTrip, {
-            type: 'bar',
-            data: {
-                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-                datasets: [
-                    {
-                        label: 'Completed',
-                        data: [350, 410, 380, 450],
-                        backgroundColor: tertiaryColor,
-                        borderRadius: {topLeft: 4, topRight: 4, bottomLeft: 4, bottomRight: 4},
-                        borderSkipped: false
-                    },
-                    {
-                        label: 'Cancelled/Delayed',
-                        data: [25, 30, 20, 35],
-                        backgroundColor: errorColor,
-                        borderRadius: {topLeft: 4, topRight: 4, bottomLeft: 4, bottomRight: 4},
-                        borderSkipped: false
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } }
-                },
-                scales: {
-                    x: { stacked: true, grid: {display: false}, border: {display: false} },
-                    y: { stacked: true, beginAtZero: true, border: {display: false} }
-                }
-            }
-        });
-
-        // 3. Rev vs Cost (Dual Line)
-        const ctxRevCost = document.getElementById('revCostChart').getContext('2d');
-        new Chart(ctxRevCost, {
-            type: 'line',
-            data: {
-                labels: ['W1', 'W2', 'W3', 'W4'],
-                datasets: [
-                    {
-                        label: 'Revenue',
-                        data: [30, 35, 32, 40],
-                        borderColor: primaryContainerColor,
-                        borderWidth: 2,
-                        tension: 0.3
-                    },
-                    {
-                        label: 'Cost',
-                        data: [20, 22, 21, 24],
-                        borderColor: errorColor,
-                        borderWidth: 2,
-                        borderDash: [5, 5],
-                        tension: 0.3
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } } },
-                scales: {
-                    y: { beginAtZero: true, border: {display: false} },
-                    x: { border: {display: false}, grid: {display: false} }
-                }
-            }
-        });
-
-        // 4. Maint Breakdown (Donut)
-        const ctxMaint = document.getElementById('maintChart').getContext('2d');
-        new Chart(ctxMaint, {
-            type: 'doughnut',
-            data: {
-                labels: ['Engine', 'Tyres', 'Brakes', 'Electrical', 'Other'],
-                datasets: [{
-                    data: [45, 25, 15, 10, 5],
-                    backgroundColor: [
-                        primaryContainerColor,
-                        secondaryColor,
-                        errorColor,
-                        tertiaryColor,
-                        '#d3daef' // surface-dim
-                    ],
-                    borderWidth: 0,
-                    hoverOffset: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '75%',
-                plugins: {
-                    legend: { display: false }
-                }
-            }
-        });
-
-        // 5. Driver Performance (Radar)
-        const ctxDriver = document.getElementById('driverChart').getContext('2d');
-        new Chart(ctxDriver, {
-            type: 'radar',
-            data: {
-                labels: ['Safety', 'Punctuality', 'Fuel Eff.', 'Compliance', 'Feedback'],
-                datasets: [{
-                    label: 'Fleet Average',
-                    data: [85, 90, 75, 95, 88],
-                    backgroundColor: 'rgba(0, 88, 190, 0.2)', // secondary with opacity
-                    borderColor: secondaryColor,
-                    pointBackgroundColor: secondaryColor,
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: secondaryColor
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    r: {
-                        angleLines: { color: '#e5e7eb' },
-                        grid: { color: '#e5e7eb' },
-                        pointLabels: { font: { family: 'Inter', size: 10 } },
-                        ticks: { display: false, min: 0, max: 100 }
-                    }
-                }
-            }
-        });
-    </script>
+<script src="api.js"></script>
+<script src="reports.js"></script>
 </body></html>
