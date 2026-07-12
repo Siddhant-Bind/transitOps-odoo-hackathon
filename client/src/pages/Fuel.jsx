@@ -1,14 +1,9 @@
-import React, { useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 
 const Fuel = () => {
   const { setFuelFormOpen, setExpenseFormOpen, fuelLogs, expenses } = useAppContext();
   
-  useEffect(() => {
-    if (window.lucide && window.lucide.createIcons) {
-      window.lucide.createIcons();
-    }
-  }, []);
+
 
   // Calculate dynamic metrics
   const totalFuelConsumed = fuelLogs.reduce((sum, log) => {

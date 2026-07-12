@@ -112,63 +112,50 @@
 </head>
 <body class="bg-background text-on-surface font-body-sm flex min-h-screen antialiased">
 <!-- SideNavBar (Shared Component) -->
-<aside class="fixed left-0 top-0 h-full w-[260px] bg-surface dark:bg-inverse-surface border-r border-outline-variant shadow-sm z-50">
-<div class="flex flex-col h-full p-stack-lg">
-<!-- Brand -->
-<div class="flex items-center gap-3 mb-8 px-4">
-<div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xl">
-                    T
-                </div>
-<div>
-<h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed leading-none">TransitOps</h1>
-<p class="font-label-caps text-label-caps text-on-surface-variant mt-1">Enterprise Fleet</p>
-</div>
-</div>
-<!-- Navigation Links -->
-<nav id="sidebar" class="fixed left-0 top-0 h-full w-[260px] z-50 transition-transform duration-300 -translate-x-full md:translate-x-0 flex-1 flex flex-col gap-1 space-y-1">
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span class="font-body-md text-body-md">Dashboard</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-icon="directions_car">directions_car</span>
-<span class="font-body-md text-body-md">Fleet</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-icon="person">person</span>
-<span class="font-body-md text-body-md">Drivers</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-icon="route">route</span>
-<span class="font-body-md text-body-md">Trips</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-icon="build">build</span>
-<span class="font-body-md text-body-md">Maintenance</span>
-</a>
-<!-- Active Item -->
-<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-bold scale-95 duration-150 ease-in-out shadow-sm" href="#">
-<span class="material-symbols-outlined icon-fill" data-icon="local_gas_station">local_gas_station</span>
-<span class="font-body-md text-body-md font-bold">Fuel &amp; Expenses</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
-<span class="font-body-md text-body-md">Reports &amp; Analytics</span>
-</a>
-</nav>
-<!-- Mobile Overlay -->
-<div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity"></div>
-<!-- Bottom Actions -->
-<div class="mt-auto flex flex-col gap-2">
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-icon="settings">settings</span>
-<span class="font-body-md text-body-md">Settings</span>
-</a>
-<button class="w-full py-3 bg-primary-container text-on-primary-container rounded-[14px] font-body-md text-body-md font-semibold flex items-center justify-center gap-2 mt-4 hover:opacity-90 transition-opacity">
-<span class="material-symbols-outlined text-sm">add</span> Quick Add
-                </button>
-</div>
-</div>
+<aside class="fixed left-0 top-0 h-full w-[260px] bg-surface dark:bg-inverse-surface border-r border-outline-variant shadow-sm flex flex-col p-6 z-50 transition-transform duration-300 -translate-x-full md:translate-x-0">
+    <div class="flex items-center gap-3 mb-8">
+     
+        <div>
+            <h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed leading-none tracking-tight">TransitOps</h1>
+           
+        </div>
+    </div>
+    <nav id="sidebar" class="flex-1 flex flex-col space-y-1 font-body-md text-body-md overflow-y-auto">
+        
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out" href="dashboard.html">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-body-md text-body-md">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out" href="fleet.html">
+                <span class="material-symbols-outlined">directions_car</span>
+                <span class="font-body-md text-body-md">Fleet</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out" href="drivers.html">
+                <span class="material-symbols-outlined">person</span>
+                <span class="font-body-md text-body-md">Drivers</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out" href="trips.html">
+                <span class="material-symbols-outlined">route</span>
+                <span class="font-body-md text-body-md">Trips</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out" href="maintenance.html">
+                <span class="material-symbols-outlined">build</span>
+                <span class="font-body-md text-body-md">Maintenance</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 bg-primary text-on-primary rounded-lg font-bold shadow-sm duration-150 ease-in-out" href="fuel.html">
+                <span class="material-symbols-outlined">local_gas_station</span>
+                <span class="font-body-md text-body-md">Fuel & Expenses</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out" href="reports.html">
+                <span class="material-symbols-outlined">analytics</span>
+                <span class="font-body-md text-body-md">Reports & Analytics</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out mt-auto" href="settings.html">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="font-body-md text-body-md">Settings</span>
+            </a>
+    </nav>
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity"></div>
 </aside>
 <!-- Main Content Canvas -->
 <main class="flex-1 flex flex-col ml-[260px] min-h-screen">

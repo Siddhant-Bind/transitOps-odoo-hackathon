@@ -121,7 +121,7 @@
 </div>
 <div>
 <h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed leading-tight">TransitOps</h1>
-<p class="font-label-caps text-label-caps text-on-surface-variant">Enterprise Fleet</p>
+
 </div>
 </div>
 <button class="w-full mb-6 bg-primary-container text-white py-3 px-4 rounded-lg font-body-md text-body-md font-medium shadow-sm hover:shadow transition-shadow flex items-center justify-center gap-2">
@@ -129,35 +129,35 @@
             Quick Add
         </button>
 <div class="flex flex-col gap-1 flex-grow overflow-y-auto pr-2">
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out font-body-md text-body-md group" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out font-body-md text-body-md group" href="#">
 <span class="material-symbols-outlined text-xl group-hover:text-primary transition-colors">dashboard</span>
                 Dashboard
             </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out font-body-md text-body-md group" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out font-body-md text-body-md group" href="#">
 <span class="material-symbols-outlined text-xl group-hover:text-primary transition-colors">directions_car</span>
                 Fleet
             </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out font-body-md text-body-md group" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out font-body-md text-body-md group" href="#">
 <span class="material-symbols-outlined text-xl group-hover:text-primary transition-colors">person</span>
                 Drivers
             </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out font-body-md text-body-md group" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out font-body-md text-body-md group" href="#">
 <span class="material-symbols-outlined text-xl group-hover:text-primary transition-colors">route</span>
                 Trips
             </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out font-body-md text-body-md group" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out font-body-md text-body-md group" href="#">
 <span class="material-symbols-outlined text-xl group-hover:text-primary transition-colors">build</span>
                 Maintenance
             </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out font-body-md text-body-md group" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out font-body-md text-body-md group" href="#">
 <span class="material-symbols-outlined text-xl group-hover:text-primary transition-colors">local_gas_station</span>
                 Fuel &amp; Expenses
             </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 rounded-lg scale-95 duration-150 ease-in-out font-body-md text-body-md group" href="#">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out font-body-md text-body-md group" href="#">
 <span class="material-symbols-outlined text-xl group-hover:text-primary transition-colors">analytics</span>
                 Reports &amp; Analytics
             </a>
-<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-bold scale-95 duration-150 ease-in-out font-body-md text-body-md" href="#">
+<a class="flex items-center gap-3 px-4 py-3 bg-primary text-on-primary rounded-lg font-bold shadow-sm duration-150 ease-in-out font-body-md text-body-md" href="#">
 <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">settings</span>
                 Settings
             </a>
@@ -203,40 +203,50 @@
 <!-- Page Content -->
 <div class="p-margin-page max-w-container-max mx-auto w-full flex-grow flex flex-col md:flex-row gap-gutter">
 <!-- Left Sidebar (Settings Navigation) -->
-<aside class="w-full md:w-64 flex-shrink-0">
-<div class="sticky top-[100px]">
-<h2 class="font-section-title text-section-title text-on-surface mb-6">Settings</h2>
-<nav class="flex flex-col gap-1">
-<button class="text-left px-4 py-2.5 rounded-lg font-body-md text-body-md text-on-surface-variant hover:bg-surface-container transition-colors flex items-center justify-between group">
-                            General
-                            <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</button>
-<button class="text-left px-4 py-2.5 rounded-lg font-body-md text-body-md text-on-surface-variant hover:bg-surface-container transition-colors flex items-center justify-between group">
-                            Company
-                            <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</button>
-<button class="text-left px-4 py-2.5 rounded-lg font-body-md text-body-md text-on-surface-variant hover:bg-surface-container transition-colors flex items-center justify-between group">
-                            Depot
-                            <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</button>
-<button class="text-left px-4 py-2.5 rounded-lg font-body-md text-body-md text-on-surface-variant hover:bg-surface-container transition-colors flex items-center justify-between group">
-                            Notifications
-                            <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</button>
-<button class="text-left px-4 py-2.5 rounded-lg font-body-md text-body-md text-on-surface-variant hover:bg-surface-container transition-colors flex items-center justify-between group">
-                            Users
-                            <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</button>
-<button class="text-left px-4 py-2.5 rounded-lg font-body-md text-body-md text-on-surface-variant hover:bg-surface-container transition-colors flex items-center justify-between group">
-                            Security
-                            <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
-</button>
-<button class="text-left px-4 py-2.5 rounded-lg font-body-md text-body-md bg-white border border-outline-variant shadow-sm text-primary font-medium flex items-center justify-between">
-                            RBAC (Roles &amp; Permissions)
-                            <span class="material-symbols-outlined text-sm">chevron_right</span>
-</button>
-</nav>
-</div>
+<aside class="fixed left-0 top-0 h-full w-[260px] bg-surface dark:bg-inverse-surface border-r border-outline-variant shadow-sm flex flex-col p-6 z-50 transition-transform duration-300 -translate-x-full md:translate-x-0">
+    <div class="flex items-center gap-3 mb-8">
+        <div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xl">T</div>
+        <div>
+            <h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed leading-none tracking-tight">TransitOps</h1>
+            <p class="font-label-caps text-label-caps text-on-surface-variant mt-1">Enterprise Fleet</p>
+        </div>
+    </div>
+    <nav id="sidebar" class="flex-1 flex flex-col space-y-1 font-body-md text-body-md overflow-y-auto">
+        
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out" href="dashboard.html">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-body-md text-body-md">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out" href="fleet.html">
+                <span class="material-symbols-outlined">directions_car</span>
+                <span class="font-body-md text-body-md">Fleet</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out" href="drivers.html">
+                <span class="material-symbols-outlined">person</span>
+                <span class="font-body-md text-body-md">Drivers</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out" href="trips.html">
+                <span class="material-symbols-outlined">route</span>
+                <span class="font-body-md text-body-md">Trips</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out" href="maintenance.html">
+                <span class="material-symbols-outlined">build</span>
+                <span class="font-body-md text-body-md">Maintenance</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out" href="fuel.html">
+                <span class="material-symbols-outlined">local_gas_station</span>
+                <span class="font-body-md text-body-md">Fuel & Expenses</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-colors duration-200 rounded-lg duration-150 ease-in-out" href="reports.html">
+                <span class="material-symbols-outlined">analytics</span>
+                <span class="font-body-md text-body-md">Reports & Analytics</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 bg-primary text-on-primary rounded-lg font-bold shadow-sm duration-150 ease-in-out mt-auto" href="settings.html">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="font-body-md text-body-md">Settings</span>
+            </a>
+    </nav>
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity"></div>
 </aside>
 <!-- Main Settings Content Area -->
 <div class="flex-1 flex flex-col gap-stack-lg">

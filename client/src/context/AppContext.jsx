@@ -54,6 +54,7 @@ export const AppProvider = ({ children }) => {
           serviceType: m.maintenance_type,
           workshop: m.performed_by || 'Main Workshop',
           cost: m.cost ? `$${Number(m.cost).toLocaleString()}` : '$0.00',
+          costRaw: Number(m.cost) || 0,
           date: new Date(m.actual_date || m.scheduled_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
           status: m.status,
           image: 'https://placehold.co/100'

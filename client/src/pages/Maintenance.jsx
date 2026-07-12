@@ -1,14 +1,9 @@
-import React, { useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 
 const Maintenance = () => {
   const { maintenanceLogs, setSelectedMaintenanceLog, setMaintenanceFormOpen } = useAppContext();
   
-  useEffect(() => {
-    if (window.lucide && window.lucide.createIcons) {
-      window.lucide.createIcons();
-    }
-  }, []);
+
 
   // Compute dynamic KPIs
   const vehiclesInShop = maintenanceLogs.filter(log => log.status !== 'Completed' && log.status !== 'Cancelled').length;
