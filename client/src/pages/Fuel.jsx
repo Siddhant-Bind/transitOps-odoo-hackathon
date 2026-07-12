@@ -1,7 +1,20 @@
-
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Fuel = () => {
+  const [fuelLogs] = useState([
+    { vehicle: 'VH-492', date: 'Oct 24, 08:30', litres: '85 L', cost: '$134.50', mileage: '142,500 km', station: 'Shell Express' },
+    { vehicle: 'VH-118', date: 'Oct 24, 07:15', litres: '120 L', cost: '$189.20', mileage: '88,320 km', station: 'PetroCanada' },
+    { vehicle: 'VH-902', date: 'Oct 23, 16:45', litres: '65 L', cost: '$102.80', mileage: '210,105 km', station: 'Esso' },
+    { vehicle: 'VH-334', date: 'Oct 23, 14:20', litres: '90 L', cost: '$142.10', mileage: '54,900 km', station: 'Shell Express' },
+    { vehicle: 'VH-551', date: 'Oct 22, 09:10', litres: '110 L', cost: '$173.00', mileage: '112,450 km', station: 'PetroCanada' }
+  ]);
+  const [expenses] = useState([
+    { tripId: '#TR-8921', vehicle: 'VH-118', type: 'Toll Gate', driver: 'Sarah Jenkins', amount: '$45.00', status: 'Approved' },
+    { tripId: '#TR-8944', vehicle: 'VH-334', type: 'Emergency Repair', driver: 'Mike Torres', amount: '$320.50', status: 'Pending Approval' },
+    { tripId: '#TR-8890', vehicle: 'VH-492', type: 'Parking', driver: 'David Chen', amount: '$18.00', status: 'Approved' },
+    { tripId: '#TR-8955', vehicle: 'VH-551', type: 'Weigh Station Fee', driver: 'Anna Smith', amount: '$25.00', status: 'Pending Approval' }
+  ]);
+
   useEffect(() => {
     if (window.lucide && window.lucide.createIcons) {
       window.lucide.createIcons();
@@ -12,37 +25,7 @@ const Fuel = () => {
     <>
       
 
-<header className="sticky top-0 z-40 w-full border-b border-outline-variant bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-md shadow-sm">
-<div className="flex justify-between items-center h-16 px-margin-page max-w-container-max mx-auto">
 
-<div className="flex-1 flex items-center">
-<div className="relative w-64 focus-within:ring-2 focus-within:ring-secondary rounded-lg transition-all">
-<span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-<input className="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg text-body-sm focus:outline-none" placeholder="Search..." type="text" />
-</div>
-</div>
-
-<div className="flex items-center gap-6">
-<div className="flex items-center gap-4 text-on-surface-variant">
-<button className="hover:text-primary transition-all">
-<span className="material-symbols-outlined" data-icon="notifications">notifications</span>
-</button>
-<button className="hover:text-primary transition-all">
-<span className="material-symbols-outlined" data-icon="mail">mail</span>
-</button>
-</div>
-<div className="flex items-center gap-3">
-<button className="text-body-sm font-medium px-4 py-2 border border-outline-variant rounded-[14px] bg-surface-container-lowest hover:bg-surface-container transition-colors">Settings</button>
-<button className="text-body-sm font-medium px-4 py-2 bg-primary-container text-on-primary-container rounded-[14px] hover:opacity-90 transition-opacity flex items-center gap-2">
-<span className="material-symbols-outlined text-sm">add</span> Add Vehicle
-                        </button>
-</div>
-<div className="h-8 w-8 rounded-full overflow-hidden border border-outline-variant cursor-pointer ring-2 ring-transparent hover:ring-primary-container transition-all">
-<img alt="User Avatar" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmolZtt7mRq3yBow4bFHhqa7bmbjrgYKNQcjitYzem15tkmhfo7iNNecBJsbdX2XIT59Tgi_HMLRi2sZSdbjVa5XMosWi0zs3RCypfv5b47htnk1YXEBnL5Zyh675375kf9aSuTt49LkpHL7kEhJyZM4ZNkynXHFYa-PnpC8brhnjiSAiNneWy1DPLt5ynV1iB_F2NUcjGd451dQaXCuvEIlqO1KMU2KBoH52v6ABjnLhN-edQpHydzQ" />
-</div>
-</div>
-</div>
-</header>
 
 <div className="p-margin-page flex-1 max-w-container-max w-full mx-auto space-y-stack-lg">
 
@@ -148,46 +131,16 @@ const Fuel = () => {
 </tr>
 </thead>
 <tbody className="text-body-sm">
-<tr>
-<td className="px-stack-lg py-3 font-medium text-on-surface">VH-492</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">Oct 24, 08:30</td>
-<td className="px-stack-lg py-3">85 L</td>
-<td className="px-stack-lg py-3 font-medium">$134.50</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">142,500 km</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">Shell Express</td>
+{fuelLogs.map((log, index) => (
+<tr key={index}>
+<td className="px-stack-lg py-3 font-medium text-on-surface">{log.vehicle}</td>
+<td className="px-stack-lg py-3 text-on-surface-variant">{log.date}</td>
+<td className="px-stack-lg py-3">{log.litres}</td>
+<td className="px-stack-lg py-3 font-medium">{log.cost}</td>
+<td className="px-stack-lg py-3 text-on-surface-variant">{log.mileage}</td>
+<td className="px-stack-lg py-3 text-on-surface-variant">{log.station}</td>
 </tr>
-<tr>
-<td className="px-stack-lg py-3 font-medium text-on-surface">VH-118</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">Oct 24, 07:15</td>
-<td className="px-stack-lg py-3">120 L</td>
-<td className="px-stack-lg py-3 font-medium">$189.20</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">88,320 km</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">PetroCanada</td>
-</tr>
-<tr>
-<td className="px-stack-lg py-3 font-medium text-on-surface">VH-902</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">Oct 23, 16:45</td>
-<td className="px-stack-lg py-3">65 L</td>
-<td className="px-stack-lg py-3 font-medium">$102.80</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">210,105 km</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">Esso</td>
-</tr>
-<tr>
-<td className="px-stack-lg py-3 font-medium text-on-surface">VH-334</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">Oct 23, 14:20</td>
-<td className="px-stack-lg py-3">90 L</td>
-<td className="px-stack-lg py-3 font-medium">$142.10</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">54,900 km</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">Shell Express</td>
-</tr>
-<tr>
-<td className="px-stack-lg py-3 font-medium text-on-surface">VH-551</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">Oct 22, 09:10</td>
-<td className="px-stack-lg py-3">110 L</td>
-<td className="px-stack-lg py-3 font-medium">$173.00</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">112,450 km</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">PetroCanada</td>
-</tr>
+))}
 </tbody>
 </table>
 </div>
@@ -275,60 +228,22 @@ const Fuel = () => {
 </tr>
 </thead>
 <tbody className="text-body-sm">
-<tr>
-<td className="px-stack-lg py-3 font-medium text-on-surface">#TR-8921</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">VH-118</td>
-<td className="px-stack-lg py-3">Toll Gate</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">Sarah Jenkins</td>
-<td className="px-stack-lg py-3 font-medium">$45.00</td>
+{expenses.map((expense, index) => (
+<tr key={index}>
+<td className="px-stack-lg py-3 font-medium text-on-surface">{expense.tripId}</td>
+<td className="px-stack-lg py-3 text-on-surface-variant">{expense.vehicle}</td>
+<td className="px-stack-lg py-3">{expense.type}</td>
+<td className="px-stack-lg py-3 text-on-surface-variant">{expense.driver}</td>
+<td className="px-stack-lg py-3 font-medium">{expense.amount}</td>
 <td className="px-stack-lg py-3">
-<span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-tertiary-container/10 text-tertiary">Approved</span>
+<span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold ${expense.status === 'Approved' ? 'bg-tertiary-container/10 text-tertiary' : 'bg-primary-container/10 text-primary-container'}`}>{expense.status}</span>
 </td>
 <td className="px-stack-lg py-3 text-right">
+{expense.status === 'Pending Approval' && <button className="text-secondary font-medium hover:underline mr-3">Review</button>}
 <button className="text-on-surface-variant hover:text-primary"><span className="material-symbols-outlined text-[20px]">more_vert</span></button>
 </td>
 </tr>
-<tr>
-<td className="px-stack-lg py-3 font-medium text-on-surface">#TR-8944</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">VH-334</td>
-<td className="px-stack-lg py-3">Emergency Repair</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">Mike Torres</td>
-<td className="px-stack-lg py-3 font-medium">$320.50</td>
-<td className="px-stack-lg py-3">
-<span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-primary-container/10 text-primary-container">Pending Approval</span>
-</td>
-<td className="px-stack-lg py-3 text-right">
-<button className="text-secondary font-medium hover:underline mr-3">Review</button>
-<button className="text-on-surface-variant hover:text-primary"><span className="material-symbols-outlined text-[20px]">more_vert</span></button>
-</td>
-</tr>
-<tr>
-<td className="px-stack-lg py-3 font-medium text-on-surface">#TR-8890</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">VH-492</td>
-<td className="px-stack-lg py-3">Parking</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">David Chen</td>
-<td className="px-stack-lg py-3 font-medium">$18.00</td>
-<td className="px-stack-lg py-3">
-<span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-tertiary-container/10 text-tertiary">Approved</span>
-</td>
-<td className="px-stack-lg py-3 text-right">
-<button className="text-on-surface-variant hover:text-primary"><span className="material-symbols-outlined text-[20px]">more_vert</span></button>
-</td>
-</tr>
-<tr>
-<td className="px-stack-lg py-3 font-medium text-on-surface">#TR-8955</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">VH-551</td>
-<td className="px-stack-lg py-3">Weigh Station Fee</td>
-<td className="px-stack-lg py-3 text-on-surface-variant">Anna Smith</td>
-<td className="px-stack-lg py-3 font-medium">$25.00</td>
-<td className="px-stack-lg py-3">
-<span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-primary-container/10 text-primary-container">Pending Approval</span>
-</td>
-<td className="px-stack-lg py-3 text-right">
-<button className="text-secondary font-medium hover:underline mr-3">Review</button>
-<button className="text-on-surface-variant hover:text-primary"><span className="material-symbols-outlined text-[20px]">more_vert</span></button>
-</td>
-</tr>
+))}
 </tbody>
 </table>
 </div>

@@ -1,7 +1,8 @@
-
 import React, { useEffect } from 'react';
+import { useAppContext } from '../context/AppContext';
 
 const Maintenance = () => {
+  const { maintenanceLogs, setSelectedMaintenanceLog } = useAppContext();
   useEffect(() => {
     if (window.lucide && window.lucide.createIcons) {
       window.lucide.createIcons();
@@ -89,54 +90,31 @@ const Maintenance = () => {
 </tr>
 </thead>
 <tbody className="font-body-sm text-body-sm">
-
-<tr className="bg-surface-bright border-b border-outline-variant hover:bg-surface-container-low transition-colors group">
+{maintenanceLogs.map((log, index) => (
+<tr key={log.id} className={`border-b border-outline-variant hover:bg-surface-container-low transition-colors group ${index % 2 !== 0 ? 'bg-surface-bright' : 'bg-surface-container-lowest'}`}>
 <td className="py-3 px-4 flex items-center gap-3">
 <div className="w-10 h-10 rounded bg-surface-variant flex items-center justify-center overflow-hidden border border-outline-variant">
-<img className="w-full h-full object-cover" data-alt="A clean photograph of a white commercial delivery van, 3/4 front angle, parked in a modern industrial lot, daylight, corporate modern aesthetic, 50-100 words" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAWhoM80V3fkeDobTdWfUmukCSNjoKc8Vm2f2oCDYltFs2izEnyFH1LU-6TG09doE4ibTk-Ip0M9g1a4PYhFmbicSe-fF5oE1RM6ep4fNd2v_3fp5ldpL7VJt2qJaX9AyXUkLX34lyRXXq_8lFv0lzUq5y_QPaEp1TOCe8hUX-MalMntLh7F_hsmTOVBX9bwSTUDFQDEwnqmLzVBvWM8qx5RJFlxMw6JWXgNRtHXFYdW20xtmgBmQzNg" />
+<img className="w-full h-full object-cover" src={log.image || "https://placehold.co/100"} alt="vehicle" />
 </div>
 <div>
-<div className="font-medium text-on-surface">Ford Transit T-250</div>
-<div className="text-on-surface-variant text-xs">V-1042</div>
+<div className="font-medium text-on-surface">{log.vehicle}</div>
+<div className="text-on-surface-variant text-xs">{log.regNumber}</div>
 </div>
 </td>
-<td className="py-3 px-4 text-on-surface">Oil Change &amp; Filter</td>
-<td className="py-3 px-4 text-on-surface-variant">Downtown Fleet Auto</td>
-<td className="py-3 px-4 text-on-surface text-right font-medium">$125.00</td>
-<td className="py-3 px-4 text-on-surface-variant">Oct 12, 2023</td>
+<td className="py-3 px-4 text-on-surface">{log.serviceType}</td>
+<td className="py-3 px-4 text-on-surface-variant">{log.workshop}</td>
+<td className="py-3 px-4 text-on-surface text-right font-medium">{log.cost}</td>
+<td className="py-3 px-4 text-on-surface-variant">{log.date}</td>
 <td className="py-3 px-4">
-<span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-tertiary/10 text-tertiary border border-tertiary/20">
-                                        Completed
-                                    </span>
+<span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium border ${log.status === 'Completed' ? 'bg-tertiary/10 text-tertiary border-tertiary/20' : 'bg-error/10 text-error border-error/20'}`}>
+{log.status}
+</span>
 </td>
 <td className="py-3 px-4 text-right">
-<button className="text-secondary hover:text-secondary-container transition-colors" >View Details</button>
+<button onClick={() => setSelectedMaintenanceLog(log)} className="text-secondary hover:text-secondary-container transition-colors" >View Details</button>
 </td>
 </tr>
-
-<tr className="bg-surface-container-lowest border-b border-outline-variant hover:bg-surface-container-low transition-colors group">
-<td className="py-3 px-4 flex items-center gap-3">
-<div className="w-10 h-10 rounded bg-surface-variant flex items-center justify-center overflow-hidden border border-outline-variant">
-<img className="w-full h-full object-cover" data-alt="A pristine photograph of a heavy duty commercial truck cab, silver color, parked in a depot, soft natural lighting, corporate modern aesthetic, 50-100 words" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSPmbOZHyJUbgDXbDrAU4aduAkSJBLY_Cylt_jO1z2tArGiKG4t1T6faEC37igx-JGJcCH-9bSkt2s1Q7ZJ_T_AyKsmEJEHVs3vNPjUwImHxnkYqZf3mgRqyvlDI8zup8vpcQYwa9K-SE3bp8FncxT0_2YsHpCZ1P4htM-ZdO3dYYRGftiHFLIVb8Tu3CCdyudaOSOgaJomvjteltgzYSWNe8blvn-578Gjo3FDNSNtm9stjxDrkSB_A" />
-</div>
-<div>
-<div className="font-medium text-on-surface">Freightliner Cascadia</div>
-<div className="text-on-surface-variant text-xs">H-9011</div>
-</div>
-</td>
-<td className="py-3 px-4 text-on-surface">Transmission Overhaul</td>
-<td className="py-3 px-4 text-on-surface-variant">Central Heavy Duty</td>
-<td className="py-3 px-4 text-on-surface text-right font-medium">$3,450.00</td>
-<td className="py-3 px-4 text-on-surface-variant">Oct 15, 2023</td>
-<td className="py-3 px-4">
-<span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-error/10 text-error border border-error/20">
-                                        In Shop
-                                    </span>
-</td>
-<td className="py-3 px-4 text-right">
-<button className="text-secondary hover:text-secondary-container transition-colors" >View Details</button>
-</td>
-</tr>
+))}
 </tbody>
 </table>
 </div>

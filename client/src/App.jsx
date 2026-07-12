@@ -15,19 +15,19 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
         
         {/* Dashboard Routes wrapped in Sidebar/Topbar */}
-        <Route path="/" element={<DashboardLayout />}>
-          <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<ExecutiveDashboard />} />
-          <Route path="fleet" element={<Fleet />} />
-          <Route path="drivers" element={<Drivers />} />
-          <Route path="trips" element={<Trips />} />
-          <Route path="maintenance" element={<Maintenance />} />
-          <Route path="fuel" element={<Fuel />} />
-          <Route path="reports" element={<Reports />} />
-          <Route path="settings" element={<Settings />} />
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<ExecutiveDashboard />} />
+          <Route path="/fleet" element={<Fleet />} />
+          <Route path="/drivers" element={<Drivers />} />
+          <Route path="/trips" element={<Trips />} />
+          <Route path="/maintenance" element={<Maintenance />} />
+          <Route path="/fuel" element={<Fuel />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/settings" element={<Settings />} />
         </Route>
         
         {/* Catch all redirect to login */}

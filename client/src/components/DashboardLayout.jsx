@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
+import GlobalOverlays from './GlobalOverlays';
 
 const DashboardLayout = () => {
   return (
@@ -15,6 +16,7 @@ const DashboardLayout = () => {
           </div>
         </main>
       </div>
+      <GlobalOverlays />
     </div>
   );
 };

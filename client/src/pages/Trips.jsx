@@ -1,7 +1,13 @@
-
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Trips = () => {
+  const [tripsData] = useState([
+    { id: 'TRP-8892', status: 'Dispatched', route: 'Chicago ➔ Detroit', icon: 'person', details: 'Sarah Jenkins • TRK-1042', progress: 45, eta: '4h 12m' },
+    { id: 'TRP-8893', status: 'Scheduled', route: 'Atlanta ➔ Miami', icon: 'schedule', details: 'Departs: 14:00 EST' },
+    { id: 'TRP-8894', status: 'Draft', route: 'Dallas ➔ Houston', icon: 'warning', details: 'Missing Driver' },
+    { id: 'TRP-8890', status: 'Cancelled', route: 'Seattle ➔ Portland', icon: 'cancel', details: 'Cancelled by Dispatch' }
+  ]);
+
   useEffect(() => {
     if (window.lucide && window.lucide.createIcons) {
       window.lucide.createIcons();
@@ -107,53 +113,29 @@ const Trips = () => {
 
 <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-background">
 
-<div className="bg-surface-container-lowest border-l-4 border-l-secondary border-y border-r border-outline-variant rounded-r-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+{tripsData.map((trip) => (
+<div key={trip.id} className={`bg-surface-container-lowest border-l-4 ${trip.status === 'Dispatched' ? 'border-l-secondary' : trip.status === 'Scheduled' ? 'border-l-tertiary-container' : trip.status === 'Draft' ? 'border-l-surface-variant opacity-70 hover:opacity-100' : 'border-l-error opacity-60'} border-y border-r border-outline-variant rounded-r-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer`}>
 <div className="flex justify-between items-start mb-2">
-<span className="bg-secondary/10 text-secondary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Dispatched</span>
-<span className="font-label-caps text-label-caps text-on-surface-variant">TRP-8892</span>
+<span className={`${trip.status === 'Dispatched' ? 'bg-secondary/10 text-secondary' : trip.status === 'Scheduled' ? 'bg-tertiary-container/10 text-tertiary-container' : trip.status === 'Draft' ? 'bg-surface-variant text-on-surface-variant' : 'bg-error/10 text-error'} px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider`}>{trip.status}</span>
+<span className="font-label-caps text-label-caps text-on-surface-variant">{trip.id}</span>
 </div>
-<h3 className="font-body-md text-body-md text-on-surface mb-1">Chicago ➔ Detroit</h3>
+<h3 className={`font-body-md text-body-md text-on-surface mb-1 ${trip.status === 'Cancelled' ? 'line-through' : ''}`}>{trip.route}</h3>
 <div className="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm mb-3">
-<span className="material-symbols-outlined text-[16px]">person</span> Sarah Jenkins • TRK-1042
-                                </div>
+<span className="material-symbols-outlined text-[16px]">{trip.icon}</span> {trip.details}
+</div>
+{trip.progress !== undefined && (
+<>
 <div className="w-full bg-surface-container-high rounded-full h-1.5 mb-1">
-<div className="bg-secondary h-1.5 rounded-full" style={{}}></div>
+<div className="bg-secondary h-1.5 rounded-full" style={{width: `${trip.progress}%`}}></div>
 </div>
 <div className="flex justify-between font-label-caps text-[10px] text-on-surface-variant">
-<span>ETA: 4h 12m</span>
+<span>ETA: {trip.eta}</span>
 <span>On Time</span>
 </div>
+</>
+)}
 </div>
-
-<div className="bg-surface-container-lowest border-l-4 border-l-tertiary-container border-y border-r border-outline-variant rounded-r-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-<div className="flex justify-between items-start mb-2">
-<span className="bg-tertiary-container/10 text-tertiary-container px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Scheduled</span>
-<span className="font-label-caps text-label-caps text-on-surface-variant">TRP-8893</span>
-</div>
-<h3 className="font-body-md text-body-md text-on-surface mb-1">Atlanta ➔ Miami</h3>
-<div className="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
-<span className="material-symbols-outlined text-[16px]">schedule</span> Departs: 14:00 EST
-                                </div>
-</div>
-
-<div className="bg-surface-container-lowest border-l-4 border-l-surface-variant border-y border-r border-outline-variant rounded-r-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer opacity-70 hover:opacity-100">
-<div className="flex justify-between items-start mb-2">
-<span className="bg-surface-variant text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Draft</span>
-<span className="font-label-caps text-label-caps text-on-surface-variant">TRP-8894</span>
-</div>
-<h3 className="font-body-md text-body-md text-on-surface mb-1">Dallas ➔ Houston</h3>
-<div className="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
-<span className="material-symbols-outlined text-[16px]">warning</span> Missing Driver
-                                </div>
-</div>
-
-<div className="bg-surface-container-lowest border-l-4 border-l-error border-y border-r border-outline-variant rounded-r-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer opacity-60">
-<div className="flex justify-between items-start mb-2">
-<span className="bg-error/10 text-error px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Cancelled</span>
-<span className="font-label-caps text-label-caps text-on-surface-variant">TRP-8890</span>
-</div>
-<h3 className="font-body-md text-body-md text-on-surface mb-1 line-through">Seattle ➔ Portland</h3>
-</div>
+))}
 </div>
 </div>
 </div>

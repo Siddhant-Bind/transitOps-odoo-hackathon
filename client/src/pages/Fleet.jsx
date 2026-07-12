@@ -1,7 +1,8 @@
-
 import React, { useEffect } from 'react';
+import { useAppContext } from '../context/AppContext';
 
 const Fleet = () => {
+  const { fleetData } = useAppContext();
   useEffect(() => {
     if (window.lucide && window.lucide.createIcons) {
       window.lucide.createIcons();
@@ -92,114 +93,52 @@ const Fleet = () => {
 </tr>
 </thead>
 <tbody className="font-body-sm text-body-sm">
-
-<tr className="border-b border-outline-variant hover:bg-surface-container-low transition-colors group cursor-pointer" >
+{fleetData.map((vehicle, index) => (
+<tr key={vehicle.id} className={`border-b border-outline-variant hover:bg-surface-container-low transition-colors group cursor-pointer ${index % 2 !== 0 ? 'bg-surface-bright' : ''}`} >
 <td className="py-3 px-4">
 <div className="flex items-center gap-3">
 <div className="w-12 h-10 rounded bg-surface-container border border-outline-variant flex items-center justify-center overflow-hidden">
-<img className="w-full h-full object-cover" data-alt="A clean, modern heavy goods vehicle (HGV) cab in pristine white, parked at a stylized logistics depot. Bright, diffused daylight illumination, giving a crisp, professional aesthetic. Shot from a slight low angle to emphasize robust industrial reliability. Soft, neutral background to keep focus on the vehicle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp0WhM0lnY0j3C1eXb6vWKFRYg0no7Gc6HdzPqaTwJbY-KV93g-uuVpyTarD4okVQc6nBKqj1x0r__1YNDbYskTKMyOveGcV3t30BqwmjFcOCBMOwhBLkrKemmWbE5ffXBdnEd87SsX45_asdKRFdNf655cA-8AysNUsfIpfUM5DccLe0FYbx2v1GgrqOmBpc9GvNbXIGIvWaGYvwPIrOAF-jFTUH8Fj3nHcMrADgEW57_y4Zce4j7IA" />
+<img className="w-full h-full object-cover" src={vehicle.image || "https://placehold.co/100"} alt="vehicle" />
 </div>
 <div>
-<div className="font-medium text-on-surface">Volvo FH16</div>
-<div className="text-on-surface-variant text-xs mt-0.5">Heavy Goods</div>
+<div className="font-medium text-on-surface">{vehicle.model}</div>
+<div className="text-on-surface-variant text-xs mt-0.5">{vehicle.type.split('/')[1] || vehicle.type}</div>
 </div>
 </div>
 </td>
-<td className="py-3 px-4 text-on-surface font-medium">HG23 KLP</td>
-<td className="py-3 px-4 text-on-surface-variant">44t / Articulated</td>
+<td className="py-3 px-4 text-on-surface font-medium">{vehicle.regNumber}</td>
+<td className="py-3 px-4 text-on-surface-variant">{vehicle.type}</td>
 <td className="py-3 px-4">
 <div className="flex items-center gap-2">
-<div className="w-6 h-6 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs font-bold">JD</div>
-<span className="text-on-surface">John Doe</span>
-</div>
-</td>
-<td className="py-3 px-4 text-on-surface-variant">142,500 mi</td>
-<td className="py-3 px-4">
-<span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-tertiary-container/10 text-tertiary-container border border-tertiary-container/20">
-<span className="w-1.5 h-1.5 rounded-full bg-tertiary-container mr-1.5"></span>
-                                            Active Route
-                                        </span>
-</td>
-<td className="py-3 px-4 text-right">
-<button className="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed/20 rounded-md transition-colors" title="View Details">
-<span className="material-symbols-outlined" style={{}}>visibility</span>
-</button>
-<button className="p-1.5 text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/20 rounded-md transition-colors" title="Edit">
-<span className="material-symbols-outlined" style={{}}>edit</span>
-</button>
-</td>
-</tr>
-
-<tr className="bg-surface-bright border-b border-outline-variant hover:bg-surface-container-low transition-colors group cursor-pointer" >
-<td className="py-3 px-4">
-<div className="flex items-center gap-3">
-<div className="w-12 h-10 rounded bg-surface-container border border-outline-variant flex items-center justify-center overflow-hidden">
-<img className="w-full h-full object-cover" data-alt="A sleek, aerodynamic delivery van in a corporate silver finish, stationed in a modern loading bay. High-key lighting highlights the smooth panels and clean design. The setting suggests efficiency and rapid urban logistics, fitting a high-end corporate management interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyfA56-t1ymGgDJdgNfffK8yIf4yj2kL8sj4M_WWjZMn4nl6V1U3SrJtmki3E0y4MgP7j7oTntX8ifkvPONdpxqRxRhlT17egVLxYleVoOIL54KWTQVnjkWbcBF0CZMmAqyQSd3hlIr04oDZF-PXwQ7-1DuFfIMvSdUuoFUkXe9D9BunTUC0ykF0J1FKc6GL6T2w3Yz0f0Vf31puw2V-irPTrYbCkVVt6T78Wp1PhTm5gVDyjIipRSHg" />
-</div>
-<div>
-<div className="font-medium text-on-surface">Mercedes Sprinter</div>
-<div className="text-on-surface-variant text-xs mt-0.5">Delivery Van</div>
-</div>
-</div>
-</td>
-<td className="py-3 px-4 text-on-surface font-medium">VN22 OQM</td>
-<td className="py-3 px-4 text-on-surface-variant">3.5t / Panel</td>
-<td className="py-3 px-4">
+{vehicle.driverAvatar ? (
+<img className="w-6 h-6 rounded-full object-cover border border-outline-variant" src={vehicle.driverAvatar} alt="driver" />
+) : (
+vehicle.driverInitials ? (
+<div className="w-6 h-6 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs font-bold">{vehicle.driverInitials}</div>
+) : (
 <div className="text-on-surface-variant italic text-xs">Unassigned</div>
+)
+)}
+{vehicle.driver !== 'Unassigned' && <span className="text-on-surface">{vehicle.driver}</span>}
+</div>
 </td>
-<td className="py-3 px-4 text-on-surface-variant">45,120 mi</td>
+<td className="py-3 px-4 text-on-surface-variant">{vehicle.odometer}</td>
 <td className="py-3 px-4">
-<span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-surface-variant text-on-surface border border-outline-variant">
-<span className="w-1.5 h-1.5 rounded-full bg-outline-variant mr-1.5"></span>
-                                            Idle (Depot)
-                                        </span>
+<span className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border ${vehicle.status === 'Active Route' ? 'bg-tertiary-container/10 text-tertiary-container border-tertiary-container/20' : vehicle.status === 'Maintenance' ? 'bg-error/10 text-error border-error/20' : 'bg-surface-variant text-on-surface border-outline-variant'}`}>
+<span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${vehicle.status === 'Active Route' ? 'bg-tertiary-container' : vehicle.status === 'Maintenance' ? 'bg-error' : 'bg-outline-variant'}`}></span>
+{vehicle.status}
+</span>
 </td>
 <td className="py-3 px-4 text-right">
 <button className="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed/20 rounded-md transition-colors" title="View Details">
-<span className="material-symbols-outlined" style={{}}>visibility</span>
+<span className="material-symbols-outlined">visibility</span>
 </button>
 <button className="p-1.5 text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/20 rounded-md transition-colors" title="Edit">
-<span className="material-symbols-outlined" style={{}}>edit</span>
+<span className="material-symbols-outlined">edit</span>
 </button>
 </td>
 </tr>
-
-<tr className="border-b border-outline-variant hover:bg-surface-container-low transition-colors group cursor-pointer" >
-<td className="py-3 px-4">
-<div className="flex items-center gap-3">
-<div className="w-12 h-10 rounded bg-surface-container border border-outline-variant flex items-center justify-center overflow-hidden">
-<img className="w-full h-full object-cover" data-alt="A heavy-duty Scania R-Series truck cab, viewed from a three-quarter angle. The vehicle is painted in a muted corporate blue, standing inside a brightly lit, spotless maintenance hangar. Soft shadows, clinical lighting, conveying operational readiness and meticulous upkeep." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaVg9P7WrcOTybZu8LJNfjnMpg_VwuEI2b6DHjckhi7mpaQRusTrYBu1uv1pFIUlZRXsq1rgLHinGFn18nDACW_kKA9QxcbIjxS9BhTMQuig6COx3TdkXdCAY1EaBvyGX7xB0OL2LQA7BgHhUivg5D-8YgV9e5isMHWiEmwwBwGOxabzsTmrVNh4GORrrY8_Ns2EzPwyQxaG2Y_DJWrKyN7oaW91ilael6Q5cJHdKZZ6VLSLAXzXY4Bg" />
-</div>
-<div>
-<div className="font-medium text-on-surface">Scania R-Series</div>
-<div className="text-on-surface-variant text-xs mt-0.5">Heavy Goods</div>
-</div>
-</div>
-</td>
-<td className="py-3 px-4 text-on-surface font-medium">HG21 ZXC</td>
-<td className="py-3 px-4 text-on-surface-variant">44t / Articulated</td>
-<td className="py-3 px-4">
-<div className="flex items-center gap-2">
-<img className="w-6 h-6 rounded-full object-cover border border-outline-variant" data-alt="Small thumbnail portrait of a middle-aged male truck driver wearing a high-visibility vest over a dark polo shirt. Friendly but professional demeanor, well-lit against a plain light gray background. Suitable for a corporate employee directory avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDXvuJnAXN4i98TIYSeKdydrTAE_3WiZ8QPlLwx8i5yX_IoRIlSZARsrZVFhZpBTHSrUjb_i_iNgSVggs1B7pJJDCfcpdvFc_dDrEyCHTomGMZ4FaYHeCc5MvBpeY-GPNCYeSnpJtqeEiVU1rrnHN0WhI43JYW3u9GS_gNMWO6dbM_Tai3E6Kj_xoCVh3KpVlIgRDVQ60U9tBPJRPXjr2Qkf1GeKAWsCyDCcjW62gpgIaeEuovWBljTQ" />
-<span className="text-on-surface">Mike Torres</span>
-</div>
-</td>
-<td className="py-3 px-4 text-on-surface-variant">210,000 mi</td>
-<td className="py-3 px-4">
-<span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-error/10 text-error border border-error/20">
-<span className="w-1.5 h-1.5 rounded-full bg-error mr-1.5"></span>
-                                            Maintenance
-                                        </span>
-</td>
-<td className="py-3 px-4 text-right">
-<button className="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed/20 rounded-md transition-colors" title="View Details">
-<span className="material-symbols-outlined" style={{}}>visibility</span>
-</button>
-<button className="p-1.5 text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/20 rounded-md transition-colors" title="Edit">
-<span className="material-symbols-outlined" style={{}}>edit</span>
-</button>
-</td>
-</tr>
+))}
 </tbody>
 </table>
 </div>

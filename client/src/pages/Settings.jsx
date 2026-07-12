@@ -12,27 +12,7 @@ const Settings = () => {
     <>
       
 
-<header className="sticky top-0 z-40 w-full bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-md shadow-sm">
-<div className="flex justify-between items-center h-16 px-margin-page max-w-container-max mx-auto">
-<div className="flex-1 max-w-md hidden md:flex items-center bg-surface-container-low rounded-lg px-3 py-2 border border-outline-variant focus-within:ring-2 focus-within:ring-secondary focus-within:border-secondary transition-all">
-<span className="material-symbols-outlined text-on-surface-variant mr-2">search</span>
-<input className="bg-transparent border-none outline-none w-full text-body-sm text-on-surface placeholder-on-surface-variant focus:ring-0 p-0" placeholder="Search settings..." type="text" />
-</div>
-<div className="flex items-center gap-4 ml-auto">
-<button className="p-2 text-on-surface-variant hover:text-primary transition-all rounded-full hover:bg-surface-container relative">
-<span className="material-symbols-outlined">notifications</span>
-<span className="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
-</button>
-<button className="p-2 text-on-surface-variant hover:text-primary transition-all rounded-full hover:bg-surface-container">
-<span className="material-symbols-outlined">mail</span>
-</button>
-<div className="h-8 w-px bg-outline-variant mx-2"></div>
-<button className="bg-white border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-body-sm text-body-sm hover:bg-surface-container-low transition-colors">
-                        Add Vehicle
-                    </button>
-</div>
-</div>
-</header>
+
 
 <div className="p-margin-page max-w-container-max mx-auto w-full flex-grow flex flex-col md:flex-row gap-gutter">
 

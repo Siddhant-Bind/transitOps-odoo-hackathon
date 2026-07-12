@@ -1,11 +1,148 @@
-
 import React, { useEffect } from 'react';
+import Chart from 'chart.js/auto';
 
 const Reports = () => {
   useEffect(() => {
     if (window.lucide && window.lucide.createIcons) {
       window.lucide.createIcons();
     }
+
+    if (!Chart) return;
+
+    // Common chart options
+    Chart.defaults.font.family = 'Inter, sans-serif';
+    Chart.defaults.color = '#71717A';
+
+    // 1. Monthly Revenue Chart (Line)
+    const revCtx = document.getElementById('revenueChart');
+    let revChart;
+    if (revCtx) {
+      revChart = new Chart(revCtx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Revenue',
+            data: [150000, 220000, 180000, 250000, 280000, 310000],
+            borderColor: '#3B82F6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+
+    // 2. Trip Status Chart (Doughnut)
+    const tripCtx = document.getElementById('tripChart');
+    let tripChart;
+    if (tripCtx) {
+      tripChart = new Chart(tripCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Completed', 'In Transit', 'Delayed', 'Cancelled'],
+          datasets: [{
+            data: [65, 20, 10, 5],
+            backgroundColor: ['#10B981', '#3B82F6', '#F59E0B', '#EF4444'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '70%',
+          plugins: { legend: { position: 'bottom' } }
+        }
+      });
+    }
+
+    // 3. Rev vs Cost (Bar)
+    const revCostCtx = document.getElementById('revCostChart');
+    let rcChart;
+    if (revCostCtx) {
+      rcChart = new Chart(revCostCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+          datasets: [
+            { label: 'Revenue', data: [450, 520, 600, 710], backgroundColor: '#3B82F6' },
+            { label: 'Cost', data: [320, 350, 410, 480], backgroundColor: '#EF4444' }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom' } }
+        }
+      });
+    }
+
+    // 4. Maint. Costs (Doughnut)
+    const maintCtx = document.getElementById('maintChart');
+    let maintChart;
+    if (maintCtx) {
+      maintChart = new Chart(maintCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Engine', 'Tires', 'Electrical', 'Other'],
+          datasets: [{
+            data: [45, 25, 20, 10],
+            backgroundColor: ['#8B5CF6', '#EC4899', '#F97316', '#94A3B8'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '80%',
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+
+    // 5. Driver Metrics (Radar)
+    const driverCtx = document.getElementById('driverChart');
+    let driverChart;
+    if (driverCtx) {
+      driverChart = new Chart(driverCtx, {
+        type: 'radar',
+        data: {
+          labels: ['Safety', 'Efficiency', 'On-Time', 'Compliance', 'Customer'],
+          datasets: [{
+            label: 'Avg Fleet Performance',
+            data: [85, 78, 92, 88, 75],
+            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+            borderColor: '#3B82F6',
+            pointBackgroundColor: '#3B82F6'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            r: {
+              angleLines: { display: true },
+              suggestedMin: 50,
+              suggestedMax: 100
+            }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+
+    return () => {
+      if (revChart) revChart.destroy();
+      if (tripChart) tripChart.destroy();
+      if (rcChart) rcChart.destroy();
+      if (maintChart) maintChart.destroy();
+      if (driverChart) driverChart.destroy();
+    };
   }, []);
 
   return (
