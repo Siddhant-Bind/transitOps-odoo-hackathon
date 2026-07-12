@@ -1,11 +1,12 @@
 
 import React, { useEffect, useState } from 'react';
+import { useAppContext } from '../context/AppContext';
 
 const Settings = () => {
+  const { isDarkMode, setDarkMode } = useAppContext();
   const [activeTab, setActiveTab] = useState('General');
 
   const [settingsState, setSettingsState] = useState({
-    darkMode: false,
     emailNotifications: true,
     currency: 'USD ($)',
     distanceUnit: 'Miles (mi)',
@@ -53,7 +54,7 @@ const Settings = () => {
                       <p className="font-body-sm text-body-sm text-on-surface-variant">Switch between light and dark themes.</p>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" checked={settingsState.darkMode} onChange={e => setSettingsState({ ...settingsState, darkMode: e.target.checked })} className="sr-only peer" />
+                      <input type="checkbox" checked={isDarkMode} onChange={e => setDarkMode(e.target.checked)} className="sr-only peer" />
                       <div className="w-11 h-6 bg-surface-dim peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                     </label>
                   </div>
@@ -72,7 +73,7 @@ const Settings = () => {
                   <div>
                     <label className="block font-body-sm text-body-sm text-on-surface font-medium mb-1">Currency</label>
                     <div className="relative">
-                      <select value={settingsState.currency} onChange={e => setSettingsState({ ...settingsState, currency: e.target.value })} className="block w-full bg-white border border-outline-variant text-on-surface text-body-sm rounded-lg focus:ring-primary focus:border-primary p-2.5 appearance-none shadow-sm cursor-pointer">
+                      <select value={settingsState.currency} onChange={e => setSettingsState({ ...settingsState, currency: e.target.value })} className="block w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-body-sm rounded-lg focus:ring-primary focus:border-primary p-2.5 appearance-none shadow-sm cursor-pointer">
                         <option>USD ($)</option>
                         <option>EUR (€)</option>
                         <option>GBP (£)</option>
@@ -85,7 +86,7 @@ const Settings = () => {
                   <div>
                     <label className="block font-body-sm text-body-sm text-on-surface font-medium mb-1">Distance Unit</label>
                     <div className="relative">
-                      <select value={settingsState.distanceUnit} onChange={e => setSettingsState({ ...settingsState, distanceUnit: e.target.value })} className="block w-full bg-white border border-outline-variant text-on-surface text-body-sm rounded-lg focus:ring-primary focus:border-primary p-2.5 appearance-none shadow-sm cursor-pointer">
+                      <select value={settingsState.distanceUnit} onChange={e => setSettingsState({ ...settingsState, distanceUnit: e.target.value })} className="block w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-body-sm rounded-lg focus:ring-primary focus:border-primary p-2.5 appearance-none shadow-sm cursor-pointer">
                         <option>Miles (mi)</option>
                         <option>Kilometers (km)</option>
                       </select>
@@ -108,7 +109,7 @@ const Settings = () => {
                 <h3 className="font-section-title text-section-title text-on-surface">Role-Based Access Control</h3>
                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Manage permissions for different user roles across the platform.</p>
               </div>
-              <button className="bg-secondary text-white px-4 py-2 rounded-lg font-body-sm text-body-sm font-medium hover:bg-secondary-container transition-colors flex items-center gap-2">
+              <button className="bg-secondary text-on-secondary px-4 py-2 rounded-lg font-body-sm text-body-sm font-medium hover:bg-secondary-container transition-colors flex items-center gap-2">
                 <span className="material-symbols-outlined text-sm">add</span> New Role
               </button>
             </div>
@@ -137,8 +138,8 @@ const Settings = () => {
               </table>
             </div>
             <div className="mt-6 flex justify-end">
-              <button className="bg-white border border-outline-variant text-on-surface px-6 py-2 rounded-lg font-body-sm text-body-sm font-medium hover:bg-surface-container-low transition-colors mr-3">Cancel</button>
-              <button onClick={() => alert('RBAC Saved!')} className="bg-primary text-white px-6 py-2 rounded-lg font-body-sm text-body-sm font-medium hover:bg-opacity-90 transition-colors shadow-sm">Save Changes</button>
+              <button className="bg-surface-container-lowest border border-outline-variant text-on-surface px-6 py-2 rounded-lg font-body-sm text-body-sm font-medium hover:bg-surface-container-low transition-colors mr-3">Cancel</button>
+              <button onClick={() => alert('RBAC Saved!')} className="bg-primary text-on-primary px-6 py-2 rounded-lg font-body-sm text-body-sm font-medium hover:bg-opacity-90 transition-colors shadow-sm">Save Changes</button>
             </div>
           </section>
         );
@@ -171,7 +172,7 @@ const Settings = () => {
                 <span className={`material-symbols-outlined text-sm transition-opacity ${activeTab === item ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>chevron_right</span>
               </button>
             ))}
-            <button onClick={() => setActiveTab('RBAC')} className={`mt-2 text-left px-4 py-2.5 rounded-lg font-body-md text-body-md flex items-center justify-between border ${activeTab === 'RBAC' ? 'bg-primary text-on-primary border-primary shadow-sm font-medium' : 'bg-white border-outline-variant text-primary font-medium hover:bg-surface-container'}`}>
+            <button onClick={() => setActiveTab('RBAC')} className={`mt-2 text-left px-4 py-2.5 rounded-lg font-body-md text-body-md flex items-center justify-between border ${activeTab === 'RBAC' ? 'bg-primary text-on-primary border-primary shadow-sm font-medium' : 'bg-surface-container-lowest border-outline-variant text-primary font-medium hover:bg-surface-container'}`}>
               RBAC (Roles &amp; Permissions)
               <span className="material-symbols-outlined text-sm">chevron_right</span>
             </button>

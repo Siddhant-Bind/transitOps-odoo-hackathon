@@ -22,7 +22,7 @@ const LoginPage = () => {
         
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-16">
-            <Car className="text-primary-container shrink-0" size={36} />
+            <Car className="text-primary shrink-0" size={36} />
             <h1 className="text-3xl font-bold text-primary tracking-tight">TransitOps</h1>
           </div>
           
@@ -76,9 +76,9 @@ const LoginPage = () => {
           </ul>
         </div>
         
-        {/* Large Logistics Illustration Placeholder */}
-        <div className="relative z-10 w-full h-64 mt-12 rounded-xl overflow-hidden shadow-card border border-outline-variant/20 bg-surface-container flex items-center justify-center">
-            <p className="text-on-surface-variant/50 text-sm italic">Illustration Space</p>
+        {/* Large Logistics Illustration */}
+        <div className="relative z-10 w-full mt-12 rounded-xl overflow-hidden shadow-card border border-outline-variant/20 flex items-center justify-center">
+            <img src="/transit-illustration.png" alt="Transit Operations Control Center" className="w-full h-auto object-cover" />
         </div>
       </div>
       

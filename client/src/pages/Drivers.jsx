@@ -12,9 +12,9 @@ const Drivers = () => {
     {
       name: 'Sarah Jenkins', id: 'DRV-7731', avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCEBox-hGSVPF_81PlKPqZ3GeVy0bZ6b5t-1gMKwBpiFY-juWFxZftHxA5R1xjknGOaInlpfuFaoJ--AMnJI4AZjWYLDWbjMoz643-RfEyonR1-PduksBRTFt6DxAPWIDaufsl5EXtc_5IcDVf3e0XswYlG5X5nPPQ0af4PtryRmmy73cbYpHtBJRnIEmVQsAgPodS-8-v23iJsJCgQDS6ZavFyeklHC1eP2nRhWVi8frZD1lT6tAPcGg',
       license: 'CDL Class B', phone: '+1 (555) 832-1102', licenseWarning: false,
-      trips: '432', safety: '82/100', safetyColor: 'text-[#F59E0B]',
+      trips: '432', safety: '82/100', safetyColor: 'text-primary-container',
       vehicle: 'Unassigned', depot: 'South Hub',
-      status: 'Available', statusColor: 'bg-[#3B82F6]/10 text-[#3B82F6]', statusDotColor: 'bg-[#3B82F6]'
+      status: 'Available', statusColor: 'bg-secondary/10 text-secondary', statusDotColor: 'bg-secondary'
     },
     {
       name: 'David Torres', id: 'DRV-9920', initials: 'DT',
@@ -47,7 +47,7 @@ const Drivers = () => {
 <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Manage personnel, licenses, and performance metrics.</p>
 </div>
 <div className="flex gap-2">
-<button onClick={() => alert('Exporting Driver List...')} className="bg-surface-container-lowest border border-[#E5E7EB] text-on-surface px-4 py-2 rounded-[14px] font-body-md text-body-md hover:bg-surface-container transition-colors flex items-center gap-2">
+<button onClick={() => alert('Exporting Driver List...')} className="bg-surface-container-lowest border border-outline-variant text-on-surface px-4 py-2 rounded-[14px] font-body-md text-body-md hover:bg-surface-container transition-colors flex items-center gap-2">
 <span className="material-symbols-outlined text-[18px]">download</span> Export
                         </button>
 <button onClick={() => alert('Add Driver Modal Opens here')} className="bg-primary text-on-primary px-4 py-2 rounded-[14px] font-body-md text-body-md hover:bg-opacity-90 space-x-2 transition-opacity flex items-center shadow-sm">
@@ -58,35 +58,35 @@ const Drivers = () => {
 
 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-gutter">
 
-<div className="bg-surface-container-lowest p-stack-lg rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2">
+<div className="bg-surface-container-lowest p-stack-lg rounded-xl border border-outline-variant shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2">
 <span className="font-label-caps text-label-caps text-on-surface-variant uppercase">Total Drivers</span>
 <div className="flex items-baseline gap-2">
 <span className="font-kpi-display text-kpi-display text-on-surface">248</span>
 </div>
 </div>
 
-<div className="bg-surface-container-lowest p-stack-lg rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-[#3B82F6]">
+<div className="bg-surface-container-lowest p-stack-lg rounded-xl border border-outline-variant shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-[#3B82F6]">
 <span className="font-label-caps text-label-caps text-on-surface-variant uppercase">Available</span>
 <div className="flex items-baseline gap-2">
 <span className="font-kpi-display text-kpi-display text-on-surface">42</span>
 </div>
 </div>
 
-<div className="bg-surface-container-lowest p-stack-lg rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-tertiary-container">
+<div className="bg-surface-container-lowest p-stack-lg rounded-xl border border-outline-variant shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-tertiary-container">
 <span className="font-label-caps text-label-caps text-on-surface-variant uppercase">On Trip</span>
 <div className="flex items-baseline gap-2">
 <span className="font-kpi-display text-kpi-display text-on-surface">195</span>
 </div>
 </div>
 
-<div className="bg-surface-container-lowest p-stack-lg rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-[#F59E0B]">
+<div className="bg-surface-container-lowest p-stack-lg rounded-xl border border-outline-variant shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-primary-container">
 <span className="font-label-caps text-label-caps text-on-surface-variant uppercase">Expiring Licenses</span>
 <div className="flex items-baseline gap-2">
 <span className="font-kpi-display text-kpi-display text-on-surface">8</span>
 </div>
 </div>
 
-<div className="bg-surface-container-lowest p-stack-lg rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-error">
+<div className="bg-surface-container-lowest p-stack-lg rounded-xl border border-outline-variant shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col gap-2 border-l-4 border-l-error">
 <span className="font-label-caps text-label-caps text-on-surface-variant uppercase">Suspended</span>
 <div className="flex items-baseline gap-2">
 <span className="font-kpi-display text-kpi-display text-on-surface">3</span>
@@ -94,22 +94,22 @@ const Drivers = () => {
 </div>
 </div>
 
-<div className="bg-surface-container-lowest rounded-xl border border-[#E5E7EB] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col">
+<div className="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col">
 
-<div className="p-4 border-b border-[#E5E7EB] flex flex-wrap gap-4 items-center justify-between bg-surface-container-low/50">
+<div className="p-4 border-b border-outline-variant flex flex-wrap gap-4 items-center justify-between bg-surface-container-low/50">
 <div className="flex gap-2 items-center flex-wrap">
-<select className="bg-surface-container-lowest border border-[#E5E7EB] rounded-lg font-body-sm text-on-surface px-3 py-1.5 focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] outline-none">
+<select className="bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-on-surface px-3 py-1.5 focus:border-secondary focus:ring-1 focus:ring-secondary outline-none">
 <option>All Statuses</option>
 <option>Available</option>
 <option>On Trip</option>
 <option>Suspended</option>
 </select>
-<select className="bg-surface-container-lowest border border-[#E5E7EB] rounded-lg font-body-sm text-on-surface px-3 py-1.5 focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] outline-none">
+<select className="bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-on-surface px-3 py-1.5 focus:border-secondary focus:ring-1 focus:ring-secondary outline-none">
 <option>All Licenses</option>
 <option>CDL Class A</option>
 <option>CDL Class B</option>
 </select>
-<select className="bg-surface-container-lowest border border-[#E5E7EB] rounded-lg font-body-sm text-on-surface px-3 py-1.5 focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] outline-none">
+<select className="bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-on-surface px-3 py-1.5 focus:border-secondary focus:ring-1 focus:ring-secondary outline-none">
 <option>All Depots</option>
 <option>North Hub</option>
 <option>South Hub</option>
@@ -123,7 +123,7 @@ Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerP
 <div className="overflow-x-auto">
 <table className="w-full text-left border-collapse">
 <thead>
-<tr className="font-label-caps text-label-caps uppercase text-on-surface-variant border-b border-[#E5E7EB]">
+<tr className="font-label-caps text-label-caps uppercase text-on-surface-variant border-b border-outline-variant">
 <th className="px-6 py-4 font-semibold">Driver</th>
 <th className="px-6 py-4 font-semibold">License / Phone</th>
 <th className="px-6 py-4 font-semibold">Metrics</th>
@@ -134,7 +134,7 @@ Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerP
 </thead>
 <tbody className="font-body-sm text-body-sm text-on-surface">
 {paginatedDrivers.map((driver, index) => (
-<tr key={index} className={`${index % 2 === 0 ? 'bg-[#FFFFFF]' : 'bg-[#F9FAFB]'} hover:bg-surface-container-low transition-colors group border-b border-[#E5E7EB]/50`}>
+<tr key={index} className={`${index % 2 === 0 ? 'bg-surface-container-lowest' : 'bg-surface-bright'} hover:bg-surface-container-low transition-colors group border-b border-outline-variant/50`}>
 <td className="px-6 py-4">
 <div className="flex items-center gap-3">
 {driver.avatar ? (
@@ -195,14 +195,14 @@ Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerP
 </table>
 </div>
 
-<div className="p-4 border-t border-[#E5E7EB] flex items-center justify-between bg-surface-container-lowest">
-<button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} className="px-3 py-1.5 border border-[#E5E7EB] rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-body-sm text-body-sm disabled:opacity-50">Previous</button>
+<div className="p-4 border-t border-outline-variant flex items-center justify-between bg-surface-container-lowest">
+<button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} className="px-3 py-1.5 border border-outline-variant rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-body-sm text-body-sm disabled:opacity-50">Previous</button>
 <div className="flex gap-1">
 <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-primary-container text-on-primary-container font-medium text-sm">{currentPage}</button>
 <span className="w-8 h-8 flex items-center justify-center text-on-surface-variant">/</span>
 <span className="w-8 h-8 flex items-center justify-center text-on-surface-variant font-medium text-sm">{totalPages}</span>
 </div>
-<button onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} className="px-3 py-1.5 border border-[#E5E7EB] rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-body-sm text-body-sm disabled:opacity-50">Next</button>
+<button onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} className="px-3 py-1.5 border border-outline-variant rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-body-sm text-body-sm disabled:opacity-50">Next</button>
 </div>
 </div>
 </div>
