@@ -1,0 +1,675 @@
+<!DOCTYPE html><html class="h-full bg-background dark:bg-background" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>TransitOps - Reports &amp; Analytics</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error": "#ffffff",
+                      "surface-container": "#e9edff",
+                      "on-error-container": "#93000a",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed-variant": "#004395",
+                      "on-secondary-container": "#fefcff",
+                      "primary-fixed": "#ffddb8",
+                      "error-container": "#ffdad6",
+                      "surface-container-low": "#f1f3ff",
+                      "on-tertiary-fixed-variant": "#005321",
+                      "secondary-fixed": "#d8e2ff",
+                      "surface-variant": "#dce2f7",
+                      "tertiary-container": "#2bca62",
+                      "inverse-on-surface": "#edf0ff",
+                      "surface-tint": "#855300",
+                      "secondary": "#0058be",
+                      "on-tertiary-fixed": "#002109",
+                      "on-primary-fixed-variant": "#653e00",
+                      "on-primary-fixed": "#2a1700",
+                      "background": "#f9f9ff",
+                      "tertiary": "#006e2f",
+                      "on-surface": "#141b2b",
+                      "secondary-fixed-dim": "#adc6ff",
+                      "secondary-container": "#2170e4",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#6bff8f",
+                      "on-primary": "#ffffff",
+                      "on-primary-container": "#613b00",
+                      "outline-variant": "#d8c3ad",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-bright": "#f9f9ff",
+                      "primary": "#855300",
+                      "primary-fixed-dim": "#ffb95f",
+                      "surface-container-high": "#e1e8fd",
+                      "inverse-surface": "#293040",
+                      "outline": "#867461",
+                      "surface-container-highest": "#dce2f7",
+                      "inverse-primary": "#ffb95f",
+                      "on-secondary": "#ffffff",
+                      "on-background": "#141b2b",
+                      "tertiary-fixed-dim": "#4ae176",
+                      "surface": "#f9f9ff",
+                      "on-tertiary-container": "#004f20",
+                      "on-secondary-fixed": "#001a42",
+                      "surface-dim": "#d3daef",
+                      "primary-container": "#f59e0b",
+                      "on-surface-variant": "#534434"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-max": "1440px",
+                      "margin-page": "32px",
+                      "gutter": "24px",
+                      "stack-sm": "8px",
+                      "stack-lg": "24px",
+                      "stack-md": "16px"
+              },
+              "fontFamily": {
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "section-title": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "kpi-display": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "section-title": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "kpi-display": [
+                              "36px",
+                              {
+                                      "lineHeight": "44px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "15px",
+                              {
+                                      "lineHeight": "22px",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="h-full flex text-on-background font-body-sm bg-[#F5F7FA]">
+<!-- Side Navigation -->
+<nav class="bg-surface dark:bg-inverse-surface text-primary-container dark:text-primary-container font-body-md text-body-md fixed left-0 top-0 h-full w-[260px] bg-surface dark:bg-inverse-surface border-r border-outline-variant shadow-sm flex flex-col h-full p-stack-lg z-50">
+<!-- Header -->
+<div class="mb-8">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined">directions_car</span>
+</div>
+<div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed">TransitOps</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Enterprise Fleet</p>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 scale-95 duration-150 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 scale-95 duration-150 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="directions_car">directions_car</span>
+                Fleet
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 scale-95 duration-150 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+                Drivers
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 scale-95 duration-150 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="route">route</span>
+                Trips
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 scale-95 duration-150 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="build">build</span>
+                Maintenance
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 scale-95 duration-150 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="local_gas_station">local_gas_station</span>
+                Fuel &amp; Expenses
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-bold hover:bg-surface-container-high transition-colors duration-200 scale-95 duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                Reports &amp; Analytics
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container hover:bg-surface-container-high transition-colors duration-200 scale-95 duration-150 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Settings
+            </a>
+</div>
+<!-- CTA -->
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<button class="w-full flex items-center justify-center gap-2 bg-primary-container text-on-primary-container py-3 rounded-lg font-body-md text-body-md font-medium hover:bg-opacity-90 transition-colors">
+<span class="material-symbols-outlined">add</span>
+                Quick Add
+            </button>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col ml-[260px] min-w-0 bg-[#F5F7FA]">
+<!-- Top App Bar -->
+<header class="bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-md text-primary dark:text-primary-fixed-dim sticky top-0 z-40 w-full border-b border-outline-variant bg-surface dark:bg-inverse-surface shadow-sm flex justify-between items-center h-16 px-margin-page max-w-container-max">
+<div class="flex items-center flex-1 gap-6">
+<!-- Search Bar -->
+<div class="relative w-64 focus-within:ring-2 focus-within:ring-secondary rounded-lg">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface dark:bg-inverse-surface border border-outline-variant rounded-lg text-body-sm font-body-sm focus:outline-none" placeholder="Search reports..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+</button>
+<div class="h-6 w-px bg-outline-variant mx-2"></div>
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps hidden md:inline">Settings</span>
+</button>
+<button class="bg-primary-container text-on-primary-container px-4 py-2 rounded-lg font-body-md text-body-md font-medium hover:bg-opacity-90 transition-colors hidden md:block">
+                    Add Vehicle
+                </button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-2">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A detailed headshot of a professional logistics manager in a modern, brightly lit office environment. Soft, high-key lighting creates a welcoming, premium light-mode aesthetic, emphasizing clean whites and subtle warm tones. The overall feel is corporate, efficient, and approachable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDosyX_rjWrXiNDlhRrW6U8g2ol0jyf2s6P9F91ctfnq3H4VbWfJhpLEPMg7jTDiMSyhSBF_JJnJ6OVgQe9wGfv8na1kxTEM06JPDlopkH1FLrdIEz2_T3oclGlaNhJuGYdBsBx4e51OnG2tNcn21YCuHZgsh1RWXnQV6chrQoWHZL4NTiX3ShlUJcukEOUF2LBbvDXARSyi6Invf6JZ2BqW9EqAWcQpNoOQAlrCxrfxrVYGQqzF5lmTA">
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 p-margin-page overflow-y-auto max-w-container-max mx-auto w-full">
+<!-- Page Header & Controls -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+<div>
+<h2 class="font-section-title text-section-title text-on-background">Reports &amp; Analytics</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Executive overview of fleet performance and financials.</p>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<!-- Date Range Picker -->
+<div class="flex items-center bg-surface border border-outline-variant rounded-lg px-3 py-2">
+<span class="material-symbols-outlined text-on-surface-variant mr-2 text-[20px]">calendar_today</span>
+<select class="bg-transparent border-none text-body-sm font-body-sm text-on-surface focus:ring-0 p-0 pr-6">
+<option>Last 30 Days</option>
+<option>This Quarter</option>
+<option>Year to Date</option>
+<option>Custom Range...</option>
+</select>
+</div>
+<!-- Export Buttons -->
+<div class="flex items-center bg-surface border border-outline-variant rounded-lg overflow-hidden">
+<button class="px-3 py-2 border-r border-outline-variant hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-caps text-label-caps" title="Export PDF">
+<span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+                            PDF
+                        </button>
+<button class="px-3 py-2 border-r border-outline-variant hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-caps text-label-caps" title="Export Excel">
+<span class="material-symbols-outlined text-[18px]">table_view</span>
+                            XLSX
+                        </button>
+<button class="px-3 py-2 hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-caps text-label-caps" title="Export CSV">
+<span class="material-symbols-outlined text-[18px]">data_object</span>
+                            CSV
+                        </button>
+</div>
+</div>
+</div>
+<!-- KPI Grid (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-8">
+<!-- Revenue -->
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Total Revenue</span>
+<div class="w-8 h-8 rounded-full bg-tertiary/10 text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+</div>
+</div>
+<div>
+<div class="font-kpi-display text-kpi-display text-on-background">$1.24M</div>
+<div class="flex items-center gap-1 mt-2 text-tertiary font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+12.5% vs last period</span>
+</div>
+</div>
+</div>
+<!-- Operational Cost -->
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Operational Cost</span>
+<div class="w-8 h-8 rounded-full bg-error/10 text-error flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+</div>
+</div>
+<div>
+<div class="font-kpi-display text-kpi-display text-on-background">$842K</div>
+<div class="flex items-center gap-1 mt-2 text-error font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+4.2% vs last period</span>
+</div>
+</div>
+</div>
+<!-- Net Profit -->
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Net Profit</span>
+<div class="w-8 h-8 rounded-full bg-secondary/10 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">savings</span>
+</div>
+</div>
+<div>
+<div class="font-kpi-display text-kpi-display text-on-background">$398K</div>
+<div class="flex items-center gap-1 mt-2 text-tertiary font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+8.7% vs last period</span>
+</div>
+</div>
+</div>
+<!-- Fleet Utilization -->
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Fleet Utilization</span>
+<div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">pie_chart</span>
+</div>
+</div>
+<div>
+<div class="font-kpi-display text-kpi-display text-on-background">87.3%</div>
+<div class="flex items-center gap-1 mt-2 text-tertiary font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+2.1% vs last period</span>
+</div>
+</div>
+</div>
+<!-- Row 2 KPIs -->
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Fuel Efficiency</span>
+<div class="w-8 h-8 rounded-full bg-secondary-container/20 text-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">local_gas_station</span>
+</div>
+</div>
+<div>
+<div class="font-kpi-display text-kpi-display text-on-background">6.2 <span class="text-lg text-on-surface-variant">MPG</span></div>
+<div class="flex items-center gap-1 mt-2 text-tertiary font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+0.4 MPG vs last period</span>
+</div>
+</div>
+</div>
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Completed Trips</span>
+<div class="w-8 h-8 rounded-full bg-tertiary-container/20 text-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">route</span>
+</div>
+</div>
+<div>
+<div class="font-kpi-display text-kpi-display text-on-background">1,492</div>
+<div class="flex items-center gap-1 mt-2 text-tertiary font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+112 vs last period</span>
+</div>
+</div>
+</div>
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Avg Trip Cost</span>
+<div class="w-8 h-8 rounded-full bg-error-container/20 text-error flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">request_quote</span>
+</div>
+</div>
+<div>
+<div class="font-kpi-display text-kpi-display text-on-background">$564</div>
+<div class="flex items-center gap-1 mt-2 text-error font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+$12 vs last period</span>
+</div>
+</div>
+</div>
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+<div class="flex justify-between items-start mb-4">
+<span class="font-body-sm text-body-sm text-on-surface-variant">ROI</span>
+<div class="w-8 h-8 rounded-full bg-primary-container/20 text-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">monitoring</span>
+</div>
+</div>
+<div>
+<div class="font-kpi-display text-kpi-display text-on-background">18.4%</div>
+<div class="flex items-center gap-1 mt-2 text-tertiary font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+1.2% vs last period</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Charts Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter mb-8">
+<!-- Main Line Chart: Monthly Revenue -->
+<div class="lg:col-span-2 bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)]">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-section-title text-section-title text-on-background">Monthly Revenue</h3>
+<button class="p-1 hover:bg-surface-container rounded transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="h-[300px] w-full">
+<canvas id="revenueChart"></canvas>
+</div>
+</div>
+<!-- Stacked Bar Chart: Trip Completion -->
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)]">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-section-title text-section-title text-on-background">Trip Status</h3>
+<button class="p-1 hover:bg-surface-container rounded transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="h-[300px] w-full">
+<canvas id="tripChart"></canvas>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-8">
+<!-- Dual Line Chart: Rev vs Cost -->
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)]">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-section-title text-section-title text-on-background">Rev vs Cost</h3>
+<button class="p-1 hover:bg-surface-container rounded transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="h-[250px] w-full">
+<canvas id="revCostChart"></canvas>
+</div>
+</div>
+<!-- Donut Chart: Maint Breakdown -->
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)]">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-section-title text-section-title text-on-background">Maint. Costs</h3>
+<button class="p-1 hover:bg-surface-container rounded transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="h-[250px] w-full flex justify-center items-center relative">
+<canvas id="maintChart"></canvas>
+<div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Total</span>
+<span class="font-body-md text-body-md font-bold text-on-background">$124K</span>
+</div>
+</div>
+</div>
+<!-- Radar Chart: Driver Performance -->
+<div class="bg-surface rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),_0_2px_4px_-1px_rgba(0,0,0,0.03)]">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-section-title text-section-title text-on-background">Driver Metrics</h3>
+<button class="p-1 hover:bg-surface-container rounded transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="h-[250px] w-full">
+<canvas id="driverChart"></canvas>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+        // Common Chart Defaults
+        Chart.defaults.font.family = 'Inter, sans-serif';
+        Chart.defaults.color = '#534434'; // text-on-surface-variant
+        Chart.defaults.scale.grid.color = '#e5e7eb'; // subtle grid
+        const primaryColor = '#855300';
+        const primaryContainerColor = '#f59e0b';
+        const secondaryColor = '#0058be';
+        const tertiaryColor = '#006e2f';
+        const errorColor = '#ba1a1a';
+        const surfaceColor = '#f9f9ff';
+
+        // 1. Monthly Revenue (Line)
+        const ctxRev = document.getElementById('revenueChart').getContext('2d');
+        new Chart(ctxRev, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Revenue ($K)',
+                    data: [85, 92, 88, 105, 110, 118, 115, 125, 130, 128, 135, 142],
+                    borderColor: primaryContainerColor,
+                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: surfaceColor,
+                    pointBorderColor: primaryContainerColor,
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, border: {display: false} },
+                    x: { border: {display: false}, grid: {display: false} }
+                }
+            }
+        });
+
+        // 2. Trip Status (Stacked Bar)
+        const ctxTrip = document.getElementById('tripChart').getContext('2d');
+        new Chart(ctxTrip, {
+            type: 'bar',
+            data: {
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                datasets: [
+                    {
+                        label: 'Completed',
+                        data: [350, 410, 380, 450],
+                        backgroundColor: tertiaryColor,
+                        borderRadius: {topLeft: 4, topRight: 4, bottomLeft: 4, bottomRight: 4},
+                        borderSkipped: false
+                    },
+                    {
+                        label: 'Cancelled/Delayed',
+                        data: [25, 30, 20, 35],
+                        backgroundColor: errorColor,
+                        borderRadius: {topLeft: 4, topRight: 4, bottomLeft: 4, bottomRight: 4},
+                        borderSkipped: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } }
+                },
+                scales: {
+                    x: { stacked: true, grid: {display: false}, border: {display: false} },
+                    y: { stacked: true, beginAtZero: true, border: {display: false} }
+                }
+            }
+        });
+
+        // 3. Rev vs Cost (Dual Line)
+        const ctxRevCost = document.getElementById('revCostChart').getContext('2d');
+        new Chart(ctxRevCost, {
+            type: 'line',
+            data: {
+                labels: ['W1', 'W2', 'W3', 'W4'],
+                datasets: [
+                    {
+                        label: 'Revenue',
+                        data: [30, 35, 32, 40],
+                        borderColor: primaryContainerColor,
+                        borderWidth: 2,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Cost',
+                        data: [20, 22, 21, 24],
+                        borderColor: errorColor,
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } } },
+                scales: {
+                    y: { beginAtZero: true, border: {display: false} },
+                    x: { border: {display: false}, grid: {display: false} }
+                }
+            }
+        });
+
+        // 4. Maint Breakdown (Donut)
+        const ctxMaint = document.getElementById('maintChart').getContext('2d');
+        new Chart(ctxMaint, {
+            type: 'doughnut',
+            data: {
+                labels: ['Engine', 'Tyres', 'Brakes', 'Electrical', 'Other'],
+                datasets: [{
+                    data: [45, 25, 15, 10, 5],
+                    backgroundColor: [
+                        primaryContainerColor,
+                        secondaryColor,
+                        errorColor,
+                        tertiaryColor,
+                        '#d3daef' // surface-dim
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '75%',
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // 5. Driver Performance (Radar)
+        const ctxDriver = document.getElementById('driverChart').getContext('2d');
+        new Chart(ctxDriver, {
+            type: 'radar',
+            data: {
+                labels: ['Safety', 'Punctuality', 'Fuel Eff.', 'Compliance', 'Feedback'],
+                datasets: [{
+                    label: 'Fleet Average',
+                    data: [85, 90, 75, 95, 88],
+                    backgroundColor: 'rgba(0, 88, 190, 0.2)', // secondary with opacity
+                    borderColor: secondaryColor,
+                    pointBackgroundColor: secondaryColor,
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: secondaryColor
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    r: {
+                        angleLines: { color: '#e5e7eb' },
+                        grid: { color: '#e5e7eb' },
+                        pointLabels: { font: { family: 'Inter', size: 10 } },
+                        ticks: { display: false, min: 0, max: 100 }
+                    }
+                }
+            }
+        });
+    </script>
+</body></html>

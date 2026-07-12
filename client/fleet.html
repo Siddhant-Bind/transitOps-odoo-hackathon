@@ -1,0 +1,660 @@
+<!DOCTYPE html><html class="h-full bg-background text-on-background" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Fleet Registry | TransitOps</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-surface": "#293040",
+                      "surface-container": "#e9edff",
+                      "primary-container": "#f59e0b",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed-dim": "#4ae176",
+                      "on-error": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "outline": "#867461",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed": "#001a42",
+                      "on-primary-fixed": "#2a1700",
+                      "background": "#f9f9ff",
+                      "error": "#ba1a1a",
+                      "secondary-container": "#2170e4",
+                      "tertiary-container": "#2bca62",
+                      "on-tertiary-fixed": "#002109",
+                      "surface-bright": "#f9f9ff",
+                      "on-tertiary-fixed-variant": "#005321",
+                      "secondary": "#0058be",
+                      "on-surface-variant": "#534434",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-fixed-variant": "#004395",
+                      "primary": "#855300",
+                      "primary-fixed": "#ffddb8",
+                      "secondary-fixed": "#d8e2ff",
+                      "on-secondary-container": "#fefcff",
+                      "surface-container-high": "#e1e8fd",
+                      "on-primary-fixed-variant": "#653e00",
+                      "tertiary-fixed": "#6bff8f",
+                      "tertiary": "#006e2f",
+                      "surface-tint": "#855300",
+                      "primary-fixed-dim": "#ffb95f",
+                      "secondary-fixed-dim": "#adc6ff",
+                      "on-primary-container": "#613b00",
+                      "on-surface": "#141b2b",
+                      "inverse-primary": "#ffb95f",
+                      "surface": "#f9f9ff",
+                      "on-background": "#141b2b",
+                      "surface-container-highest": "#dce2f7",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#d8c3ad",
+                      "surface-variant": "#dce2f7",
+                      "surface-dim": "#d3daef",
+                      "inverse-on-surface": "#edf0ff",
+                      "on-tertiary-container": "#004f20",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f1f3ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-max": "1440px",
+                      "stack-md": "16px",
+                      "stack-lg": "24px",
+                      "margin-page": "32px",
+                      "stack-sm": "8px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "section-title": [
+                              "Inter"
+                      ],
+                      "kpi-display": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "15px",
+                              {
+                                      "lineHeight": "22px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "section-title": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "kpi-display": [
+                              "36px",
+                              {
+                                      "lineHeight": "44px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            font-feature-settings: 'liga';
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .shadow-soft {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .drawer-overlay {
+            background-color: rgba(20, 27, 43, 0.2);
+            backdrop-filter: blur(4px);
+        }
+
+        .drawer-enter {
+            transform: translateX(100%);
+        }
+        .drawer-enter-active {
+            transform: translateX(0);
+            transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .drawer-exit {
+            transform: translateX(0);
+        }
+        .drawer-exit-active {
+            transform: translateX(100%);
+            transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="h-full flex antialiased bg-background text-on-background">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full w-[260px] bg-surface dark:bg-inverse-surface border-r border-outline-variant shadow-sm z-50 flex flex-col p-stack-lg hidden md:flex">
+<div class="flex items-center gap-3 mb-8 px-4">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary font-bold text-xl">
+                T
+            </div>
+<div>
+<div class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed">TransitOps</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">Enterprise Fleet</div>
+</div>
+</div>
+<button class="mb-8 mx-4 w-full bg-primary-container text-on-primary py-2 px-4 rounded-lg font-body-md text-body-md font-medium hover:bg-opacity-90 transition-colors shadow-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 20px;">add</span>
+            Quick Add
+        </button>
+<div class="flex-1 flex flex-col gap-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-bold font-body-md text-body-md shadow-sm" href="#">
+<span class="material-symbols-outlined" data-icon="directions_car" style="font-variation-settings: 'FILL' 1;">directions_car</span>
+                Fleet
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+                Drivers
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="route">route</span>
+                Trips
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="build">build</span>
+                Maintenance
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="local_gas_station">local_gas_station</span>
+                Fuel &amp; Expenses
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                Reports &amp; Analytics
+            </a>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Settings
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col md:ml-[260px] min-w-0">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-40 w-full border-b border-outline-variant bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-md shadow-sm">
+<div class="flex justify-between items-center h-16 px-margin-page max-w-container-max mx-auto w-full">
+<!-- Search (Left) -->
+<div class="flex-1 max-w-md">
+<div class="relative group focus-within:ring-2 focus-within:ring-secondary rounded-lg">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-size: 20px;">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2 border border-outline-variant rounded-lg leading-5 bg-surface-container-lowest placeholder-on-surface-variant text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary sm:text-sm font-body-md transition-all duration-200" placeholder="Search fleet, drivers, routes..." type="text">
+</div>
+</div>
+<!-- Actions & Profile (Right) -->
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+</button>
+<div class="h-6 w-px bg-outline-variant mx-2"></div>
+<button class="flex items-center gap-2 hover:bg-surface-container py-1 px-2 rounded-lg transition-colors">
+<img alt="User Avatar" class="h-8 w-8 rounded-full object-cover border border-outline-variant" data-alt="Professional corporate headshot of a female logistics manager in her 30s, wearing a smart casual blazer. Crisp lighting, shallow depth of field, neutral gray background. High-resolution, optimistic expression, signaling competence and operational uptime within a clean, light-mode environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD26tT62EfHgBglf2bSrotx7UskffADlRa-_bZH3X-l8KqmuP8YBKpSrhzYBvCFCKFUSzgtltFHBN7hgSDhMJHeUSxhTN450l3BgU2ZYJzvWinUvxQkTwKRBPVozqFo2poQWsHWNMryQ28NbHUzOazqMCnQthQJ8hHu5Wg-QO9sXQwlFTLEWC3bI4tCFyL8j9NnPr-Ii6lKC9JmVmBGnC82mfyCwm1xSfU2su4MjKrbnyIbVL2KJDyhEA">
+<span class="font-body-md text-body-md font-medium text-on-surface hidden lg:block">Sarah Jenkins</span>
+<span class="material-symbols-outlined text-on-surface-variant" style="font-size: 18px;">expand_more</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 overflow-y-auto bg-background p-margin-page">
+<div class="max-w-container-max mx-auto">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Fleet Registry</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Manage and monitor all active vehicles across depots.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-surface-container-lowest border border-outline-variant text-on-surface py-2 px-4 rounded-lg font-body-md text-body-md font-medium hover:bg-surface-container transition-colors shadow-soft flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 20px;">download</span>
+                            Export
+                        </button>
+<button class="bg-primary-container text-on-primary py-2 px-4 rounded-lg font-body-md text-body-md font-medium hover:bg-opacity-90 transition-colors shadow-soft flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 20px;">add</span>
+                            Add Vehicle
+                        </button>
+</div>
+</div>
+<!-- Filters & Controls Toolbar -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-soft p-4 mb-6 flex flex-col lg:flex-row gap-4 justify-between items-center">
+<div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+<div class="relative">
+<select class="appearance-none bg-surface-container-lowest border border-outline-variant text-on-surface py-2 pl-3 pr-10 rounded-lg font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+<option value="">All Vehicle Types</option>
+<option value="hgv">Heavy Goods Vehicle (HGV)</option>
+<option value="lgv">Light Goods Vehicle (LGV)</option>
+<option value="van">Delivery Van</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-on-surface-variant pointer-events-none" style="font-size: 18px;">expand_more</span>
+</div>
+<div class="relative">
+<select class="appearance-none bg-surface-container-lowest border border-outline-variant text-on-surface py-2 pl-3 pr-10 rounded-lg font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+<option value="">All Statuses</option>
+<option value="active">Active (On Route)</option>
+<option value="idle">Idle (At Depot)</option>
+<option value="maintenance">Maintenance</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-on-surface-variant pointer-events-none" style="font-size: 18px;">expand_more</span>
+</div>
+<div class="relative">
+<select class="appearance-none bg-surface-container-lowest border border-outline-variant text-on-surface py-2 pl-3 pr-10 rounded-lg font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary">
+<option value="">All Depots</option>
+<option value="north">North Hub</option>
+<option value="south">South Terminal</option>
+<option value="east">East Distribution</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-on-surface-variant pointer-events-none" style="font-size: 18px;">expand_more</span>
+</div>
+<button class="text-secondary hover:bg-secondary-fixed/50 py-2 px-3 rounded-lg font-body-sm text-body-sm font-medium transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined" style="font-size: 18px;">filter_list</span>
+                            More Filters
+                        </button>
+</div>
+<div class="flex items-center gap-2 w-full lg:w-auto border-t lg:border-t-0 border-outline-variant pt-4 lg:pt-0">
+<span class="font-body-sm text-body-sm text-on-surface-variant mr-2">View:</span>
+<div class="flex bg-surface-container rounded-lg p-1">
+<button aria-label="Table View" class="p-1.5 bg-surface-container-lowest rounded-md shadow-sm text-on-surface">
+<span class="material-symbols-outlined" style="font-size: 20px;">table_rows</span>
+</button>
+<button aria-label="Grid View" class="p-1.5 text-on-surface-variant hover:text-on-surface rounded-md transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">grid_view</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Main Data Table -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-soft overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse whitespace-nowrap">
+<thead>
+<tr class="border-b border-outline-variant">
+<th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant uppercase">Vehicle</th>
+<th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant uppercase">Reg Number</th>
+<th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant uppercase">Capacity / Type</th>
+<th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant uppercase">Current Driver</th>
+<th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant uppercase">Odometer</th>
+<th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant uppercase">Status</th>
+<th class="py-3 px-4 font-label-caps text-label-caps text-on-surface-variant uppercase text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-sm text-body-sm">
+<!-- Row 1 -->
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors group cursor-pointer" onclick="toggleDrawer()">
+<td class="py-3 px-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-10 rounded bg-surface-container border border-outline-variant flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A clean, modern heavy goods vehicle (HGV) cab in pristine white, parked at a stylized logistics depot. Bright, diffused daylight illumination, giving a crisp, professional aesthetic. Shot from a slight low angle to emphasize robust industrial reliability. Soft, neutral background to keep focus on the vehicle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp0WhM0lnY0j3C1eXb6vWKFRYg0no7Gc6HdzPqaTwJbY-KV93g-uuVpyTarD4okVQc6nBKqj1x0r__1YNDbYskTKMyOveGcV3t30BqwmjFcOCBMOwhBLkrKemmWbE5ffXBdnEd87SsX45_asdKRFdNf655cA-8AysNUsfIpfUM5DccLe0FYbx2v1GgrqOmBpc9GvNbXIGIvWaGYvwPIrOAF-jFTUH8Fj3nHcMrADgEW57_y4Zce4j7IA">
+</div>
+<div>
+<div class="font-medium text-on-surface">Volvo FH16</div>
+<div class="text-on-surface-variant text-xs mt-0.5">Heavy Goods</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 text-on-surface font-medium">HG23 KLP</td>
+<td class="py-3 px-4 text-on-surface-variant">44t / Articulated</td>
+<td class="py-3 px-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs font-bold">JD</div>
+<span class="text-on-surface">John Doe</span>
+</div>
+</td>
+<td class="py-3 px-4 text-on-surface-variant">142,500 mi</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-tertiary-container/10 text-tertiary-container border border-tertiary-container/20">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container mr-1.5"></span>
+                                            Active Route
+                                        </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed/20 rounded-md transition-colors" title="View Details">
+<span class="material-symbols-outlined" style="font-size: 20px;">visibility</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/20 rounded-md transition-colors" title="Edit">
+<span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 (Zebra striped - odd) -->
+<tr class="bg-surface-bright border-b border-outline-variant hover:bg-surface-container-low transition-colors group cursor-pointer" onclick="toggleDrawer()">
+<td class="py-3 px-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-10 rounded bg-surface-container border border-outline-variant flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A sleek, aerodynamic delivery van in a corporate silver finish, stationed in a modern loading bay. High-key lighting highlights the smooth panels and clean design. The setting suggests efficiency and rapid urban logistics, fitting a high-end corporate management interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyfA56-t1ymGgDJdgNfffK8yIf4yj2kL8sj4M_WWjZMn4nl6V1U3SrJtmki3E0y4MgP7j7oTntX8ifkvPONdpxqRxRhlT17egVLxYleVoOIL54KWTQVnjkWbcBF0CZMmAqyQSd3hlIr04oDZF-PXwQ7-1DuFfIMvSdUuoFUkXe9D9BunTUC0ykF0J1FKc6GL6T2w3Yz0f0Vf31puw2V-irPTrYbCkVVt6T78Wp1PhTm5gVDyjIipRSHg">
+</div>
+<div>
+<div class="font-medium text-on-surface">Mercedes Sprinter</div>
+<div class="text-on-surface-variant text-xs mt-0.5">Delivery Van</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 text-on-surface font-medium">VN22 OQM</td>
+<td class="py-3 px-4 text-on-surface-variant">3.5t / Panel</td>
+<td class="py-3 px-4">
+<div class="text-on-surface-variant italic text-xs">Unassigned</div>
+</td>
+<td class="py-3 px-4 text-on-surface-variant">45,120 mi</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-surface-variant text-on-surface border border-outline-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant mr-1.5"></span>
+                                            Idle (Depot)
+                                        </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed/20 rounded-md transition-colors" title="View Details">
+<span class="material-symbols-outlined" style="font-size: 20px;">visibility</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/20 rounded-md transition-colors" title="Edit">
+<span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors group cursor-pointer" onclick="toggleDrawer()">
+<td class="py-3 px-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-10 rounded bg-surface-container border border-outline-variant flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A heavy-duty Scania R-Series truck cab, viewed from a three-quarter angle. The vehicle is painted in a muted corporate blue, standing inside a brightly lit, spotless maintenance hangar. Soft shadows, clinical lighting, conveying operational readiness and meticulous upkeep." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaVg9P7WrcOTybZu8LJNfjnMpg_VwuEI2b6DHjckhi7mpaQRusTrYBu1uv1pFIUlZRXsq1rgLHinGFn18nDACW_kKA9QxcbIjxS9BhTMQuig6COx3TdkXdCAY1EaBvyGX7xB0OL2LQA7BgHhUivg5D-8YgV9e5isMHWiEmwwBwGOxabzsTmrVNh4GORrrY8_Ns2EzPwyQxaG2Y_DJWrKyN7oaW91ilael6Q5cJHdKZZ6VLSLAXzXY4Bg">
+</div>
+<div>
+<div class="font-medium text-on-surface">Scania R-Series</div>
+<div class="text-on-surface-variant text-xs mt-0.5">Heavy Goods</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 text-on-surface font-medium">HG21 ZXC</td>
+<td class="py-3 px-4 text-on-surface-variant">44t / Articulated</td>
+<td class="py-3 px-4">
+<div class="flex items-center gap-2">
+<img class="w-6 h-6 rounded-full object-cover border border-outline-variant" data-alt="Small thumbnail portrait of a middle-aged male truck driver wearing a high-visibility vest over a dark polo shirt. Friendly but professional demeanor, well-lit against a plain light gray background. Suitable for a corporate employee directory avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDXvuJnAXN4i98TIYSeKdydrTAE_3WiZ8QPlLwx8i5yX_IoRIlSZARsrZVFhZpBTHSrUjb_i_iNgSVggs1B7pJJDCfcpdvFc_dDrEyCHTomGMZ4FaYHeCc5MvBpeY-GPNCYeSnpJtqeEiVU1rrnHN0WhI43JYW3u9GS_gNMWO6dbM_Tai3E6Kj_xoCVh3KpVlIgRDVQ60U9tBPJRPXjr2Qkf1GeKAWsCyDCcjW62gpgIaeEuovWBljTQ">
+<span class="text-on-surface">Mike Torres</span>
+</div>
+</td>
+<td class="py-3 px-4 text-on-surface-variant">210,000 mi</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-error/10 text-error border border-error/20">
+<span class="w-1.5 h-1.5 rounded-full bg-error mr-1.5"></span>
+                                            Maintenance
+                                        </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed/20 rounded-md transition-colors" title="View Details">
+<span class="material-symbols-outlined" style="font-size: 20px;">visibility</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/20 rounded-md transition-colors" title="Edit">
+<span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between px-4 py-3 border-t border-outline-variant bg-surface-container-lowest">
+<div class="font-body-sm text-body-sm text-on-surface-variant">
+                            Showing <span class="font-medium text-on-surface">1</span> to <span class="font-medium text-on-surface">3</span> of <span class="font-medium text-on-surface">142</span> vehicles
+                        </div>
+<div class="flex items-center gap-2">
+<button class="p-1.5 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container disabled:opacity-50 disabled:cursor-not-allowed" disabled="">
+<span class="material-symbols-outlined" style="font-size: 20px;">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-primary-container text-on-primary font-body-sm text-body-sm font-medium flex items-center justify-center">1</button>
+<button class="w-8 h-8 rounded-lg hover:bg-surface-container text-on-surface font-body-sm text-body-sm font-medium flex items-center justify-center">2</button>
+<button class="w-8 h-8 rounded-lg hover:bg-surface-container text-on-surface font-body-sm text-body-sm font-medium flex items-center justify-center">3</button>
+<span class="text-on-surface-variant">...</span>
+<button class="p-1.5 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container">
+<span class="material-symbols-outlined" style="font-size: 20px;">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Slide-over Drawer (Hidden by default) -->
+<div aria-labelledby="slide-over-title" aria-modal="true" class="fixed inset-0 z-50 overflow-hidden pointer-events-none" id="vehicleDrawerWrapper" role="dialog">
+<div class="absolute inset-0 overflow-hidden">
+<!-- Background overlay -->
+<div aria-hidden="true" class="absolute inset-0 drawer-overlay opacity-0 transition-opacity duration-300 pointer-events-none" id="drawerOverlay" onclick="toggleDrawer()"></div>
+<div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+<!-- Drawer panel -->
+<div class="pointer-events-auto w-screen max-w-xl drawer-enter shadow-2xl bg-surface-container-lowest flex flex-col h-full border-l border-outline-variant" id="drawerPanel">
+<!-- Drawer Header -->
+<div class="px-6 py-4 border-b border-outline-variant flex items-start justify-between sticky top-0 bg-surface-container-lowest z-10">
+<div class="flex items-center gap-4">
+<div class="w-16 h-12 rounded bg-surface-container border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A clean, modern heavy goods vehicle (HGV) cab in pristine white, parked at a stylized logistics depot. Bright, diffused daylight illumination, giving a crisp, professional aesthetic. Soft, neutral background to keep focus on the vehicle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0qfk6lSTuflVDBNdpaoY-9Vyk5o41bxQjH11O2Tr1YbcnyJWKmNh8ToWlV3N6y7qp6BMRm_fKCqzHvEIcmPJpdOdAriJdxF7gEhNrPZTKB8EJ6Y48JqktwGsspL3ZXh2Z5VwaL4Zdxv7cP4lU7oR99RaI6eNKEPfFm2shTkDHkBlZAwD-C3_1h_UMTa6XB92UBIeyOHkOXBRV2CPOoUXKKn5UPpSoh8ZinZyI63hpclP5wwFrXJgTQg">
+</div>
+<div>
+<h2 class="font-section-title text-section-title text-on-surface" id="slide-over-title">Volvo FH16 (HG23 KLP)</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Heavy Goods • 44t Articulated</p>
+</div>
+</div>
+<div class="ml-3 flex h-7 items-center gap-2">
+<span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-tertiary-container/10 text-tertiary-container border border-tertiary-container/20">
+                                Active Route
+                            </span>
+<button class="rounded-md bg-surface-container-lowest text-on-surface-variant hover:text-on-surface focus:outline-none focus:ring-2 focus:ring-secondary" onclick="toggleDrawer()" type="button">
+<span class="sr-only">Close panel</span>
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- Drawer Tabs -->
+<div class="px-6 border-b border-outline-variant bg-surface-container-low">
+<nav aria-label="Tabs" class="-mb-px flex space-x-6">
+<a class="border-secondary text-secondary whitespace-nowrap py-3 px-1 border-b-2 font-body-sm text-body-sm font-medium" href="#">Overview</a>
+<a class="border-transparent text-on-surface-variant hover:text-on-surface hover:border-outline whitespace-nowrap py-3 px-1 border-b-2 font-body-sm text-body-sm font-medium" href="#">Trips (Active)</a>
+<a class="border-transparent text-on-surface-variant hover:text-on-surface hover:border-outline whitespace-nowrap py-3 px-1 border-b-2 font-body-sm text-body-sm font-medium" href="#">Fuel Logs</a>
+<a class="border-transparent text-on-surface-variant hover:text-on-surface hover:border-outline whitespace-nowrap py-3 px-1 border-b-2 font-body-sm text-body-sm font-medium" href="#">Maintenance</a>
+</nav>
+</div>
+<!-- Drawer Content (Scrollable) -->
+<div class="flex-1 overflow-y-auto px-6 py-6 p-stack-lg bg-background">
+<!-- Bento Grid Stats -->
+<div class="grid grid-cols-2 gap-4 mb-8">
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant shadow-soft flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Odometer</span>
+<span class="material-symbols-outlined text-outline" style="font-size: 20px;">speed</span>
+</div>
+<div class="font-kpi-display text-kpi-display text-on-surface">142,500 <span class="text-lg text-on-surface-variant font-normal">mi</span></div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant shadow-soft flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Fuel Efficiency</span>
+<span class="material-symbols-outlined text-tertiary-container" style="font-size: 20px;">eco</span>
+</div>
+<div class="font-kpi-display text-kpi-display text-on-surface">8.4 <span class="text-lg text-on-surface-variant font-normal">mpg</span></div>
+<div class="text-xs text-tertiary-container font-medium mt-1 flex items-center">
+<span class="material-symbols-outlined" style="font-size: 14px;">trending_up</span> +0.2 vs fleet avg
+                                </div>
+</div>
+<div class="col-span-2 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant shadow-soft flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold">JD</div>
+<div>
+<div class="font-body-sm text-body-sm font-medium text-on-surface">Current Driver: John Doe</div>
+<div class="text-xs text-on-surface-variant mt-0.5">Shift ends in 4h 30m</div>
+</div>
+</div>
+<button class="text-secondary font-body-sm text-body-sm font-medium hover:underline">Message</button>
+</div>
+</div>
+<!-- Current Assignment Details -->
+<h3 class="font-section-title text-section-title text-on-surface mb-4">Current Assignment</h3>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-soft overflow-hidden mb-8">
+<div class="p-4 border-b border-outline-variant flex items-center justify-between bg-surface-bright">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">route</span>
+<span class="font-body-md text-body-md font-medium text-on-surface">Route #LDN-MAN-042</span>
+</div>
+<span class="text-xs font-medium text-tertiary-container bg-tertiary-container/10 px-2 py-1 rounded">On Schedule</span>
+</div>
+<div class="p-4 flex flex-col gap-4 relative">
+<!-- Timeline Line -->
+<div class="absolute left-6 top-8 bottom-8 w-px bg-outline-variant z-0"></div>
+<div class="flex gap-4 relative z-10">
+<div class="w-4 h-4 rounded-full bg-tertiary-container border-2 border-surface-container-lowest mt-1 shadow-sm"></div>
+<div>
+<div class="font-body-sm text-body-sm font-medium text-on-surface">London Gateway (Origin)</div>
+<div class="text-xs text-on-surface-variant">Departed 06:30 AM</div>
+</div>
+</div>
+<div class="flex gap-4 relative z-10">
+<div class="w-4 h-4 rounded-full bg-primary-container border-2 border-surface-container-lowest mt-1 shadow-sm animate-pulse"></div>
+<div>
+<div class="font-body-sm text-body-sm font-medium text-on-surface">M1 Service Station (Current Location)</div>
+<div class="text-xs text-on-surface-variant">Arrived 09:15 AM - Rest break</div>
+</div>
+</div>
+<div class="flex gap-4 relative z-10">
+<div class="w-4 h-4 rounded-full bg-surface-dim border-2 border-surface-container-lowest mt-1 shadow-sm"></div>
+<div>
+<div class="font-body-sm text-body-sm font-medium text-on-surface">Manchester Hub (Destination)</div>
+<div class="text-xs text-on-surface-variant">ETA 12:45 PM</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Drawer Footer -->
+<div class="px-6 py-4 border-t border-outline-variant bg-surface-container-lowest flex justify-end gap-3 sticky bottom-0">
+<button class="bg-surface-container-lowest border border-outline-variant text-on-surface py-2 px-4 rounded-lg font-body-md text-body-md font-medium hover:bg-surface-container transition-colors shadow-soft" onclick="toggleDrawer()" type="button">
+                            Close
+                        </button>
+<button class="bg-primary-container text-on-primary py-2 px-4 rounded-lg font-body-md text-body-md font-medium hover:bg-opacity-90 transition-colors shadow-soft" type="button">
+                            Edit Vehicle
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+        function toggleDrawer() {
+            const wrapper = document.getElementById('vehicleDrawerWrapper');
+            const overlay = document.getElementById('drawerOverlay');
+            const panel = document.getElementById('drawerPanel');
+            
+            const isOpen = wrapper.classList.contains('pointer-events-auto');
+
+            if (isOpen) {
+                // Close
+                panel.classList.remove('drawer-enter-active');
+                panel.classList.add('drawer-exit-active');
+                overlay.classList.remove('opacity-100');
+                overlay.classList.add('opacity-0');
+                
+                setTimeout(() => {
+                    wrapper.classList.remove('pointer-events-auto');
+                    wrapper.classList.add('pointer-events-none');
+                    overlay.classList.add('pointer-events-none');
+                    panel.classList.remove('drawer-exit-active', 'drawer-exit');
+                    panel.classList.add('drawer-enter');
+                }, 300); // matches transition duration
+            } else {
+                // Open
+                wrapper.classList.remove('pointer-events-none');
+                wrapper.classList.add('pointer-events-auto');
+                overlay.classList.remove('pointer-events-none');
+                
+                // Force reflow
+                void panel.offsetWidth;
+                
+                panel.classList.remove('drawer-enter');
+                panel.classList.add('drawer-enter-active');
+                overlay.classList.remove('opacity-0');
+                overlay.classList.add('opacity-100');
+            }
+        }
+    </script>
+</body></html>
