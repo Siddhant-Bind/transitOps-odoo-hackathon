@@ -1,20 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useAppContext } from '../context/AppContext';
 
 const Fuel = () => {
-  const [fuelLogs] = useState([
-    { vehicle: 'VH-492', date: 'Oct 24, 08:30', litres: '85 L', cost: '$134.50', mileage: '142,500 km', station: 'Shell Express' },
-    { vehicle: 'VH-118', date: 'Oct 24, 07:15', litres: '120 L', cost: '$189.20', mileage: '88,320 km', station: 'PetroCanada' },
-    { vehicle: 'VH-902', date: 'Oct 23, 16:45', litres: '65 L', cost: '$102.80', mileage: '210,105 km', station: 'Esso' },
-    { vehicle: 'VH-334', date: 'Oct 23, 14:20', litres: '90 L', cost: '$142.10', mileage: '54,900 km', station: 'Shell Express' },
-    { vehicle: 'VH-551', date: 'Oct 22, 09:10', litres: '110 L', cost: '$173.00', mileage: '112,450 km', station: 'PetroCanada' }
-  ]);
-  const [expenses] = useState([
-    { tripId: '#TR-8921', vehicle: 'VH-118', type: 'Toll Gate', driver: 'Sarah Jenkins', amount: '$45.00', status: 'Approved' },
-    { tripId: '#TR-8944', vehicle: 'VH-334', type: 'Emergency Repair', driver: 'Mike Torres', amount: '$320.50', status: 'Pending Approval' },
-    { tripId: '#TR-8890', vehicle: 'VH-492', type: 'Parking', driver: 'David Chen', amount: '$18.00', status: 'Approved' },
-    { tripId: '#TR-8955', vehicle: 'VH-551', type: 'Weigh Station Fee', driver: 'Anna Smith', amount: '$25.00', status: 'Pending Approval' }
-  ]);
-
+  const { setFuelFormOpen, setExpenseFormOpen, fuelLogs, expenses } = useAppContext();
   useEffect(() => {
     if (window.lucide && window.lucide.createIcons) {
       window.lucide.createIcons();
@@ -35,10 +23,10 @@ const Fuel = () => {
 <p className="font-body-md text-body-md text-on-surface-variant mt-1">Monitor operational costs and log receipts across the fleet.</p>
 </div>
 <div className="flex items-center gap-3">
-<button className="text-body-sm font-medium px-5 py-2.5 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-[14px] hover:bg-surface-container transition-colors flex items-center gap-2 shadow-sm">
+<button onClick={() => setExpenseFormOpen(true)} className="text-body-sm font-medium px-5 py-2.5 bg-surface-container-lowest border border-outline-variant text-on-surface rounded-[14px] hover:bg-surface-container transition-colors flex items-center gap-2 shadow-sm">
 <span className="material-symbols-outlined text-[18px]">receipt_long</span> Add Expense
                     </button>
-<button className="text-body-sm font-medium px-5 py-2.5 bg-primary-container text-on-primary-container rounded-[14px] hover:opacity-90 transition-opacity flex items-center gap-2 shadow-sm">
+<button onClick={() => setFuelFormOpen(true)} className="text-body-sm font-medium px-5 py-2.5 bg-primary-container text-on-primary-container rounded-[14px] hover:opacity-90 transition-opacity flex items-center gap-2 shadow-sm">
 <span className="material-symbols-outlined text-[18px]">local_gas_station</span> Add Fuel Log
                     </button>
 </div>

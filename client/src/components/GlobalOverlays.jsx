@@ -1,15 +1,29 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 
 export default function GlobalOverlays() {
+  const navigate = useNavigate();
   const {
     isAddVehicleOpen, setAddVehicleOpen,
     isSettingsOpen, setSettingsOpen,
     selectedMaintenanceLog, setSelectedMaintenanceLog,
     userProfileOpen, setUserProfileOpen,
     notificationsOpen, setNotificationsOpen,
-    addVehicle
+    isMaintenanceFormOpen, setMaintenanceFormOpen,
+    isFuelFormOpen, setFuelFormOpen,
+    isExpenseFormOpen, setExpenseFormOpen,
+    addVehicle,
+    maintenanceLogs, setMaintenanceLogs,
+    fuelLogs, setFuelLogs,
+    expenses, setExpenses
   } = useAppContext();
+
+  const handleNavigation = (path) => {
+    setUserProfileOpen(false);
+    setNotificationsOpen(false);
+    navigate(path);
+  };
 
   // Handle Add Vehicle Form
   const [vehicleForm, setVehicleForm] = useState({
@@ -27,6 +41,57 @@ export default function GlobalOverlays() {
     });
     setAddVehicleOpen(false);
     setVehicleForm({ regNumber: '', model: '', type: 'Van', odometer: '' });
+  };
+
+  const [maintenanceForm, setMaintenanceForm] = useState({ vehicle: '', serviceType: '', cost: '' });
+  const handleMaintenanceSubmit = (e) => {
+    e.preventDefault();
+    const newLog = {
+      id: `ML-${Math.floor(100+Math.random()*900)}`,
+      vehicle: maintenanceForm.vehicle || 'Generic Vehicle',
+      regNumber: 'XX-0000',
+      serviceType: maintenanceForm.serviceType || 'Standard Service',
+      workshop: 'Internal Depot',
+      cost: `$${maintenanceForm.cost || '0.00'}`,
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      status: 'Scheduled',
+      image: 'https://placehold.co/100'
+    };
+    setMaintenanceLogs([newLog, ...maintenanceLogs]);
+    setMaintenanceFormOpen(false);
+    setMaintenanceForm({ vehicle: '', serviceType: '', cost: '' });
+  };
+
+  const [fuelForm, setFuelForm] = useState({ vehicle: '', litres: '', cost: '' });
+  const handleFuelSubmit = (e) => {
+    e.preventDefault();
+    const newLog = {
+      vehicle: fuelForm.vehicle || 'VH-000',
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' }),
+      litres: `${fuelForm.litres || '0'} L`,
+      cost: `$${fuelForm.cost || '0.00'}`,
+      mileage: 'TBD',
+      station: 'Internal Depot Station'
+    };
+    setFuelLogs([newLog, ...fuelLogs]);
+    setFuelFormOpen(false);
+    setFuelForm({ vehicle: '', litres: '', cost: '' });
+  };
+
+  const [expenseForm, setExpenseForm] = useState({ vehicle: '', amount: '', type: '' });
+  const handleExpenseSubmit = (e) => {
+    e.preventDefault();
+    const newLog = {
+      tripId: `#TR-${Math.floor(1000+Math.random()*9000)}`,
+      vehicle: expenseForm.vehicle || 'VH-000',
+      type: expenseForm.type || 'Miscellaneous',
+      driver: 'Current User',
+      amount: `$${expenseForm.amount || '0.00'}`,
+      status: 'Pending Approval'
+    };
+    setExpenses([newLog, ...expenses]);
+    setExpenseFormOpen(false);
+    setExpenseForm({ vehicle: '', amount: '', type: '' });
   };
 
   return (
@@ -187,13 +252,13 @@ export default function GlobalOverlays() {
             </div>
             <div className="p-4 flex-1">
               <ul className="space-y-1">
-                <li><button className="w-full text-left px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container rounded-lg flex items-center gap-3"><span className="material-symbols-outlined text-[18px]">person</span> My Account</button></li>
-                <li><button className="w-full text-left px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container rounded-lg flex items-center gap-3"><span className="material-symbols-outlined text-[18px]">lock</span> Security</button></li>
-                <li><button className="w-full text-left px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container rounded-lg flex items-center gap-3"><span className="material-symbols-outlined text-[18px]">help</span> Help Center</button></li>
+                <li><button onClick={() => handleNavigation('/settings')} className="w-full text-left px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container rounded-lg flex items-center gap-3"><span className="material-symbols-outlined text-[18px]">person</span> My Account</button></li>
+                <li><button onClick={() => handleNavigation('/settings')} className="w-full text-left px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container rounded-lg flex items-center gap-3"><span className="material-symbols-outlined text-[18px]">lock</span> Security</button></li>
+                <li><button onClick={() => alert('Opening Help Center')} className="w-full text-left px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container rounded-lg flex items-center gap-3"><span className="material-symbols-outlined text-[18px]">help</span> Help Center</button></li>
               </ul>
             </div>
             <div className="p-4 border-t border-outline-variant">
-              <button className="w-full bg-error-container text-error px-4 py-2 rounded-lg font-medium flex justify-center items-center gap-2 hover:opacity-90">
+              <button onClick={() => handleNavigation('/login')} className="w-full bg-error-container text-error px-4 py-2 rounded-lg font-medium flex justify-center items-center gap-2 hover:opacity-90">
                 <span className="material-symbols-outlined text-[18px]">logout</span> Sign Out
               </button>
             </div>
@@ -225,6 +290,108 @@ export default function GlobalOverlays() {
                   </div>
                   <p className="text-sm text-on-surface">Fuel logged for VH-334 pending approval.</p>
                </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 6. Maintenance Form Drawer */}
+      {isMaintenanceFormOpen && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <div className="absolute inset-0 bg-surface-dim/40 backdrop-blur-sm" onClick={() => setMaintenanceFormOpen(false)}></div>
+          <div className="relative w-full max-w-sm h-full bg-surface-container-lowest border-l border-outline-variant shadow-xl z-10 flex flex-col transition-transform animate-in slide-in-from-right duration-300">
+            <div className="p-4 border-b border-outline-variant flex justify-between items-center">
+               <h3 className="font-semibold text-on-surface">Schedule / Log Service</h3>
+               <button className="text-on-surface-variant hover:text-on-surface" onClick={() => setMaintenanceFormOpen(false)}>
+                 <span className="material-symbols-outlined">close</span>
+               </button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4">
+              <form onSubmit={handleMaintenanceSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-on-surface mb-1">Vehicle</label>
+                  <input required type="text" value={maintenanceForm.vehicle} onChange={e => setMaintenanceForm({...maintenanceForm, vehicle: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="VH-123" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-on-surface mb-1">Service Type</label>
+                  <input required type="text" value={maintenanceForm.serviceType} onChange={e => setMaintenanceForm({...maintenanceForm, serviceType: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="Oil Change" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-on-surface mb-1">Estimated Cost ($)</label>
+                  <input required type="number" value={maintenanceForm.cost} onChange={e => setMaintenanceForm({...maintenanceForm, cost: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="150" />
+                </div>
+                <div className="pt-4">
+                  <button type="submit" className="w-full px-4 py-2 bg-primary text-on-primary rounded-lg font-medium shadow-sm hover:opacity-90">Save Log</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 7. Fuel Form Drawer */}
+      {isFuelFormOpen && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <div className="absolute inset-0 bg-surface-dim/40 backdrop-blur-sm" onClick={() => setFuelFormOpen(false)}></div>
+          <div className="relative w-full max-w-sm h-full bg-surface-container-lowest border-l border-outline-variant shadow-xl z-10 flex flex-col transition-transform animate-in slide-in-from-right duration-300">
+            <div className="p-4 border-b border-outline-variant flex justify-between items-center">
+               <h3 className="font-semibold text-on-surface">Add Fuel Log</h3>
+               <button className="text-on-surface-variant hover:text-on-surface" onClick={() => setFuelFormOpen(false)}>
+                 <span className="material-symbols-outlined">close</span>
+               </button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4">
+              <form onSubmit={handleFuelSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-on-surface mb-1">Vehicle</label>
+                  <input required type="text" value={fuelForm.vehicle} onChange={e => setFuelForm({...fuelForm, vehicle: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="VH-123" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-on-surface mb-1">Litres</label>
+                  <input required type="number" value={fuelForm.litres} onChange={e => setFuelForm({...fuelForm, litres: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="85 L" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-on-surface mb-1">Total Cost ($)</label>
+                  <input required type="number" value={fuelForm.cost} onChange={e => setFuelForm({...fuelForm, cost: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="120" />
+                </div>
+                <div className="pt-4">
+                  <button type="submit" className="w-full px-4 py-2 bg-primary text-on-primary rounded-lg font-medium shadow-sm hover:opacity-90">Log Fuel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 8. Expense Form Drawer */}
+      {isExpenseFormOpen && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <div className="absolute inset-0 bg-surface-dim/40 backdrop-blur-sm" onClick={() => setExpenseFormOpen(false)}></div>
+          <div className="relative w-full max-w-sm h-full bg-surface-container-lowest border-l border-outline-variant shadow-xl z-10 flex flex-col transition-transform animate-in slide-in-from-right duration-300">
+            <div className="p-4 border-b border-outline-variant flex justify-between items-center">
+               <h3 className="font-semibold text-on-surface">Add Expense</h3>
+               <button className="text-on-surface-variant hover:text-on-surface" onClick={() => setExpenseFormOpen(false)}>
+                 <span className="material-symbols-outlined">close</span>
+               </button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4">
+              <form onSubmit={handleExpenseSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-on-surface mb-1">Vehicle/Trip Reference</label>
+                  <input required type="text" value={expenseForm.vehicle} onChange={e => setExpenseForm({...expenseForm, vehicle: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="VH-123" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-on-surface mb-1">Expense Type</label>
+                  <input required type="text" value={expenseForm.type} onChange={e => setExpenseForm({...expenseForm, type: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="Toll Gate" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-on-surface mb-1">Amount ($)</label>
+                  <input required type="number" value={expenseForm.amount} onChange={e => setExpenseForm({...expenseForm, amount: e.target.value})} className="w-full px-3 py-2 bg-surface border border-outline-variant rounded-lg" placeholder="45" />
+                </div>
+                <div className="pt-4">
+                  <button type="submit" className="w-full px-4 py-2 bg-primary text-on-primary rounded-lg font-medium shadow-sm hover:opacity-90">Submit Expense</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>

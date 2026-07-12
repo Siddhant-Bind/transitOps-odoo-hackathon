@@ -25,6 +25,11 @@ const Drivers = () => {
     }
   ]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 2; // small number so we slice dummy data
+  const totalPages = Math.ceil(driversData.length / itemsPerPage);
+  const paginatedDrivers = driversData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
   useEffect(() => {
     if (window.lucide && window.lucide.createIcons) {
       window.lucide.createIcons();
@@ -42,11 +47,11 @@ const Drivers = () => {
 <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Manage personnel, licenses, and performance metrics.</p>
 </div>
 <div className="flex gap-2">
-<button className="bg-surface-container-lowest border border-[#E5E7EB] text-on-surface px-4 py-2 rounded-[14px] font-body-md text-body-md hover:bg-surface-container transition-colors flex items-center gap-2">
-<span className="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span> Filters
+<button onClick={() => alert('Exporting Driver List...')} className="bg-surface-container-lowest border border-[#E5E7EB] text-on-surface px-4 py-2 rounded-[14px] font-body-md text-body-md hover:bg-surface-container transition-colors flex items-center gap-2">
+<span className="material-symbols-outlined text-[18px]">download</span> Export
                         </button>
-<button className="bg-surface-container-lowest border border-[#E5E7EB] text-on-surface px-4 py-2 rounded-[14px] font-body-md text-body-md hover:bg-surface-container transition-colors flex items-center gap-2">
-<span className="material-symbols-outlined text-[18px]" data-icon="download">download</span> Export
+<button onClick={() => alert('Add Driver Modal Opens here')} className="bg-primary text-on-primary px-4 py-2 rounded-[14px] font-body-md text-body-md hover:bg-opacity-90 space-x-2 transition-opacity flex items-center shadow-sm">
+<span className="material-symbols-outlined text-[18px]">person_add</span> <span>Add Driver</span>
                         </button>
 </div>
 </div>
@@ -111,7 +116,7 @@ const Drivers = () => {
 </select>
 </div>
 <div className="text-on-surface-variant font-body-sm text-body-sm">
-                            Showing 1-10 of 248 drivers
+Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, driversData.length)} of {driversData.length} drivers
                         </div>
 </div>
 
@@ -128,7 +133,7 @@ const Drivers = () => {
 </tr>
 </thead>
 <tbody className="font-body-sm text-body-sm text-on-surface">
-{driversData.map((driver, index) => (
+{paginatedDrivers.map((driver, index) => (
 <tr key={index} className={`${index % 2 === 0 ? 'bg-[#FFFFFF]' : 'bg-[#F9FAFB]'} hover:bg-surface-container-low transition-colors group border-b border-[#E5E7EB]/50`}>
 <td className="px-6 py-4">
 <div className="flex items-center gap-3">
@@ -172,12 +177,17 @@ const Drivers = () => {
 </span>
 </td>
 <td className="px-6 py-4 text-right">
-<button className="text-on-surface-variant hover:text-primary transition-colors p-1" >
-<span className="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+<div className="flex items-center justify-end">
+<button onClick={() => alert('Opening Messages')} className="text-on-surface-variant hover:text-primary transition-colors p-1" title="Message Driver">
+<span className="material-symbols-outlined text-[20px]">chat</span>
+</button>
+<button onClick={() => alert('Calling Driver')} className="text-on-surface-variant hover:text-primary transition-colors p-1 ml-2" title="Call Driver">
+<span className="material-symbols-outlined text-[20px]">call</span>
 </button>
 <button className="text-on-surface-variant hover:text-primary transition-colors p-1 ml-2">
 <span className="material-symbols-outlined text-[20px]" data-icon="more_vert">more_vert</span>
 </button>
+</div>
 </td>
 </tr>
 ))}
@@ -186,14 +196,13 @@ const Drivers = () => {
 </div>
 
 <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-between bg-surface-container-lowest">
-<button className="px-3 py-1.5 border border-[#E5E7EB] rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-body-sm text-body-sm disabled:opacity-50" disabled="">Previous</button>
+<button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} className="px-3 py-1.5 border border-[#E5E7EB] rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-body-sm text-body-sm disabled:opacity-50">Previous</button>
 <div className="flex gap-1">
-<button className="w-8 h-8 flex items-center justify-center rounded-lg bg-primary-container text-on-primary-container font-medium text-sm">1</button>
-<button className="w-8 h-8 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container font-medium text-sm">2</button>
-<button className="w-8 h-8 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container font-medium text-sm">3</button>
-<span className="w-8 h-8 flex items-center justify-center text-on-surface-variant">...</span>
+<button className="w-8 h-8 flex items-center justify-center rounded-lg bg-primary-container text-on-primary-container font-medium text-sm">{currentPage}</button>
+<span className="w-8 h-8 flex items-center justify-center text-on-surface-variant">/</span>
+<span className="w-8 h-8 flex items-center justify-center text-on-surface-variant font-medium text-sm">{totalPages}</span>
 </div>
-<button className="px-3 py-1.5 border border-[#E5E7EB] rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-body-sm text-body-sm">Next</button>
+<button onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} className="px-3 py-1.5 border border-[#E5E7EB] rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors font-body-sm text-body-sm disabled:opacity-50">Next</button>
 </div>
 </div>
 </div>
