@@ -11,10 +11,10 @@ const Topbar = () => {
       <div className="flex items-center gap-4 flex-1">
       </div>
       <div className="flex items-center gap-4">
-        <button onClick={() => setAddVehicleOpen(true)} className="bg-primary-container text-on-primary py-1.5 px-4 rounded-lg text-sm font-medium hover:bg-surface-tint transition-colors">
+        <button onClick={() => setAddVehicleOpen(true)} className="bg-primary text-on-primary py-1.5 px-4 rounded-lg text-sm font-medium hover:bg-surface-tint transition-colors">
           Add Vehicle
         </button>
-        <button onClick={() => setSettingsOpen(true)} className="bg-surface border border-outline-variant text-on-surface py-1.5 px-4 rounded-lg text-sm font-medium hover:bg-surface-container transition-colors">
+        <button onClick={() => setSettingsOpen(true)} className="bg-surface border border-outline-variant text-on-surface py-1.5 px-4 rounded-lg text-sm font-medium hover:bg-surface-container-high transition-colors">
           Settings
         </button>
         <div className="flex items-center gap-2 border-l border-outline-variant pl-4 ml-2">

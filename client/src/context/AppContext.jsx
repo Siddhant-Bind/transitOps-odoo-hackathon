@@ -12,7 +12,15 @@ export const AppProvider = ({ children }) => {
   const [isMaintenanceFormOpen, setMaintenanceFormOpen] = useState(false);
   const [isFuelFormOpen, setFuelFormOpen] = useState(false);
   const [isExpenseFormOpen, setExpenseFormOpen] = useState(false);
+  const [isDarkMode, setDarkMode] = useState(false);
 
+  React.useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
   const [fleetData, setFleetData] = useState([
     {
       id: "FL-101",
@@ -105,6 +113,7 @@ export const AppProvider = ({ children }) => {
       isMaintenanceFormOpen, setMaintenanceFormOpen,
       isFuelFormOpen, setFuelFormOpen,
       isExpenseFormOpen, setExpenseFormOpen,
+      isDarkMode, setDarkMode,
       fleetData, setFleetData, addVehicle,
       maintenanceLogs, setMaintenanceLogs,
       fuelLogs, setFuelLogs,
